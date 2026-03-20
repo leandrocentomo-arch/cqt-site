@@ -65,9 +65,8 @@ img { max-width: 100%; display: block; }
   top: 0;
 }
 .header-logo img {
-  height: 52px;
+  height: 44px;
   width: auto;
-  filter: invert(1);
 }
 .header-nav { display: flex; align-items: center; gap: 28px; height: 100%; }
 .header-nav a {
@@ -122,7 +121,7 @@ img { max-width: 100%; display: block; }
 /* ========== PAGE BANNER ========== */
 .page-banner {
   background: linear-gradient(135deg, var(--dark-gray) 0%, var(--mid-gray) 100%);
-  padding: 50px 40px 40px;
+  padding: 50px max(40px, calc(50% - 510px)) 40px;
   position: relative;
   overflow: hidden;
 }
@@ -153,7 +152,7 @@ img { max-width: 100%; display: block; }
 }
 .breadcrumb {
   background: rgba(0,0,0,0.3);
-  padding: 6px 40px;
+  padding: 6px max(40px, calc(50% - 510px));
   font-size: 11px;
   color: var(--blue-medium);
 }
@@ -168,7 +167,7 @@ img { max-width: 100%; display: block; }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 60px 50px 40px;
+  padding: 60px max(40px, calc(50% - 510px)) 40px;
   overflow: hidden;
 }
 .hero::after {
@@ -194,6 +193,9 @@ img { max-width: 100%; display: block; }
   pointer-events: none;
 }
 .hero-content { position: relative; z-index: 2; max-width: 520px; }
+.hero-logo { margin-bottom: 18px; }
+.hero-logo img { height: 38px; width: auto; }
+.nowrap { white-space: nowrap; }
 .hero h1 {
   font-size: 36px;
   font-weight: 700;
