@@ -37,13 +37,11 @@ img { max-width: 100%; display: block; }
   z-index: 100;
 }
 .header-logo {
-  font-size: 34px;
-  font-weight: 700;
-  color: var(--white);
-  letter-spacing: 2px;
-  font-style: italic;
+  display: flex;
+  align-items: center;
 }
-.header-logo a { color: var(--white); }
+.header-logo a { display: flex; align-items: center; }
+.header-logo img { height: 32px; width: auto; }
 .header-nav { display: flex; align-items: center; gap: 28px; }
 .header-nav a {
   color: #bbb;
@@ -304,12 +302,10 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--mid-gray);
   border: 2px solid var(--border-gray);
-  font-style: italic;
+  padding: 10px;
 }
+.services-icon img { height: 28px; width: auto; }
 .services-header-right {
   max-width: 300px;
   background: var(--light-gray);
@@ -492,7 +488,8 @@ img { max-width: 100%; display: block; }
 .footer { background: var(--dark); color: #ccc; padding: 36px 40px 18px; }
 .footer-top { display: flex; gap: 50px; margin-bottom: 24px; }
 .footer-brand { min-width: 220px; }
-.footer-logo { font-size: 30px; font-weight: 700; color: var(--white); font-style: italic; margin-bottom: 6px; }
+.footer-logo { margin-bottom: 6px; }
+.footer-logo img { height: 28px; width: auto; }
 .footer-brand-text { font-size: 11.5px; color: #999; margin-bottom: 3px; }
 .footer-brand a { color: #a0b8d0; text-decoration: underline; font-size: 11.5px; }
 .footer-wa { display: flex; align-items: center; gap: 7px; margin-top: 10px; font-size: 11.5px; }
@@ -533,8 +530,9 @@ img { max-width: 100%; display: block; }
 .alcance-box .icon-circle {
   width: 50px; height: 50px; border-radius: 50%;
   background: #333; display: flex; align-items: center; justify-content: center;
-  font-size: 18px; font-weight: 700; font-style: italic; flex-shrink: 0;
+  flex-shrink: 0; padding: 10px;
 }
+.alcance-box .icon-circle img { height: 24px; width: auto; }
 .alcance-box h3 { font-size: 15px; font-weight: 600; text-decoration: underline; margin-bottom: 4px; }
 .alcance-box p { font-size: 12.5px; color: #bbb; }
 
