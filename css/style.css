@@ -32,7 +32,7 @@ img { max-width: 100%; display: block; }
 /* ========== HEADER ========== */
 .header {
   background: var(--dark);
-  padding: 0 40px;
+  padding: 0 max(40px, calc(50% - 510px));
   height: 48px;
   display: flex;
   align-items: center;
@@ -46,13 +46,9 @@ img { max-width: 100%; display: block; }
   align-items: flex-start;
   position: relative;
   z-index: 110;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-.header.scrolled .header-logo {
   opacity: 1;
   pointer-events: auto;
+  transition: opacity 0.3s;
 }
 .header-logo a {
   display: flex;
@@ -61,7 +57,7 @@ img { max-width: 100%; display: block; }
   top: 0;
 }
 .header-logo img {
-  height: 56px;
+  height: 64px;
   width: auto;
 }
 .header-nav { display: flex; align-items: center; gap: 28px; height: 100%; }
@@ -647,7 +643,7 @@ img { max-width: 100%; display: block; }
 /* ========== SERVICES HERO GRID (Home) ========== */
 .services-hero {
   width: 100%;
-  height: 85vh;
+  height: 480px;
   display: flex;
   flex-direction: row;
   overflow: hidden;
@@ -715,17 +711,17 @@ img { max-width: 100%; display: block; }
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 48px 40px;
+  padding: 36px 32px;
   color: #fff;
 }
 
 /* Title area */
 .sh-title {
-  font-size: 30px;
+  font-size: 26px;
   font-weight: 300;
   letter-spacing: -0.3px;
   line-height: 1.15;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 .sh-title strong {
   font-weight: 700;
@@ -734,7 +730,7 @@ img { max-width: 100%; display: block; }
   width: 40px;
   height: 3px;
   background: var(--accent-red);
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 }
 
 /* Vertical text */
@@ -745,23 +741,23 @@ img { max-width: 100%; display: block; }
   transform: translateY(-50%) rotate(180deg);
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  font-size: 60px;
+  font-size: 48px;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: -2px;
-  opacity: 0.08;
+  opacity: 0.2;
   color: #fff;
   transition: opacity 0.5s;
   z-index: 2;
   pointer-events: none;
 }
 .sh-column:hover .sh-vertical {
-  opacity: 0.18;
+  opacity: 0.35;
 }
 
 /* List items (appear on hover) */
 .sh-list {
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   opacity: 0;
   transform: translateY(8px);
   transition: opacity 0.5s, transform 0.5s;
@@ -774,9 +770,9 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   color: rgba(255,255,255,0.9);
 }
 .sh-list li::before {
@@ -792,6 +788,7 @@ img { max-width: 100%; display: block; }
 .sh-cta {
   display: inline-block;
   border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 3px;
   color: #fff;
   padding: 8px 24px;
   font-size: 11px;
@@ -864,7 +861,7 @@ img { max-width: 100%; display: block; }
   .norm-list { columns: 1; }
   /* Services hero responsive */
   .services-hero { flex-direction: column; height: auto; }
-  .sh-column { min-height: 50vh; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .sh-column { min-height: 320px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
   .sh-column:hover { flex: 1; }
   .sh-content { padding: 32px 20px; }
   .sh-title { font-size: 24px; }
