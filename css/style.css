@@ -31,7 +31,7 @@ img { max-width: 100%; display: block; }
 
 /* ========== HEADER ========== */
 .header {
-  background: var(--dark);
+  background: var(--dark-gray);
   padding: 0 max(40px, calc(50% - 510px));
   height: 48px;
   display: flex;
@@ -643,7 +643,7 @@ img { max-width: 100%; display: block; }
 /* ========== SERVICES HERO GRID (Home) ========== */
 .services-hero {
   width: 100%;
-  height: 480px;
+  height: 552px;
   display: flex;
   flex-direction: row;
   overflow: hidden;
@@ -654,7 +654,7 @@ img { max-width: 100%; display: block; }
   content: '';
   position: absolute;
   top: 0; right: 0;
-  width: 60%;
+  width: 70%;
   height: 100%;
   background-image: url('../img/CQT Sistemas da Qualidade.png');
   background-size: contain;
@@ -673,11 +673,11 @@ img { max-width: 100%; display: block; }
 .sh-column:last-child { border-right: none; }
 .sh-column:hover { flex: 1.5; }
 
-/* Column background colors (50% transparent to show image behind) */
-.sh-column--iso    { background: linear-gradient(160deg, rgba(42,37,53,0.5) 0%, rgba(61,57,74,0.5) 50%, rgba(80,104,123,0.5) 100%); }
-.sh-column--inspect { background: linear-gradient(160deg, rgba(30,45,61,0.5) 0%, rgba(80,104,123,0.5) 50%, rgba(113,144,171,0.5) 100%); }
-.sh-column--esg    { background: linear-gradient(160deg, rgba(42,37,53,0.5) 0%, rgba(74,66,96,0.5) 50%, rgba(113,144,171,0.5) 100%); }
-.sh-column--food   { background: linear-gradient(160deg, rgba(30,45,61,0.5) 0%, rgba(61,57,74,0.5) 50%, rgba(80,104,123,0.5) 100%); }
+/* Column background colors (50% transparent, blue-grey toward #50687B) */
+.sh-column--iso    { background: linear-gradient(160deg, rgba(55,72,90,0.5) 0%, rgba(70,92,110,0.5) 50%, rgba(80,104,123,0.5) 100%); }
+.sh-column--inspect { background: linear-gradient(160deg, rgba(60,80,100,0.5) 0%, rgba(80,104,123,0.5) 50%, rgba(95,120,140,0.5) 100%); }
+.sh-column--esg    { background: linear-gradient(160deg, rgba(55,72,90,0.5) 0%, rgba(75,96,115,0.5) 50%, rgba(95,120,140,0.5) 100%); }
+.sh-column--food   { background: linear-gradient(160deg, rgba(60,80,100,0.5) 0%, rgba(70,92,110,0.5) 50%, rgba(80,104,123,0.5) 100%); }
 
 /* Overlay gradient */
 .sh-column::before {
@@ -741,11 +741,12 @@ img { max-width: 100%; display: block; }
   transform: translateY(-50%) rotate(180deg);
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  font-size: 48px;
+  font-size: 40px;
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: -2px;
+  letter-spacing: -1px;
   opacity: 0.2;
+  white-space: nowrap;
   color: #fff;
   transition: opacity 0.5s;
   z-index: 2;
