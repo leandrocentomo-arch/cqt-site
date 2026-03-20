@@ -644,6 +644,181 @@ img { max-width: 100%; display: block; }
 .alcance-box h3 { font-size: 15px; font-weight: 600; text-decoration: underline; margin-bottom: 4px; }
 .alcance-box p { font-size: 15px; color: var(--blue-light); }
 
+/* ========== SERVICES HERO GRID (Home) ========== */
+.services-hero {
+  width: 100%;
+  height: 85vh;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+.sh-column {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  transition: flex 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sh-column:last-child { border-right: none; }
+.sh-column:hover { flex: 1.5; }
+
+/* Column background colors (placeholder until images are added) */
+.sh-column--iso    { background: linear-gradient(160deg, #2a2535 0%, #3D394A 50%, #50687B 100%); }
+.sh-column--inspect { background: linear-gradient(160deg, #1e2d3d 0%, #50687B 50%, #7190AB 100%); }
+.sh-column--esg    { background: linear-gradient(160deg, #2a2535 0%, #4a4260 50%, #7190AB 100%); }
+.sh-column--food   { background: linear-gradient(160deg, #1e2d3d 0%, #3D394A 50%, #50687B 100%); }
+
+/* Overlay gradient */
+.sh-column::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.6) 100%);
+  transition: background 0.5s;
+  z-index: 1;
+}
+.sh-column:hover::before {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.45) 100%);
+}
+
+/* Background image (for future use) */
+.sh-column-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Content container */
+.sh-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px 40px;
+  color: #fff;
+}
+
+/* Title area */
+.sh-title {
+  font-size: 30px;
+  font-weight: 300;
+  letter-spacing: -0.3px;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.sh-title strong {
+  font-weight: 700;
+}
+.sh-accent-bar {
+  width: 40px;
+  height: 3px;
+  background: var(--accent-red);
+  margin-bottom: 32px;
+}
+
+/* Vertical text */
+.sh-vertical {
+  position: absolute;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%) rotate(180deg);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 60px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -2px;
+  opacity: 0.08;
+  color: #fff;
+  transition: opacity 0.5s;
+  z-index: 2;
+  pointer-events: none;
+}
+.sh-column:hover .sh-vertical {
+  opacity: 0.18;
+}
+
+/* List items (appear on hover) */
+.sh-list {
+  margin-bottom: 24px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+.sh-column:hover .sh-list {
+  opacity: 1;
+  transform: translateY(0);
+}
+.sh-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 10px;
+  color: rgba(255,255,255,0.9);
+}
+.sh-list li::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-red);
+  flex-shrink: 0;
+}
+
+/* CTA button */
+.sh-cta {
+  display: inline-block;
+  border: 1px solid rgba(255,255,255,0.4);
+  color: #fff;
+  padding: 8px 24px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: all 0.3s;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  width: fit-content;
+}
+.sh-cta:hover {
+  background: #fff;
+  color: var(--dark-gray);
+  border-color: #fff;
+}
+
+/* Bottom label */
+.sh-label {
+  position: absolute;
+  bottom: 16px;
+  left: 40px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.4);
+}
+.sh-label svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
   .header { padding: 10px 16px; }
@@ -672,5 +847,14 @@ img { max-width: 100%; display: block; }
   .service-block { padding: 24px 16px; }
   .contact-grid { grid-template-columns: 1fr; }
   .norm-list { columns: 1; }
+  /* Services hero responsive */
+  .services-hero { flex-direction: column; height: auto; }
+  .sh-column { min-height: 50vh; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .sh-column:hover { flex: 1; }
+  .sh-content { padding: 32px 20px; }
+  .sh-title { font-size: 24px; }
+  .sh-vertical { display: none; }
+  .sh-list { opacity: 1; transform: none; }
+  .sh-label { left: 20px; }
 }
 
