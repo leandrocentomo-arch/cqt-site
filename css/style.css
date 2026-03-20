@@ -452,6 +452,9 @@ img { max-width: 100%; display: block; }
   margin-bottom: 16px;
 }
 .service-block p { font-size: 16px; color: var(--text-light); line-height: 1.6; margin-bottom: 8px; }
+.service-block ul { margin: 8px 0 16px 20px; }
+.service-block ul li { font-size: 16px; color: var(--text-light); margin-bottom: 4px; list-style: disc; }
+.service-block h3 { font-size: 15px; font-weight: 700; margin-top: 16px; margin-bottom: 6px; }
 .service-block .link-arrow {
   color: var(--accent-red);
   font-size: 13px;
@@ -509,6 +512,19 @@ img { max-width: 100%; display: block; }
 .blog-section { padding: 36px 40px 50px; max-width: var(--max-width); margin: 0 auto; }
 .blog-section > h2 { font-size: 17px; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 2px; }
 .blog-link { color: var(--accent-red); font-size: 15px; text-decoration: underline; margin-bottom: 20px; display: block; }
+.blog-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.filter-tab {
+  background: none;
+  border: 1px solid var(--border-gray);
+  padding: 6px 16px;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.filter-tab:hover { border-color: var(--mid-gray); color: var(--text-dark); }
+.filter-tab.active { background: var(--dark); color: var(--white); border-color: var(--dark); }
 .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .blog-card { padding-bottom: 14px; border-bottom: 1px solid var(--border-gray); }
 .blog-card-img {
@@ -645,6 +661,8 @@ img { max-width: 100%; display: block; }
   .services-grid { grid-template-columns: repeat(2, 1fr); }
   .newsletter-contact { flex-direction: column; padding: 0 16px; }
   .contact-box { width: 100%; }
+  .blog-filters { gap: 6px; }
+  .filter-tab { font-size: 12px; padding: 5px 12px; }
   .blog-grid { grid-template-columns: 1fr; }
   .footer-top { flex-direction: column; gap: 24px; }
   .footer-columns { flex-direction: column; gap: 16px; }
