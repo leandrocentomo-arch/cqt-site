@@ -2,7 +2,7 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: 'IBM Plex Sans Condensed', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   color: #333;
   background: #fff;
   font-size: 15px;
