@@ -57,7 +57,7 @@ img { max-width: 100%; display: block; }
   top: 0;
 }
 .header-logo img {
-  height: 64px;
+  height: 77px;
   width: auto;
 }
 .header-nav { display: flex; align-items: center; gap: 28px; height: 100%; }
