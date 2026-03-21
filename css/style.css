@@ -45,7 +45,7 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: flex-start;
   position: relative;
-  z-index: 110;
+  z-index: 210;
   opacity: 1;
   pointer-events: auto;
   transition: opacity 0.3s;
@@ -677,6 +677,7 @@ img { max-width: 100%; display: block; }
 }
 .whatsapp-float:hover { transform: scale(1.1); }
 .whatsapp-float svg { width: 24px; height: 24px; fill: white; }
+.whatsapp-float img { width: 28px; height: 28px; filter: brightness(0) invert(1); }
 
 /* ========== ALCANCE BOX ========== */
 .alcance-box {
