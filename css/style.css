@@ -890,18 +890,30 @@ img { max-width: 100%; display: block; }
   stroke-linejoin: round;
 }
 
-/* ========== SERVICES HERO WITH PHOTOS (Home) ========== */
-.services-hero--photos {
+/* ========== SERVICES HERO SLATE VARIANT (Home) ========== */
+.services-hero--slate {
   margin-top: 40px;
 }
-.services-hero--photos::before {
-  display: none; /* Remove a imagem CQT de fundo, usa fotos MP */
+.services-hero--slate::before {
+  display: none;
 }
-.services-hero--photos .sh-column-bg {
-  transition: transform 0.5s;
+.services-hero--slate .sh-column--iso {
+  background: linear-gradient(160deg, #4a5568 0%, #5a6a7e 50%, #6b7d94 100%);
 }
-.services-hero--photos .sh-column:hover .sh-column-bg {
-  transform: scale(1.05);
+.services-hero--slate .sh-column--inspect {
+  background: linear-gradient(160deg, #556b7f 0%, #667f96 50%, #7893ab 100%);
+}
+.services-hero--slate .sh-column--esg {
+  background: linear-gradient(160deg, #3d4f63 0%, #4e6278 50%, #5f758e 100%);
+}
+.services-hero--slate .sh-column--food {
+  background: linear-gradient(160deg, #475b6f 0%, #586e85 50%, #6a829b 100%);
+}
+.services-hero--slate .sh-accent-bar {
+  background: rgba(255,255,255,0.5);
+}
+.services-hero--slate .sh-list li::before {
+  background: rgba(255,255,255,0.5);
 }
 
 /* ========== RESPONSIVE ========== */
@@ -941,7 +953,7 @@ img { max-width: 100%; display: block; }
   .sh-vertical { display: none; }
   .sh-list { opacity: 1; transform: none; }
   .sh-label { left: 20px; }
-  /* Services hero photos responsive */
-  .services-hero--photos { margin-top: 20px; }
+  /* Services hero slate responsive */
+  .services-hero--slate { margin-top: 20px; }
 }
 
