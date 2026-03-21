@@ -894,26 +894,17 @@ img { max-width: 100%; display: block; }
 .services-hero--slate {
   margin-top: 40px;
 }
-.services-hero--slate::before {
-  display: none;
-}
 .services-hero--slate .sh-column--iso {
-  background: linear-gradient(160deg, #4a5568 0%, #5a6a7e 50%, #6b7d94 100%);
+  background: linear-gradient(160deg, rgba(120,160,200,0.5) 0%, rgba(140,180,218,0.45) 50%, rgba(165,200,232,0.4) 100%);
 }
 .services-hero--slate .sh-column--inspect {
-  background: linear-gradient(160deg, #556b7f 0%, #667f96 50%, #7893ab 100%);
+  background: linear-gradient(160deg, rgba(130,170,210,0.5) 0%, rgba(155,192,228,0.45) 50%, rgba(178,210,240,0.4) 100%);
 }
 .services-hero--slate .sh-column--esg {
-  background: linear-gradient(160deg, #3d4f63 0%, #4e6278 50%, #5f758e 100%);
+  background: linear-gradient(160deg, rgba(110,148,190,0.5) 0%, rgba(130,172,212,0.45) 50%, rgba(155,195,230,0.4) 100%);
 }
 .services-hero--slate .sh-column--food {
-  background: linear-gradient(160deg, #475b6f 0%, #586e85 50%, #6a829b 100%);
-}
-.services-hero--slate .sh-accent-bar {
-  background: rgba(255,255,255,0.5);
-}
-.services-hero--slate .sh-list li::before {
-  background: rgba(255,255,255,0.5);
+  background: linear-gradient(160deg, rgba(125,162,205,0.5) 0%, rgba(148,185,222,0.45) 50%, rgba(170,205,238,0.4) 100%);
 }
 
 /* ========== RESPONSIVE ========== */
