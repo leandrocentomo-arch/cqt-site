@@ -894,17 +894,18 @@ img { max-width: 100%; display: block; }
 .services-hero--slate {
   margin-top: 40px;
 }
+/* Escuro → d1dee8 (base) → claro, com transparência para imagem de fundo */
 .services-hero--slate .sh-column--iso {
-  background: linear-gradient(160deg, #3b5998 0%, #4a6bab 50%, #5a7dbe 100%);
+  background: linear-gradient(160deg, rgba(120,140,162,0.82) 0%, rgba(148,168,190,0.78) 100%);
 }
 .services-hero--slate .sh-column--inspect {
-  background: linear-gradient(160deg, #5b88b5 0%, #6d9cc8 50%, #80b0da 100%);
+  background: linear-gradient(160deg, rgba(158,178,198,0.78) 0%, rgba(185,200,216,0.74) 100%);
 }
 .services-hero--slate .sh-column--esg {
-  background: linear-gradient(160deg, #7aaad4 0%, #8dbde6 50%, #a0d0f0 100%);
+  background: linear-gradient(160deg, rgba(195,210,224,0.74) 0%, rgba(209,222,232,0.70) 100%);
 }
 .services-hero--slate .sh-column--food {
-  background: linear-gradient(160deg, #9ec5e8 0%, #b3d6f2 50%, #c8e6fc 100%);
+  background: linear-gradient(160deg, rgba(215,226,236,0.70) 0%, rgba(232,240,248,0.65) 100%);
 }
 
 /* ========== RESPONSIVE ========== */
