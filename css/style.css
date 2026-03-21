@@ -895,16 +895,16 @@ img { max-width: 100%; display: block; }
   margin-top: 40px;
 }
 .services-hero--slate .sh-column--iso {
-  background: linear-gradient(160deg, rgba(120,160,200,0.5) 0%, rgba(140,180,218,0.45) 50%, rgba(165,200,232,0.4) 100%);
+  background: linear-gradient(160deg, #3b5998 0%, #4a6bab 50%, #5a7dbe 100%);
 }
 .services-hero--slate .sh-column--inspect {
-  background: linear-gradient(160deg, rgba(130,170,210,0.5) 0%, rgba(155,192,228,0.45) 50%, rgba(178,210,240,0.4) 100%);
+  background: linear-gradient(160deg, #5b88b5 0%, #6d9cc8 50%, #80b0da 100%);
 }
 .services-hero--slate .sh-column--esg {
-  background: linear-gradient(160deg, rgba(110,148,190,0.5) 0%, rgba(130,172,212,0.45) 50%, rgba(155,195,230,0.4) 100%);
+  background: linear-gradient(160deg, #7aaad4 0%, #8dbde6 50%, #a0d0f0 100%);
 }
 .services-hero--slate .sh-column--food {
-  background: linear-gradient(160deg, rgba(125,162,205,0.5) 0%, rgba(148,185,222,0.45) 50%, rgba(170,205,238,0.4) 100%);
+  background: linear-gradient(160deg, #9ec5e8 0%, #b3d6f2 50%, #c8e6fc 100%);
 }
 
 /* ========== RESPONSIVE ========== */
