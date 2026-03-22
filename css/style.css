@@ -1547,23 +1547,24 @@ img { max-width: 100%; display: block; }
   margin-bottom: 32px;
 }
 
-/* Traços decrescentes decorativos — lado a lado */
+/* Traços decrescentes decorativos — lado a lado, espessos */
 .hero-refined__dashes {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 6px;
   margin-bottom: 28px;
+  max-width: 500px;
 }
 .hero-refined__dash {
   display: block;
-  height: 2px;
+  height: 3px;
   background: var(--color-accent);
   border-radius: 1px;
 }
-.hero-refined__dash--1 { width: 48px; }
-.hero-refined__dash--2 { width: 32px; }
-.hero-refined__dash--3 { width: 18px; }
+.hero-refined__dash--1 { flex: 3; }
+.hero-refined__dash--2 { flex: 2; }
+.hero-refined__dash--3 { flex: 1; }
 
 /* Buttons */
 .hero-refined__actions {
@@ -1686,15 +1687,18 @@ img { max-width: 100%; display: block; }
   flex-shrink: 0;
 }
 
-/* Image wrapper — mesma largura dos stats */
+/* Image wrapper — compensa transparência do PNG para alinhar com stats */
 .hero-refined__img-wrap {
   position: relative;
   margin-bottom: 20px;
+  overflow: hidden;
 }
 .hero-refined__img-wrap img {
-  width: 100%;
+  width: 112%;
+  max-width: none;
   height: auto;
   display: block;
+  margin-left: -6%;
 }
 
 /* Texto vertical decorativo lado direito */
