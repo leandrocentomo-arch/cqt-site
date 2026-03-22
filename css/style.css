@@ -1687,18 +1687,17 @@ img { max-width: 100%; display: block; }
   flex-shrink: 0;
 }
 
-/* Image wrapper — compensa transparência do PNG para alinhar com stats */
+/* Image wrapper — centralizada com stats */
 .hero-refined__img-wrap {
   position: relative;
   margin-bottom: 20px;
-  overflow: hidden;
+  display: flex;
+  justify-content: center;
 }
 .hero-refined__img-wrap img {
-  width: 112%;
-  max-width: none;
+  width: 100%;
   height: auto;
   display: block;
-  margin-left: -6%;
 }
 
 /* Texto vertical decorativo lado direito */
