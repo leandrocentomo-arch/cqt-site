@@ -145,14 +145,48 @@
   <div class="hero-refined__bg"></div>
   <!-- Geometric background connectors -->
   <svg class="hero-refined__geo" viewBox="0 0 1200 600" preserveAspectRatio="none">
+    <!-- Grid lines horizontais -->
     <line x1="0" y1="100" x2="1200" y2="100" class="hero-refined__geo-line"/>
+    <line x1="0" y1="300" x2="1200" y2="300" class="hero-refined__geo-line hero-refined__geo-line--mid"/>
     <line x1="0" y1="500" x2="1200" y2="500" class="hero-refined__geo-line"/>
+    <!-- Grid lines verticais -->
+    <line x1="200" y1="0" x2="200" y2="600" class="hero-refined__geo-line hero-refined__geo-line--v"/>
     <line x1="600" y1="0" x2="600" y2="600" class="hero-refined__geo-line hero-refined__geo-line--v"/>
-    <circle cx="600" cy="100" r="4" class="hero-refined__geo-dot"/>
-    <circle cx="600" cy="500" r="4" class="hero-refined__geo-dot"/>
-    <rect x="180" y="80" width="240" height="40" rx="2" class="hero-refined__geo-rect"/>
-    <rect x="780" y="460" width="200" height="40" rx="2" class="hero-refined__geo-rect"/>
-    <path d="M420 100 Q510 300 600 300 Q690 300 780 500" class="hero-refined__geo-curve"/>
+    <line x1="1000" y1="0" x2="1000" y2="600" class="hero-refined__geo-line hero-refined__geo-line--v"/>
+    <!-- Retângulos decorativos -->
+    <rect x="120" y="70" width="260" height="60" rx="3" class="hero-refined__geo-rect"/>
+    <rect x="820" y="420" width="220" height="55" rx="3" class="hero-refined__geo-rect"/>
+    <rect x="50" y="380" width="140" height="40" rx="3" class="hero-refined__geo-rect hero-refined__geo-rect--alt"/>
+    <rect x="940" y="110" width="160" height="40" rx="3" class="hero-refined__geo-rect hero-refined__geo-rect--alt"/>
+    <!-- Curvas conectoras -->
+    <path d="M400 100 Q500 280 600 300 Q700 320 800 500" class="hero-refined__geo-curve"/>
+    <path d="M180 500 Q280 380 380 360" class="hero-refined__geo-curve hero-refined__geo-curve--alt"/>
+    <path d="M820 100 Q920 220 1020 240" class="hero-refined__geo-curve hero-refined__geo-curve--alt"/>
+    <!-- Círculos decorativos -->
+    <circle cx="200" cy="100" r="4" class="hero-refined__geo-dot"/>
+    <circle cx="600" cy="300" r="5" class="hero-refined__geo-dot hero-refined__geo-dot--accent"/>
+    <circle cx="1000" cy="500" r="4" class="hero-refined__geo-dot"/>
+    <circle cx="200" cy="500" r="3" class="hero-refined__geo-dot"/>
+    <circle cx="1000" cy="100" r="3" class="hero-refined__geo-dot"/>
+    <!-- Cruzes decorativas -->
+    <g class="hero-refined__geo-cross" transform="translate(400,500)">
+      <line x1="-6" y1="-6" x2="6" y2="6"/><line x1="6" y1="-6" x2="-6" y2="6"/>
+    </g>
+    <g class="hero-refined__geo-cross" transform="translate(800,100)">
+      <line x1="-6" y1="-6" x2="6" y2="6"/><line x1="6" y1="-6" x2="-6" y2="6"/>
+    </g>
+    <g class="hero-refined__geo-cross" transform="translate(350,180)">
+      <line x1="-5" y1="-5" x2="5" y2="5"/><line x1="5" y1="-5" x2="-5" y2="5"/>
+    </g>
+    <g class="hero-refined__geo-cross" transform="translate(900,350)">
+      <line x1="-5" y1="-5" x2="5" y2="5"/><line x1="5" y1="-5" x2="-5" y2="5"/>
+    </g>
+    <!-- Losangos -->
+    <polygon points="100,300 112,288 124,300 112,312" class="hero-refined__geo-diamond"/>
+    <polygon points="1100,200 1110,190 1120,200 1110,210" class="hero-refined__geo-diamond"/>
+    <!-- Linhas diagonais sutis -->
+    <line x1="0" y1="0" x2="300" y2="200" class="hero-refined__geo-diag"/>
+    <line x1="1200" y1="600" x2="900" y2="400" class="hero-refined__geo-diag"/>
   </svg>
   <div class="hero-refined__container">
     <div class="hero-refined__content">
@@ -161,11 +195,11 @@
         <span class="hero-refined__badge-text">Desde 1998 &bull; Consultoria Especializada</span>
       </div>
       <h1 class="hero-refined__title">
-        <span class="reveal hero-refined__title--light" style="--reveal-delay: 0.15s">Excelência em</span>
-        <span class="reveal hero-refined__title--accent" style="--reveal-delay: 0.3s">Normas ISO e Qualidade</span>
-        <span class="reveal" style="--reveal-delay: 0.45s">para sua empresa</span>
+        <span class="reveal hero-refined__title--light" style="--reveal-delay: 0.15s">Consultoria especializada</span>
+        <span class="reveal hero-refined__title--accent" style="--reveal-delay: 0.3s">Normas ISO e padrões de mercado</span>
+        <span class="reveal" style="--reveal-delay: 0.45s">Inspeções de produtos</span>
       </h1>
-      <p class="hero-refined__subtitle reveal" style="--reveal-delay: 0.5s">Há mais de 25 anos apoiando empresas na conquista de certificações, conformidade com padrões internacionais e inspeções de qualidade.</p>
+      <p class="hero-refined__subtitle reveal" style="--reveal-delay: 0.5s">Há 28 anos apoiando empresas na conquista de certificações, conformidade com padrões internacionais e inspeções de qualidade.</p>
       <div class="hero-refined__actions reveal" style="--reveal-delay: 0.7s">
         <a href="servicos.html" class="hero-refined__btn hero-refined__btn--primary">
           Conheça nossos serviços
@@ -184,7 +218,7 @@
 
         <div class="hero-refined__stats">
           <div class="hero-refined__stat">
-            <span class="hero-refined__stat-num">27</span>
+            <span class="hero-refined__stat-num">28</span>
             <span class="hero-refined__stat-label">anos de<br>mercado</span>
           </div>
           <div class="hero-refined__stat-divider"></div>
@@ -202,8 +236,6 @@
         <div class="hero-refined__img-wrap">
           <img src="img/Imagens em círculos.png" alt="CQT — Operação global, inspeções e sustentabilidade">
         </div>
-
-        <span class="hero-refined__side-label">ISO 9001 &middot; 14001 &middot; 45001 &middot; 22000 &middot; ESG &middot; SEDEX</span>
 
         <div class="hero-refined__accent-bar"></div>
       </div>

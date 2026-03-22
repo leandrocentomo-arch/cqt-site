@@ -1293,12 +1293,28 @@ img { max-width: 100%; display: block; }
   to   { opacity: 1; transform: translateX(0) scale(1); }
 }
 @keyframes heroGeoLine {
-  from { stroke-dashoffset: 800; }
+  from { stroke-dashoffset: 1400; }
   to   { stroke-dashoffset: 0; }
 }
+@keyframes heroGeoFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
 @keyframes heroGeoDot {
-  from { opacity: 0; r: 0; }
-  to   { opacity: 1; r: 4; }
+  from { opacity: 0; transform: scale(0); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes heroGeoRectReveal {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes heroGeoCrossReveal {
+  from { opacity: 0; transform: rotate(-90deg) scale(0); }
+  to   { opacity: 1; transform: rotate(0deg) scale(1); }
+}
+@keyframes heroGeoDiamondReveal {
+  from { opacity: 0; transform: scale(0) rotate(45deg); }
+  to   { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
 .reveal {
@@ -1338,35 +1354,84 @@ img { max-width: 100%; display: block; }
   fill: none;
   stroke: rgba(11,29,51,0.04);
   stroke-width: 1;
-  stroke-dasharray: 800;
-  animation: heroGeoLine 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  animation-delay: 0.5s;
-  stroke-dashoffset: 800;
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 1400;
+  animation: heroGeoLine 2.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation-delay: 0.3s;
 }
 .hero-refined__geo-line--v {
-  stroke: rgba(184,149,42,0.06);
-  stroke-dasharray: 6 8;
+  stroke: rgba(184,149,42,0.05);
+  stroke-dasharray: 6 10;
+  stroke-dashoffset: 0;
+  animation: heroGeoFadeIn 1.8s ease forwards;
+  animation-delay: 0.6s;
+  opacity: 0;
+}
+.hero-refined__geo-line--mid {
+  stroke: rgba(11,29,51,0.025);
   animation-delay: 0.8s;
 }
 .hero-refined__geo-dot {
-  fill: var(--color-accent);
+  fill: rgba(11,29,51,0.06);
   opacity: 0;
-  animation: heroGeoDot 0.4s ease forwards;
-  animation-delay: 1.5s;
+  animation: heroGeoDot 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: 1.8s;
+}
+.hero-refined__geo-dot--accent {
+  fill: rgba(184,149,42,0.1);
+  animation-delay: 2s;
 }
 .hero-refined__geo-rect {
   fill: none;
   stroke: rgba(11,29,51,0.03);
   stroke-width: 1;
+  opacity: 0;
+  animation: heroGeoRectReveal 1s ease forwards;
+  animation-delay: 1.2s;
+}
+.hero-refined__geo-rect--alt {
+  stroke: rgba(184,149,42,0.04);
+  animation-delay: 1.5s;
 }
 .hero-refined__geo-curve {
   fill: none;
   stroke: rgba(184,149,42,0.06);
   stroke-width: 1;
   stroke-dasharray: 800;
-  animation: heroGeoLine 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  animation-delay: 1s;
   stroke-dashoffset: 800;
+  animation: heroGeoLine 2.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation-delay: 0.8s;
+}
+.hero-refined__geo-curve--alt {
+  stroke: rgba(11,29,51,0.03);
+  stroke-width: 0.8;
+  animation-delay: 1.4s;
+}
+.hero-refined__geo-cross {
+  opacity: 0;
+  animation: heroGeoCrossReveal 0.6s ease forwards;
+  animation-delay: 2.2s;
+}
+.hero-refined__geo-cross line {
+  stroke: rgba(184,149,42,0.08);
+  stroke-width: 1;
+}
+.hero-refined__geo-diamond {
+  fill: none;
+  stroke: rgba(11,29,51,0.04);
+  stroke-width: 1;
+  opacity: 0;
+  animation: heroGeoDiamondReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: 2s;
+}
+.hero-refined__geo-diag {
+  fill: none;
+  stroke: rgba(11,29,51,0.02);
+  stroke-width: 0.5;
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  animation: heroGeoLine 3s ease forwards;
+  animation-delay: 1s;
 }
 
 .hero-refined__container {
@@ -1474,13 +1539,14 @@ img { max-width: 100%; display: block; }
   transform: translateX(3px);
 }
 .hero-refined__btn--whatsapp {
-  background: #25D366;
-  color: #fff;
+  background: transparent;
+  color: #25D366;
   border: 1.5px solid #25D366;
 }
 .hero-refined__btn--whatsapp:hover {
-  background: #1fb855;
-  border-color: #1fb855;
+  background: #25D366;
+  color: #fff;
+  border-color: #25D366;
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(37,211,102,0.25);
 }
