@@ -1694,11 +1694,9 @@ img { max-width: 100%; display: block; }
   overflow: hidden;
 }
 .hero-refined__img-wrap img {
-  width: 110%;
-  max-width: none;
+  width: 100%;
   height: auto;
   display: block;
-  margin-left: -5%;
 }
 
 /* Texto vertical decorativo lado direito */
