@@ -143,50 +143,39 @@
 
 <section class="hero-refined">
   <div class="hero-refined__bg"></div>
-  <!-- Geometric background connectors -->
+  <!-- Geometric background — concentrado no lado direito -->
   <svg class="hero-refined__geo" viewBox="0 0 1200 600" preserveAspectRatio="none">
-    <!-- Grid lines horizontais -->
-    <line x1="0" y1="100" x2="1200" y2="100" class="hero-refined__geo-line"/>
-    <line x1="0" y1="300" x2="1200" y2="300" class="hero-refined__geo-line hero-refined__geo-line--mid"/>
-    <line x1="0" y1="500" x2="1200" y2="500" class="hero-refined__geo-line"/>
-    <!-- Grid lines verticais -->
-    <line x1="200" y1="0" x2="200" y2="600" class="hero-refined__geo-line hero-refined__geo-line--v"/>
-    <line x1="600" y1="0" x2="600" y2="600" class="hero-refined__geo-line hero-refined__geo-line--v"/>
-    <line x1="1000" y1="0" x2="1000" y2="600" class="hero-refined__geo-line hero-refined__geo-line--v"/>
-    <!-- Retângulos decorativos -->
-    <rect x="120" y="70" width="260" height="60" rx="3" class="hero-refined__geo-rect"/>
-    <rect x="820" y="420" width="220" height="55" rx="3" class="hero-refined__geo-rect"/>
-    <rect x="50" y="380" width="140" height="40" rx="3" class="hero-refined__geo-rect hero-refined__geo-rect--alt"/>
-    <rect x="940" y="110" width="160" height="40" rx="3" class="hero-refined__geo-rect hero-refined__geo-rect--alt"/>
-    <!-- Curvas conectoras -->
-    <path d="M400 100 Q500 280 600 300 Q700 320 800 500" class="hero-refined__geo-curve"/>
-    <path d="M180 500 Q280 380 380 360" class="hero-refined__geo-curve hero-refined__geo-curve--alt"/>
-    <path d="M820 100 Q920 220 1020 240" class="hero-refined__geo-curve hero-refined__geo-curve--alt"/>
-    <!-- Círculos decorativos -->
-    <circle cx="200" cy="100" r="4" class="hero-refined__geo-dot"/>
-    <circle cx="600" cy="300" r="5" class="hero-refined__geo-dot hero-refined__geo-dot--accent"/>
-    <circle cx="1000" cy="500" r="4" class="hero-refined__geo-dot"/>
-    <circle cx="200" cy="500" r="3" class="hero-refined__geo-dot"/>
-    <circle cx="1000" cy="100" r="3" class="hero-refined__geo-dot"/>
-    <!-- Cruzes decorativas -->
-    <g class="hero-refined__geo-cross" transform="translate(400,500)">
+    <!-- Curva principal — animação draw-in enfatizada -->
+    <path d="M500 60 Q620 250 680 300 Q740 350 860 540" class="hero-refined__geo-curve hero-refined__geo-curve--main"/>
+    <!-- Curvas secundárias no lado direito -->
+    <path d="M750 80 Q850 200 950 240" class="hero-refined__geo-curve hero-refined__geo-curve--alt"/>
+    <path d="M680 520 Q780 420 880 400" class="hero-refined__geo-curve hero-refined__geo-curve--alt"/>
+    <!-- Linhas horizontais sutis (lado direito) -->
+    <line x1="600" y1="120" x2="1200" y2="120" class="hero-refined__geo-line"/>
+    <line x1="650" y1="480" x2="1200" y2="480" class="hero-refined__geo-line"/>
+    <!-- Linhas verticais tracejadas (lado direito) -->
+    <line x1="750" y1="40" x2="750" y2="560" class="hero-refined__geo-line hero-refined__geo-line--v"/>
+    <line x1="1050" y1="60" x2="1050" y2="540" class="hero-refined__geo-line hero-refined__geo-line--v"/>
+    <!-- Círculos decorativos (todos no lado direito) -->
+    <circle cx="680" cy="300" r="6" class="hero-refined__geo-dot hero-refined__geo-dot--accent"/>
+    <circle cx="750" cy="120" r="4" class="hero-refined__geo-dot"/>
+    <circle cx="1050" cy="480" r="4" class="hero-refined__geo-dot"/>
+    <circle cx="860" cy="540" r="3" class="hero-refined__geo-dot"/>
+    <circle cx="950" cy="240" r="3" class="hero-refined__geo-dot"/>
+    <!-- Círculos grandes outline (lado direito) -->
+    <circle cx="900" cy="300" r="80" class="hero-refined__geo-circle"/>
+    <circle cx="1100" cy="150" r="50" class="hero-refined__geo-circle hero-refined__geo-circle--sm"/>
+    <circle cx="750" cy="500" r="40" class="hero-refined__geo-circle hero-refined__geo-circle--sm"/>
+    <!-- Cruzes decorativas (lado direito) -->
+    <g class="hero-refined__geo-cross" transform="translate(820,130)">
       <line x1="-6" y1="-6" x2="6" y2="6"/><line x1="6" y1="-6" x2="-6" y2="6"/>
     </g>
-    <g class="hero-refined__geo-cross" transform="translate(800,100)">
-      <line x1="-6" y1="-6" x2="6" y2="6"/><line x1="6" y1="-6" x2="-6" y2="6"/>
-    </g>
-    <g class="hero-refined__geo-cross" transform="translate(350,180)">
+    <g class="hero-refined__geo-cross" transform="translate(980,420)">
       <line x1="-5" y1="-5" x2="5" y2="5"/><line x1="5" y1="-5" x2="-5" y2="5"/>
     </g>
-    <g class="hero-refined__geo-cross" transform="translate(900,350)">
-      <line x1="-5" y1="-5" x2="5" y2="5"/><line x1="5" y1="-5" x2="-5" y2="5"/>
-    </g>
-    <!-- Losangos -->
-    <polygon points="100,300 112,288 124,300 112,312" class="hero-refined__geo-diamond"/>
-    <polygon points="1100,200 1110,190 1120,200 1110,210" class="hero-refined__geo-diamond"/>
-    <!-- Linhas diagonais sutis -->
-    <line x1="0" y1="0" x2="300" y2="200" class="hero-refined__geo-diag"/>
-    <line x1="1200" y1="600" x2="900" y2="400" class="hero-refined__geo-diag"/>
+    <!-- Losangos (lado direito) -->
+    <polygon points="1100,400 1112,388 1124,400 1112,412" class="hero-refined__geo-diamond"/>
+    <polygon points="670,480 680,470 690,480 680,490" class="hero-refined__geo-diamond"/>
   </svg>
   <div class="hero-refined__container">
     <div class="hero-refined__content">
@@ -200,6 +189,11 @@
         <span class="reveal" style="--reveal-delay: 0.45s">Inspeções de produtos</span>
       </h1>
       <p class="hero-refined__subtitle reveal" style="--reveal-delay: 0.5s">Há 28 anos apoiando empresas na conquista de certificações, conformidade com padrões internacionais e inspeções de qualidade.</p>
+      <div class="hero-refined__dashes reveal" style="--reveal-delay: 0.6s">
+        <span class="hero-refined__dash hero-refined__dash--1"></span>
+        <span class="hero-refined__dash hero-refined__dash--2"></span>
+        <span class="hero-refined__dash hero-refined__dash--3"></span>
+      </div>
       <div class="hero-refined__actions reveal" style="--reveal-delay: 0.7s">
         <a href="servicos.html" class="hero-refined__btn hero-refined__btn--primary">
           Conheça nossos serviços
@@ -239,6 +233,7 @@
 
         <div class="hero-refined__accent-bar"></div>
       </div>
+      <span class="hero-refined__side-text">Qualidade &middot; Conformidade &middot; Sustentabilidade</span>
     </div>
   </div>
 </section>
