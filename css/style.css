@@ -1691,13 +1691,14 @@ img { max-width: 100%; display: block; }
 .hero-refined__img-wrap {
   position: relative;
   margin-bottom: 20px;
-  display: flex;
-  justify-content: center;
+  overflow: hidden;
 }
 .hero-refined__img-wrap img {
-  width: 100%;
+  width: 110%;
+  max-width: none;
   height: auto;
   display: block;
+  margin-left: -5%;
 }
 
 /* Texto vertical decorativo lado direito */
