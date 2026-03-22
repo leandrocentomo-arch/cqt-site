@@ -1686,10 +1686,10 @@ img { max-width: 100%; display: block; }
   flex-shrink: 0;
 }
 
-/* Image wrapper — sangra até as bordas do frame, alinhada com stats */
+/* Image wrapper — mesma largura dos stats */
 .hero-refined__img-wrap {
   position: relative;
-  margin: 0 -32px 20px;
+  margin-bottom: 20px;
 }
 .hero-refined__img-wrap img {
   width: 100%;
@@ -1728,7 +1728,6 @@ img { max-width: 100%; display: block; }
     padding: 60px 32px 52px;
   }
   .hero-refined__frame { max-width: 400px; padding: 28px 24px 20px; }
-  .hero-refined__img-wrap { margin: 0 -24px 20px; }
   .hero-refined__stat-num { font-size: 24px; }
   .hero-refined__side-text { display: none; }
   .hero-refined__geo { display: none; }
@@ -1747,7 +1746,6 @@ img { max-width: 100%; display: block; }
     justify-content: center;
   }
   .hero-refined__frame { max-width: 360px; padding: 24px 20px 16px; }
-  .hero-refined__img-wrap { margin: 0 -20px 20px; }
   .hero-refined__stat-num { font-size: 22px; }
   .hero-refined__side-text { display: none; }
   .hero-refined__geo { display: none; }
