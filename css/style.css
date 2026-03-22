@@ -1617,110 +1617,123 @@ img { max-width: 100%; display: block; }
   box-shadow: 0 8px 24px rgba(37,211,102,0.25);
 }
 
-/* ---- Visual Column — Geometric Frame ---- */
-.hero-refined__visual {
-  position: relative;
+/* ---- Stats + Circles — Nova estrutura ---- */
+.stats-container {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-}
-.hero-refined__frame {
-  position: relative;
-  width: 100%;
-  max-width: 480px;
-  padding: 36px 32px 28px;
+  gap: 30px;
 }
 
-/* Corner accents */
-.hero-refined__corner {
+.stats-frame {
+  position: relative;
+  border: 2px solid #0B1D33;
+  padding: 50px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  background: transparent;
+}
+
+/* Cantos decorativos dourados */
+.stats-frame::before {
+  content: '';
   position: absolute;
-  width: 40px;
-  height: 40px;
-  pointer-events: none;
+  top: -6px;
+  left: -6px;
+  width: 20px;
+  height: 20px;
+  border-top: 3px solid #B8952A;
+  border-left: 3px solid #B8952A;
 }
-.hero-refined__corner--tl {
-  top: 0; left: 0;
-  border-top: 2px solid var(--color-accent);
-  border-left: 2px solid var(--color-accent);
-}
-.hero-refined__corner--br {
-  bottom: 0; right: 0;
-  border-bottom: 2px solid var(--color-accent);
-  border-right: 2px solid var(--color-accent);
+.stats-frame::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  border-bottom: 3px solid #B8952A;
+  border-right: 3px solid #B8952A;
 }
 
-/* Stats strip */
-.hero-refined__stats {
+/* Linha dos números */
+.stats-row {
   display: flex;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
-  gap: 0;
-  margin-bottom: 24px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgba(11,29,51,0.08);
+  gap: 60px;
+  width: 100%;
 }
-.hero-refined__stat {
-  flex: 1;
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
-.hero-refined__stat-num {
-  display: block;
-  font-size: 28px;
+
+.stat-number {
+  font-family: inherit;
+  font-size: 48px;
   font-weight: 700;
-  color: #6B7280;
+  color: #0B1D33;
   line-height: 1;
-  letter-spacing: -0.5px;
-}
-.hero-refined__stat-label {
-  display: block;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--color-text-light);
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-top: 6px;
-  line-height: 1.3;
-}
-.hero-refined__stat-divider {
-  width: 1px;
-  height: 36px;
-  background: rgba(11,29,51,0.1);
-  flex-shrink: 0;
 }
 
-/* Image wrapper — centralizada com stats */
-.hero-refined__img-wrap {
-  position: relative;
-  margin-bottom: 20px;
+.stat-label {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #6B7280;
+  text-align: center;
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+/* Linha dos círculos (imagem única) */
+.circles-row {
   display: flex;
   justify-content: center;
-}
-.hero-refined__img-wrap img {
   width: 100%;
+  position: relative;
+}
+
+.circles-row img {
+  width: 100%;
+  max-width: 520px;
   height: auto;
   display: block;
+  margin: 0 auto;
 }
 
-/* Texto vertical decorativo lado direito */
-.hero-refined__side-text {
+/* Linha dourada sob a imagem */
+.circles-row::after {
+  content: '';
   position: absolute;
-  right: -24px;
-  bottom: 0;
+  bottom: -14px;
+  left: 40px;
+  width: 30px;
+  height: 3px;
+  background: #B8952A;
+}
+
+/* Texto vertical */
+.vertical-text {
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 2.5px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  color: rgba(26,43,77,0.4);
+  color: #9CA3AF;
   white-space: nowrap;
-  pointer-events: none;
-}
-
-/* Gold accent bar */
-.hero-refined__accent-bar {
-  width: 48px;
-  height: 2px;
-  background: var(--color-accent);
+  flex-shrink: 0;
 }
 
 /* ========== HERO REFINED — Responsive ========== */
@@ -1730,11 +1743,11 @@ img { max-width: 100%; display: block; }
     gap: 32px;
     padding: 60px 32px 52px;
   }
-  .hero-refined__frame { max-width: 400px; padding: 28px 24px 20px; }
-  .hero-refined__stat-num { font-size: 24px; }
-  .hero-refined__side-text { display: none; }
   .hero-refined__geo { display: none; }
   .hero-refined__bg::before { display: none; }
+  .stats-frame { padding: 36px 28px; }
+  .stats-row { gap: 40px; }
+  .stat-number { font-size: 40px; }
 }
 
 @media (max-width: 768px) {
@@ -1744,18 +1757,11 @@ img { max-width: 100%; display: block; }
     padding: 44px 24px 36px;
     min-height: auto;
   }
-  .hero-refined__visual {
-    order: -1;
-    justify-content: center;
-  }
-  .hero-refined__frame { max-width: 360px; padding: 24px 20px 16px; }
-  .hero-refined__stat-num { font-size: 22px; }
-  .hero-refined__side-text { display: none; }
   .hero-refined__geo { display: none; }
   .hero-refined__bg::before { display: none; }
   .hero-refined__content { text-align: center; }
   .hero-refined__badge { justify-content: center; }
-  .hero-refined__dashes { align-items: center; }
+  .hero-refined__dashes { justify-content: center; }
   .hero-refined__title { font-size: 24px; }
   .hero-refined__subtitle {
     max-width: 100%;
@@ -1770,6 +1776,16 @@ img { max-width: 100%; display: block; }
   .hero-refined__btn {
     justify-content: center;
     width: 100%;
+  }
+  .stats-container { flex-direction: column; }
+  .stats-frame { padding: 30px 20px; }
+  .stats-row { gap: 30px; }
+  .stat-number { font-size: 36px; }
+  .circles-row img { max-width: 100%; }
+  .vertical-text {
+    writing-mode: horizontal-tb;
+    text-align: center;
+    margin-top: 20px;
   }
 }
 
