@@ -143,39 +143,24 @@
 
 <section class="hero-refined">
   <div class="hero-refined__bg"></div>
-  <!-- Geometric background — concentrado no lado direito -->
+  <!-- Geometric background — concentrado no lado direito, menos denso -->
   <svg class="hero-refined__geo" viewBox="0 0 1200 600" preserveAspectRatio="none">
-    <!-- Curva principal — animação draw-in enfatizada -->
-    <path d="M500 60 Q620 250 680 300 Q740 350 860 540" class="hero-refined__geo-curve hero-refined__geo-curve--main"/>
-    <!-- Curvas secundárias no lado direito -->
-    <path d="M750 80 Q850 200 950 240" class="hero-refined__geo-curve hero-refined__geo-curve--alt"/>
-    <path d="M680 520 Q780 420 880 400" class="hero-refined__geo-curve hero-refined__geo-curve--alt"/>
-    <!-- Linhas horizontais sutis (lado direito) -->
-    <line x1="600" y1="120" x2="1200" y2="120" class="hero-refined__geo-line"/>
-    <line x1="650" y1="480" x2="1200" y2="480" class="hero-refined__geo-line"/>
-    <!-- Linhas verticais tracejadas (lado direito) -->
-    <line x1="750" y1="40" x2="750" y2="560" class="hero-refined__geo-line hero-refined__geo-line--v"/>
-    <line x1="1050" y1="60" x2="1050" y2="540" class="hero-refined__geo-line hero-refined__geo-line--v"/>
-    <!-- Círculos decorativos (todos no lado direito) -->
-    <circle cx="680" cy="300" r="6" class="hero-refined__geo-dot hero-refined__geo-dot--accent"/>
-    <circle cx="750" cy="120" r="4" class="hero-refined__geo-dot"/>
-    <circle cx="1050" cy="480" r="4" class="hero-refined__geo-dot"/>
-    <circle cx="860" cy="540" r="3" class="hero-refined__geo-dot"/>
-    <circle cx="950" cy="240" r="3" class="hero-refined__geo-dot"/>
-    <!-- Círculos grandes outline (lado direito) -->
-    <circle cx="900" cy="300" r="80" class="hero-refined__geo-circle"/>
-    <circle cx="1100" cy="150" r="50" class="hero-refined__geo-circle hero-refined__geo-circle--sm"/>
-    <circle cx="750" cy="500" r="40" class="hero-refined__geo-circle hero-refined__geo-circle--sm"/>
-    <!-- Cruzes decorativas (lado direito) -->
-    <g class="hero-refined__geo-cross" transform="translate(820,130)">
-      <line x1="-6" y1="-6" x2="6" y2="6"/><line x1="6" y1="-6" x2="-6" y2="6"/>
-    </g>
-    <g class="hero-refined__geo-cross" transform="translate(980,420)">
+    <!-- Curva principal — ampla, fina e elegante -->
+    <path d="M200 580 C450 400, 550 150, 1100 20" class="hero-refined__geo-curve hero-refined__geo-curve--main"/>
+    <!-- Linha horizontal sutil (lado direito) -->
+    <line x1="650" y1="300" x2="1200" y2="300" class="hero-refined__geo-line"/>
+    <!-- Linha vertical tracejada (lado direito) -->
+    <line x1="900" y1="40" x2="900" y2="560" class="hero-refined__geo-line hero-refined__geo-line--v"/>
+    <!-- Círculos outline (lado direito) -->
+    <circle cx="950" cy="280" r="90" class="hero-refined__geo-circle"/>
+    <circle cx="1100" cy="480" r="45" class="hero-refined__geo-circle hero-refined__geo-circle--sm"/>
+    <!-- Pontos nos cruzamentos -->
+    <circle cx="900" cy="300" r="4" class="hero-refined__geo-dot"/>
+    <circle cx="1050" cy="120" r="3" class="hero-refined__geo-dot"/>
+    <!-- Cruz decorativa -->
+    <g class="hero-refined__geo-cross" transform="translate(1080,350)">
       <line x1="-5" y1="-5" x2="5" y2="5"/><line x1="5" y1="-5" x2="-5" y2="5"/>
     </g>
-    <!-- Losangos (lado direito) -->
-    <polygon points="1100,400 1112,388 1124,400 1112,412" class="hero-refined__geo-diamond"/>
-    <polygon points="670,480 680,470 690,480 680,490" class="hero-refined__geo-diamond"/>
   </svg>
   <div class="hero-refined__container">
     <div class="hero-refined__content">

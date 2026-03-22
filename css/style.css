@@ -1320,6 +1320,10 @@ img { max-width: 100%; display: block; }
   from { opacity: 0; }
   to   { opacity: 1; }
 }
+@keyframes heroGeoCurveMain {
+  from { stroke-dashoffset: 1600; }
+  to   { stroke-dashoffset: 0; }
+}
 
 .reveal {
   opacity: 0;
@@ -1421,11 +1425,11 @@ img { max-width: 100%; display: block; }
   animation-delay: 0.8s;
 }
 .hero-refined__geo-curve--main {
-  stroke: rgba(43, 74, 111, 0.14);
-  stroke-width: 2;
-  stroke-dasharray: 1200;
-  stroke-dashoffset: 1200;
-  animation: heroGeoLine 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  stroke: rgba(43, 74, 111, 0.07);
+  stroke-width: 1;
+  stroke-dasharray: 1600;
+  stroke-dashoffset: 1600;
+  animation: heroGeoCurveMain 3.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   animation-delay: 0.2s;
 }
 .hero-refined__geo-curve--alt {
@@ -1543,11 +1547,12 @@ img { max-width: 100%; display: block; }
   margin-bottom: 32px;
 }
 
-/* Traços decrescentes decorativos */
+/* Traços decrescentes decorativos — lado a lado */
 .hero-refined__dashes {
   display: flex;
-  flex-direction: column;
-  gap: 5px;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
   margin-bottom: 28px;
 }
 .hero-refined__dash {
@@ -1681,10 +1686,10 @@ img { max-width: 100%; display: block; }
   flex-shrink: 0;
 }
 
-/* Image wrapper — alinhada com stats */
+/* Image wrapper — sangra até as bordas do frame, alinhada com stats */
 .hero-refined__img-wrap {
   position: relative;
-  margin-bottom: 20px;
+  margin: 0 -32px 20px;
 }
 .hero-refined__img-wrap img {
   width: 100%;
@@ -1695,15 +1700,15 @@ img { max-width: 100%; display: block; }
 /* Texto vertical decorativo lado direito */
 .hero-refined__side-text {
   position: absolute;
-  right: -18px;
-  bottom: 20px;
+  right: -24px;
+  bottom: 0;
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  font-size: 9px;
-  font-weight: 500;
+  font-size: 10px;
+  font-weight: 600;
   letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: rgba(26,43,77,0.15);
+  color: rgba(26,43,77,0.4);
   white-space: nowrap;
   pointer-events: none;
 }
@@ -1723,6 +1728,7 @@ img { max-width: 100%; display: block; }
     padding: 60px 32px 52px;
   }
   .hero-refined__frame { max-width: 400px; padding: 28px 24px 20px; }
+  .hero-refined__img-wrap { margin: 0 -24px 20px; }
   .hero-refined__stat-num { font-size: 24px; }
   .hero-refined__side-text { display: none; }
   .hero-refined__geo { display: none; }
@@ -1741,6 +1747,7 @@ img { max-width: 100%; display: block; }
     justify-content: center;
   }
   .hero-refined__frame { max-width: 360px; padding: 24px 20px 16px; }
+  .hero-refined__img-wrap { margin: 0 -20px 20px; }
   .hero-refined__stat-num { font-size: 22px; }
   .hero-refined__side-text { display: none; }
   .hero-refined__geo { display: none; }
