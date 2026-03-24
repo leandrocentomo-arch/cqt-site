@@ -13,14 +13,19 @@
   --text: #1a1a2e;
   --text-mid: #5a5a6e;
   --text-dim: #8e8e9e;
-  --glass: rgba(255, 255, 255, 0.55);
-  --glass-strong: rgba(255, 255, 255, 0.72);
-  --glass-border: rgba(255, 255, 255, 0.45);
+  --glass: rgba(255, 255, 255, 0.38);
+  --glass-strong: rgba(255, 255, 255, 0.52);
+  --glass-border: rgba(255, 255, 255, 0.55);
   --glass-border-hover: rgba(35, 31, 116, 0.18);
+  --glass-shadow: 0 2px 16px rgba(35, 31, 116, 0.04), inset 0 1px 0 rgba(255,255,255,0.6);
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 
   font-family: 'Roboto', sans-serif;
-  background: linear-gradient(160deg, #f0f0f4 0%, #e8e8ee 40%, #eaeaf0 100%);
+  background:
+    radial-gradient(ellipse 50% 50% at 15% 20%, rgba(35, 31, 116, 0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 45% at 85% 75%, rgba(100, 80, 200, 0.06) 0%, transparent 65%),
+    radial-gradient(ellipse 35% 35% at 55% 10%, rgba(35, 31, 116, 0.04) 0%, transparent 60%),
+    linear-gradient(160deg, #f0f0f4 0%, #e8e8ee 40%, #eaeaf0 100%);
   color: var(--text);
   padding: 36px 32px 40px;
   max-width: 1100px;
@@ -28,12 +33,12 @@
   overflow: hidden;
 }
 
-/* Noise texture sutil */
+/* Noise texture */
 .sgi::after {
   content: '';
   position: absolute;
   inset: 0;
-  opacity: 0.35;
+  opacity: 0.4;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
   background-size: 200px;
   pointer-events: none;
@@ -107,13 +112,16 @@
 .sgi__card {
   position: relative;
   background: var(--glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
   border: 1px solid var(--glass-border);
+  border-top: 1px solid rgba(255,255,255,0.7);
+  border-left: 1px solid rgba(255,255,255,0.6);
   border-radius: 4px;
   padding: 18px 15px 16px;
   cursor: pointer;
   overflow: hidden;
+  box-shadow: var(--glass-shadow);
   transition: all 0.32s var(--ease);
 
   opacity: 0;
@@ -131,10 +139,11 @@
 .sgi__card:hover {
   background: var(--glass-strong);
   border-color: var(--glass-border-hover);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow:
-    0 4px 20px rgba(35, 31, 116, 0.06),
-    0 1px 3px rgba(0, 0, 0, 0.04);
+    0 8px 32px rgba(35, 31, 116, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255,255,255,0.7);
 }
 
 /* Barra superior fina */
@@ -220,13 +229,16 @@
   align-items: center;
   gap: 20px;
   background: var(--glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
   border: 1px solid var(--glass-border);
+  border-top: 1px solid rgba(255,255,255,0.7);
+  border-left: 1px solid rgba(255,255,255,0.6);
   border-radius: 4px;
   padding: 22px 24px;
   cursor: pointer;
   overflow: hidden;
+  box-shadow: var(--glass-shadow);
   transition: all 0.35s var(--ease);
 
   opacity: 0;
@@ -235,10 +247,11 @@
 .sgi__feat:hover {
   background: var(--glass-strong);
   border-color: var(--glass-border-hover);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow:
-    0 6px 28px rgba(35, 31, 116, 0.07),
-    0 1px 3px rgba(0, 0, 0, 0.04);
+    0 8px 32px rgba(35, 31, 116, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255,255,255,0.7);
 }
 
 /* Barra lateral */
