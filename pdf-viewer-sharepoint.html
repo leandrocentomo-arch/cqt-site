@@ -363,10 +363,13 @@
   }
 
   /* ---- Fetch PDFs ---- */
+  /* Caminho raiz da biblioteca (sem subpastas) */
+  var ROOT_FOLDER = '/sites/SGISodexo/Certificados do SGI';
+
   function fetchPDFs() {
     var url = SITE_URL +
       "/_api/web/lists/getbytitle('" + encodeURIComponent(LIST_NAME) + "')/items" +
-      "?$select=FileLeafRef,FileRef,File/Length,File/TimeLastModified,File/UniqueId" +
+      "?$select=FileLeafRef,FileRef,FileDirRef,File/Length,File/TimeLastModified,File/UniqueId" +
       "&$expand=File" +
       "&$filter=substringof('.pdf',FileLeafRef)" +
       "&$orderby=FileLeafRef asc" +
@@ -382,15 +385,20 @@
       return r.json();
     })
     .then(function(data) {
-      return data.d.results.map(function(item) {
-        return {
-          name: item.FileLeafRef,
-          path: item.FileRef,
-          uniqueId: item.File.UniqueId,
-          size: item.File.Length ? fmtSize(+item.File.Length) : '',
-          modified: item.File.TimeLastModified ? fmtDate(item.File.TimeLastModified) : ''
-        };
-      });
+      return data.d.results
+        /* Filtra apenas arquivos na raiz da biblioteca (ignora subpastas) */
+        .filter(function(item) {
+          return item.FileDirRef === ROOT_FOLDER;
+        })
+        .map(function(item) {
+          return {
+            name: item.FileLeafRef,
+            path: item.FileRef,
+            uniqueId: item.File.UniqueId,
+            size: item.File.Length ? fmtSize(+item.File.Length) : '',
+            modified: item.File.TimeLastModified ? fmtDate(item.File.TimeLastModified) : ''
+          };
+        });
     });
   }
 
