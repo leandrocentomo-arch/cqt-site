@@ -1,243 +1,261 @@
 <meta charset="UTF-8">
 <style>
-/* ===== SGI Portal — Light / Transparent / Monocromático ===== */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
-.sgi-portal *, .sgi-portal *::before, .sgi-portal *::after { margin: 0; padding: 0; box-sizing: border-box; }
-.sgi-portal a { text-decoration: none; color: inherit; }
+.sgi *, .sgi *::before, .sgi *::after { margin: 0; padding: 0; box-sizing: border-box; }
+.sgi a { text-decoration: none; color: inherit; }
 
-.sgi-portal {
+.sgi {
   --sodexo: #231F74;
-  --sodexo-light: #3832a0;
-  --sodexo-bg: rgba(35, 31, 116, 0.06);
-  --sodexo-bg-hover: rgba(35, 31, 116, 0.10);
-  --sodexo-border: rgba(35, 31, 116, 0.10);
+  --sodexo-50: rgba(35, 31, 116, 0.50);
+  --sodexo-12: rgba(35, 31, 116, 0.12);
+  --sodexo-06: rgba(35, 31, 116, 0.06);
   --text: #1a1a2e;
-  --text-mid: #555;
-  --text-dim: #999;
-  --border: rgba(0, 0, 0, 0.07);
-  --card-bg: #fff;
-  --radius: 12px;
+  --text-mid: #5a5a6e;
+  --text-dim: #8e8e9e;
+  --glass: rgba(255, 255, 255, 0.55);
+  --glass-strong: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.45);
+  --glass-border-hover: rgba(35, 31, 116, 0.18);
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 
   font-family: 'Roboto', sans-serif;
-  background: transparent;
+  background: linear-gradient(160deg, #f0f0f4 0%, #e8e8ee 40%, #eaeaf0 100%);
   color: var(--text);
-  padding: 32px 28px 36px;
+  padding: 36px 32px 40px;
   max-width: 1100px;
+  position: relative;
+  overflow: hidden;
 }
 
+/* Noise texture sutil */
+.sgi::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 200px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.sgi > * { position: relative; z-index: 1; }
+
 /* ---- Animations ---- */
-@keyframes sgiEnter {
-  from { opacity: 0; transform: translateY(20px) scale(0.97); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes sgiUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-@keyframes sgiFadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+@keyframes sgiScale {
+  from { opacity: 0; transform: scale(0.96) translateY(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
 }
-@keyframes sgiLineGrow {
+@keyframes sgiLine {
   from { transform: scaleX(0); }
   to   { transform: scaleX(1); }
 }
 
-/* ---- Section header ---- */
-.sgi-header {
+/* ---- Header ---- */
+.sgi__hdr {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   opacity: 0;
-  animation: sgiEnter 0.5s var(--ease) forwards;
+  animation: sgiUp 0.5s var(--ease) forwards;
 }
-.sgi-header--s2 { animation-delay: 0.55s; }
+.sgi__hdr--s2 { animation-delay: 0.55s; }
 
-.sgi-header__tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
+.sgi__tag {
+  padding: 3px 10px;
   background: var(--sodexo);
-  border-radius: 4px;
-  font-size: 9.5px;
+  border-radius: 2px;
+  font-size: 9px;
   font-weight: 700;
-  letter-spacing: 1.6px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: #fff;
 }
-
-.sgi-header__title {
-  font-size: 20px;
+.sgi__h2 {
+  font-size: 19px;
   font-weight: 300;
   color: var(--text);
-  letter-spacing: -0.3px;
+  letter-spacing: -0.2px;
 }
-.sgi-header__title strong {
-  font-weight: 700;
-  color: var(--sodexo);
-}
+.sgi__h2 strong { font-weight: 700; color: var(--sodexo); }
 
 /* ---- Divider ---- */
-.sgi-divider {
+.sgi__div {
   height: 1px;
-  background: linear-gradient(90deg, var(--border), var(--sodexo-border), var(--border));
+  background: linear-gradient(90deg, transparent, rgba(35,31,116,0.12), transparent);
   margin: 28px 0;
   transform-origin: left;
   transform: scaleX(0);
-  animation: sgiLineGrow 0.7s 0.5s var(--ease) forwards;
+  animation: sgiLine 0.8s 0.5s var(--ease) forwards;
 }
 
 /* ============================================
-   CARDS GRID
+   GLASS CARDS
    ============================================ */
-.sgi-grid {
+.sgi__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  gap: 10px;
 }
 
-.sgi-card {
+.sgi__card {
   position: relative;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px 16px 18px;
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 4px;
+  padding: 18px 15px 16px;
   cursor: pointer;
   overflow: hidden;
-  transition: all 0.3s var(--ease);
+  transition: all 0.32s var(--ease);
 
   opacity: 0;
-  animation: sgiEnter 0.5s var(--ease) forwards;
+  animation: sgiScale 0.45s var(--ease) forwards;
 }
-.sgi-card:nth-child(1) { animation-delay: 0.06s; }
-.sgi-card:nth-child(2) { animation-delay: 0.12s; }
-.sgi-card:nth-child(3) { animation-delay: 0.18s; }
-.sgi-card:nth-child(4) { animation-delay: 0.24s; }
-.sgi-card:nth-child(5) { animation-delay: 0.30s; }
-.sgi-card:nth-child(6) { animation-delay: 0.36s; }
-.sgi-card:nth-child(7) { animation-delay: 0.42s; }
-.sgi-card:nth-child(8) { animation-delay: 0.48s; }
+.sgi__card:nth-child(1) { animation-delay: 0.05s; }
+.sgi__card:nth-child(2) { animation-delay: 0.10s; }
+.sgi__card:nth-child(3) { animation-delay: 0.15s; }
+.sgi__card:nth-child(4) { animation-delay: 0.20s; }
+.sgi__card:nth-child(5) { animation-delay: 0.25s; }
+.sgi__card:nth-child(6) { animation-delay: 0.30s; }
+.sgi__card:nth-child(7) { animation-delay: 0.35s; }
+.sgi__card:nth-child(8) { animation-delay: 0.40s; }
 
-/* Hover: elevação + borda azul Sodexo */
-.sgi-card:hover {
-  border-color: var(--sodexo-border);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 24px rgba(35, 31, 116, 0.08);
+.sgi__card:hover {
+  background: var(--glass-strong);
+  border-color: var(--glass-border-hover);
+  transform: translateY(-2px);
+  box-shadow:
+    0 4px 20px rgba(35, 31, 116, 0.06),
+    0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
-/* Barra lateral esquerda — aparece no hover */
-.sgi-card::after {
+/* Barra superior fina */
+.sgi__card::after {
   content: '';
   position: absolute;
+  top: 0;
   left: 0;
-  top: 20%;
-  width: 3px;
-  height: 0%;
+  right: 0;
+  height: 2px;
   background: var(--sodexo);
-  border-radius: 0 3px 3px 0;
-  transition: height 0.3s var(--ease), top 0.3s var(--ease);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.32s var(--ease);
 }
-.sgi-card:hover::after {
-  height: 60%;
-  top: 20%;
+.sgi__card:hover::after {
+  transform: scaleX(1);
 }
 
-/* Icon */
-.sgi-card__icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: var(--sodexo-bg);
+/* Icon — quadrado, bordas retas */
+.sgi__ico {
+  width: 36px;
+  height: 36px;
+  border-radius: 2px;
+  background: var(--sodexo-06);
+  border: 1px solid var(--sodexo-12);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 14px;
-  transition: background 0.3s, transform 0.3s var(--ease);
+  margin-bottom: 12px;
+  transition: all 0.32s var(--ease);
 }
-.sgi-card:hover .sgi-card__icon {
+.sgi__card:hover .sgi__ico {
   background: var(--sodexo);
-  transform: scale(1.06);
+  border-color: var(--sodexo);
 }
-.sgi-card__icon svg {
-  width: 20px;
-  height: 20px;
-  stroke-width: 1.7;
+.sgi__ico svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1;
   fill: none;
   stroke: var(--sodexo);
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: stroke 0.3s;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  transition: stroke 0.32s;
 }
-.sgi-card:hover .sgi-card__icon svg {
+.sgi__card:hover .sgi__ico svg {
   stroke: #fff;
 }
 
 /* Title */
-.sgi-card__title {
-  font-size: 13px;
+.sgi__card-t {
+  font-size: 12.5px;
   font-weight: 500;
   color: var(--text);
   line-height: 1.4;
+  letter-spacing: 0.1px;
 }
 
 /* Arrow */
-.sgi-card__arrow {
+.sgi__arr {
   position: absolute;
-  top: 16px;
-  right: 14px;
-  width: 16px;
-  height: 16px;
+  bottom: 14px;
+  right: 12px;
+  width: 14px;
+  height: 14px;
   opacity: 0;
   transform: translate(-3px, 3px);
-  transition: all 0.3s var(--ease);
+  transition: all 0.32s var(--ease);
   color: var(--sodexo);
 }
-.sgi-card:hover .sgi-card__arrow {
-  opacity: 0.5;
+.sgi__card:hover .sgi__arr {
+  opacity: 0.45;
   transform: translate(0, 0);
 }
 
 /* ============================================
-   FEATURED BANNER — Portal de Documentos
+   FEATURED — Portal de Documentos
    ============================================ */
-.sgi-featured {
+.sgi__feat {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 22px;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px 28px;
+  gap: 20px;
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 4px;
+  padding: 22px 24px;
   cursor: pointer;
   overflow: hidden;
   transition: all 0.35s var(--ease);
 
   opacity: 0;
-  animation: sgiEnter 0.5s 0.65s var(--ease) forwards;
+  animation: sgiUp 0.5s 0.6s var(--ease) forwards;
 }
-.sgi-featured:hover {
-  border-color: var(--sodexo-border);
+.sgi__feat:hover {
+  background: var(--glass-strong);
+  border-color: var(--glass-border-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(35, 31, 116, 0.10);
+  box-shadow:
+    0 6px 28px rgba(35, 31, 116, 0.07),
+    0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
-/* Barra lateral esquerda permanente */
-.sgi-featured::before {
+/* Barra lateral */
+.sgi__feat::before {
   content: '';
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
-  width: 4px;
+  width: 3px;
   background: var(--sodexo);
-  border-radius: 0 4px 4px 0;
 }
 
-.sgi-featured__icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 12px;
+.sgi__feat-ico {
+  width: 44px;
+  height: 44px;
+  border-radius: 2px;
   background: var(--sodexo);
   display: flex;
   align-items: center;
@@ -245,48 +263,48 @@
   flex-shrink: 0;
   transition: transform 0.35s var(--ease);
 }
-.sgi-featured:hover .sgi-featured__icon {
-  transform: scale(1.06);
+.sgi__feat:hover .sgi__feat-ico {
+  transform: scale(1.05);
 }
-.sgi-featured__icon svg {
-  width: 24px;
-  height: 24px;
+.sgi__feat-ico svg {
+  width: 20px;
+  height: 20px;
   color: #fff;
-  stroke-width: 1.5;
+  stroke-width: 1;
   fill: none;
   stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
 }
 
-.sgi-featured__text { flex: 1; }
-.sgi-featured__label {
-  font-size: 9px;
+.sgi__feat-txt { flex: 1; }
+.sgi__feat-lbl {
+  font-size: 8.5px;
   font-weight: 700;
-  letter-spacing: 1.8px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--sodexo);
-  margin-bottom: 4px;
-  opacity: 0.7;
+  color: var(--sodexo-50);
+  margin-bottom: 3px;
 }
-.sgi-featured__title {
-  font-size: 16px;
+.sgi__feat-t {
+  font-size: 15px;
   font-weight: 700;
   color: var(--text);
   letter-spacing: -0.2px;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
 }
-.sgi-featured__sub {
-  font-size: 12.5px;
+.sgi__feat-sub {
+  font-size: 12px;
   color: var(--text-mid);
   line-height: 1.4;
 }
 
-.sgi-featured__go {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--sodexo-bg);
+.sgi__feat-go {
+  width: 32px;
+  height: 32px;
+  border-radius: 2px;
+  background: var(--sodexo-06);
+  border: 1px solid var(--sodexo-12);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -294,137 +312,115 @@
   color: var(--sodexo);
   transition: all 0.3s var(--ease);
 }
-.sgi-featured:hover .sgi-featured__go {
+.sgi__feat:hover .sgi__feat-go {
   background: var(--sodexo);
+  border-color: var(--sodexo);
   color: #fff;
   transform: translateX(2px);
 }
-.sgi-featured__go svg {
-  width: 16px;
-  height: 16px;
+.sgi__feat-go svg {
+  width: 14px;
+  height: 14px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  stroke-width: 1.2;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
 }
 
 /* ============================================
    Responsive
    ============================================ */
 @media (max-width: 900px) {
-  .sgi-portal { padding: 24px 16px 28px; }
-  .sgi-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .sgi-featured { padding: 20px 18px; gap: 16px; }
+  .sgi { padding: 24px 16px 28px; }
+  .sgi__grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
 }
 @media (max-width: 560px) {
-  .sgi-portal { padding: 16px 10px 20px; }
-  .sgi-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-  .sgi-card { padding: 14px 12px 12px; }
-  .sgi-card__icon { width: 34px; height: 34px; margin-bottom: 10px; }
-  .sgi-card__title { font-size: 12px; }
-  .sgi-header__title { font-size: 17px; }
-  .sgi-featured { flex-direction: column; text-align: center; }
-  .sgi-featured__go { display: none; }
+  .sgi { padding: 16px 10px 20px; }
+  .sgi__grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .sgi__card { padding: 14px 12px 12px; }
+  .sgi__ico { width: 32px; height: 32px; margin-bottom: 10px; }
+  .sgi__card-t { font-size: 11.5px; }
+  .sgi__h2 { font-size: 16px; }
+  .sgi__feat { flex-direction: column; text-align: center; gap: 14px; padding: 18px 16px; }
+  .sgi__feat-go { display: none; }
 }
 </style>
 
-<div class="sgi-portal">
+<div class="sgi">
 
-  <!-- ===== Controles Compartilhados ===== -->
-  <div class="sgi-header">
-    <span class="sgi-header__tag">Ferramentas</span>
-    <h2 class="sgi-header__title">Controles <strong>Compartilhados</strong></h2>
+  <div class="sgi__hdr">
+    <span class="sgi__tag">Ferramentas</span>
+    <h2 class="sgi__h2">Controles <strong>Compartilhados</strong></h2>
   </div>
 
-  <div class="sgi-grid">
+  <div class="sgi__grid">
 
-    <a href="#" class="sgi-card">
-      <div class="sgi-card__icon">
-        <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
-      </div>
-      <div class="sgi-card__title">App para<br>RNC(s)</div>
-      <svg class="sgi-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+    <a href="#" class="sgi__card">
+      <div class="sgi__ico"><svg viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h0"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg></div>
+      <div class="sgi__card-t">App para<br>RNC(s)</div>
+      <svg class="sgi__arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="square"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
     </a>
 
-    <a href="#" class="sgi-card">
-      <div class="sgi-card__icon">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-      </div>
-      <div class="sgi-card__title">App para<br>RA(s)</div>
-      <svg class="sgi-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+    <a href="#" class="sgi__card">
+      <div class="sgi__ico"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div>
+      <div class="sgi__card-t">App para<br>RA(s)</div>
+      <svg class="sgi__arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="square"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
     </a>
 
-    <a href="#" class="sgi-card">
-      <div class="sgi-card__icon">
-        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-      </div>
-      <div class="sgi-card__title">Observações<br>de Auditorias</div>
-      <svg class="sgi-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+    <a href="#" class="sgi__card">
+      <div class="sgi__ico"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+      <div class="sgi__card-t">Observações<br>de Auditorias</div>
+      <svg class="sgi__arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="square"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
     </a>
 
-    <a href="#" class="sgi-card">
-      <div class="sgi-card__icon">
-        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
-      </div>
-      <div class="sgi-card__title">Atas de<br>Análise Crítica</div>
-      <svg class="sgi-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+    <a href="#" class="sgi__card">
+      <div class="sgi__ico"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div>
+      <div class="sgi__card-t">Atas de<br>Análise Crítica</div>
+      <svg class="sgi__arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="square"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
     </a>
 
-    <a href="#" class="sgi-card">
-      <div class="sgi-card__icon">
-        <svg viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M8 21H3v-5"/><path d="M21 3l-9 9"/><path d="M3 21l9-9"/></svg>
-      </div>
-      <div class="sgi-card__title">Mudanças<br>do SGI</div>
-      <svg class="sgi-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+    <a href="#" class="sgi__card">
+      <div class="sgi__ico"><svg viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M8 21H3v-5"/><path d="M21 3l-9 9"/><path d="M3 21l9-9"/></svg></div>
+      <div class="sgi__card-t">Mudanças<br>do SGI</div>
+      <svg class="sgi__arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="square"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
     </a>
 
-    <a href="#" class="sgi-card">
-      <div class="sgi-card__icon">
-        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      </div>
-      <div class="sgi-card__title">ARO Análise<br>de Riscos</div>
-      <svg class="sgi-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+    <a href="#" class="sgi__card">
+      <div class="sgi__ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div class="sgi__card-t">ARO Análise<br>de Riscos</div>
+      <svg class="sgi__arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="square"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
     </a>
 
-    <a href="#" class="sgi-card">
-      <div class="sgi-card__icon">
-        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-      </div>
-      <div class="sgi-card__title">Apresentações<br>do SGI</div>
-      <svg class="sgi-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+    <a href="#" class="sgi__card">
+      <div class="sgi__ico"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="1"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div>
+      <div class="sgi__card-t">Apresentações<br>do SGI</div>
+      <svg class="sgi__arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="square"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
     </a>
 
-    <a href="#" class="sgi-card">
-      <div class="sgi-card__icon">
-        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-      </div>
-      <div class="sgi-card__title">Cartilha<br>HSE</div>
-      <svg class="sgi-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+    <a href="#" class="sgi__card">
+      <div class="sgi__ico"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
+      <div class="sgi__card-t">Cartilha<br>HSE</div>
+      <svg class="sgi__arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="square"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
     </a>
 
   </div>
 
-  <div class="sgi-divider"></div>
+  <div class="sgi__div"></div>
 
-  <!-- ===== Portal de Documentos ===== -->
-  <div class="sgi-header sgi-header--s2">
-    <span class="sgi-header__tag">Documentos</span>
-    <h2 class="sgi-header__title">Portal de <strong>Documentos</strong></h2>
+  <div class="sgi__hdr sgi__hdr--s2">
+    <span class="sgi__tag">Documentos</span>
+    <h2 class="sgi__h2">Portal de <strong>Documentos</strong></h2>
   </div>
 
-  <a href="#" class="sgi-featured">
-    <div class="sgi-featured__icon">
-      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+  <a href="#" class="sgi__feat">
+    <div class="sgi__feat-ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="0"/><rect x="14" y="3" width="7" height="7" rx="0"/><rect x="14" y="14" width="7" height="7" rx="0"/><rect x="3" y="14" width="7" height="7" rx="0"/></svg></div>
+    <div class="sgi__feat-txt">
+      <div class="sgi__feat-lbl">Índice de documentos publicados</div>
+      <div class="sgi__feat-t">Dashboard — Índice de Documentos</div>
+      <div class="sgi__feat-sub">Visualização consolidada e interativa dos documentos publicados.</div>
     </div>
-    <div class="sgi-featured__text">
-      <div class="sgi-featured__label">Índice de documentos publicados</div>
-      <div class="sgi-featured__title">Dashboard — Índice de Documentos</div>
-      <div class="sgi-featured__sub">Visualização consolidada e interativa dos documentos publicados.</div>
-    </div>
-    <div class="sgi-featured__go">
-      <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-    </div>
+    <div class="sgi__feat-go"><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
   </a>
 
 </div>
