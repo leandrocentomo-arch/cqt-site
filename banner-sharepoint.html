@@ -1,0 +1,309 @@
+<style>
+/* ===== CQT Banner — SharePoint Modern Script Editor ===== */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@300;400;500;600;700;900&display=swap');
+
+.cqt-banner * { margin: 0; padding: 0; box-sizing: border-box; }
+.cqt-banner a { text-decoration: none; color: inherit; }
+.cqt-banner ul { list-style: none; }
+
+@keyframes shColumnReveal {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cqt-banner {
+  font-family: 'IBM Plex Sans Condensed', sans-serif;
+  width: 100%;
+  height: min(552px, 39.375vw);
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+}
+.cqt-banner::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 70%;
+  height: 100%;
+  background-image: url('https://leandrocentomo-arch.github.io/cqt-site/img/CQT%20Sistemas%20da%20Qualidade.png');
+  background-size: contain;
+  background-position: right center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+/* Columns */
+.cqt-banner .sh-column {
+  opacity: 0;
+  animation: shColumnReveal 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  transition: flex 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+.cqt-banner .sh-column:nth-child(1) { animation-delay: 0.1s; }
+.cqt-banner .sh-column:nth-child(2) { animation-delay: 0.25s; }
+.cqt-banner .sh-column:nth-child(3) { animation-delay: 0.4s; }
+.cqt-banner .sh-column:nth-child(4) { animation-delay: 0.55s; }
+.cqt-banner .sh-column:last-child { border-right: none; }
+.cqt-banner .sh-column:hover { flex: 1.5; }
+
+/* Column backgrounds */
+.cqt-banner .sh-column--iso    { background: linear-gradient(160deg, rgba(50,90,150,0.45) 0%, rgba(70,115,175,0.40) 100%); }
+.cqt-banner .sh-column--inspect { background: linear-gradient(160deg, rgba(70,120,185,0.40) 0%, rgba(95,148,210,0.35) 100%); }
+.cqt-banner .sh-column--esg    { background: linear-gradient(160deg, rgba(95,150,215,0.35) 0%, rgba(125,178,235,0.30) 100%); }
+.cqt-banner .sh-column--food   { background: linear-gradient(160deg, rgba(125,175,232,0.30) 0%, rgba(155,200,248,0.25) 100%); }
+
+/* Overlay gradient */
+.cqt-banner .sh-column::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.6) 100%);
+  transition: background 0.5s;
+  z-index: 1;
+}
+.cqt-banner .sh-column:hover::before {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.45) 100%);
+}
+
+/* Content */
+.cqt-banner .sh-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 36px 32px;
+  color: #fff;
+}
+
+/* Title */
+.cqt-banner .sh-title {
+  font-size: 26px;
+  font-weight: 300;
+  letter-spacing: -0.3px;
+  line-height: 1.15;
+  margin-bottom: 12px;
+  color: #fff;
+}
+.cqt-banner .sh-title strong {
+  font-weight: 700;
+}
+
+/* Accent bar */
+.cqt-banner .sh-accent-bar {
+  width: 40px;
+  height: 3px;
+  background: #EF4545;
+  margin-bottom: 16px;
+}
+
+/* Vertical text */
+.cqt-banner .sh-vertical {
+  position: absolute;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%) rotate(180deg);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 40px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  opacity: 0.2;
+  white-space: nowrap;
+  color: #fff;
+  transition: opacity 0.5s;
+  z-index: 2;
+  pointer-events: none;
+}
+.cqt-banner .sh-column:hover .sh-vertical {
+  opacity: 0.35;
+}
+
+/* List (appears on hover) */
+.cqt-banner .sh-list {
+  margin-bottom: 16px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+.cqt-banner .sh-column:hover .sh-list {
+  opacity: 1;
+  transform: translateY(0);
+}
+.cqt-banner .sh-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  color: rgba(255,255,255,0.9);
+}
+.cqt-banner .sh-list li::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #EF4545;
+  flex-shrink: 0;
+}
+
+/* CTA button */
+.cqt-banner .sh-cta {
+  display: inline-block;
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 3px;
+  color: #fff;
+  padding: 8px 24px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: all 0.3s;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  width: fit-content;
+}
+.cqt-banner .sh-cta:hover {
+  background: #fff;
+  color: #3D394A;
+  border-color: #fff;
+}
+
+/* Bottom label */
+.cqt-banner .sh-label {
+  position: absolute;
+  bottom: 16px;
+  left: 40px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.4);
+}
+.cqt-banner .sh-label svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .cqt-banner { flex-direction: column; height: auto; }
+  .cqt-banner .sh-column { min-height: 320px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .cqt-banner .sh-column:hover { flex: 1; }
+  .cqt-banner .sh-content { padding: 32px 20px; }
+  .cqt-banner .sh-title { font-size: 24px; }
+  .cqt-banner .sh-vertical { display: none; }
+  .cqt-banner .sh-list { opacity: 1; transform: none; }
+  .cqt-banner .sh-label { left: 20px; }
+}
+</style>
+
+<div class="cqt-banner">
+  <!-- Column 1: Certificação ISO -->
+  <section class="sh-column sh-column--iso">
+    <div class="sh-content">
+      <div>
+        <h2 class="sh-title">Certificação<br><strong>ISO</strong></h2>
+        <div class="sh-accent-bar"></div>
+      </div>
+      <span class="sh-vertical">Normas</span>
+      <div>
+        <ul class="sh-list">
+          <li>ISO 9001: Gestão da Qualidade</li>
+          <li>ISO 14001: Ambiental</li>
+          <li>ISO 45001: Saúde e Segurança</li>
+        </ul>
+        <a href="https://leandrocentomo-arch.github.io/cqt-site/implantacao-iso.html" class="sh-cta" target="_blank">Saiba Mais</a>
+      </div>
+    </div>
+    <div class="sh-label">
+      <svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      Operação Global
+    </div>
+  </section>
+  <!-- Column 2: Inspeções de Qualidade -->
+  <section class="sh-column sh-column--inspect">
+    <div class="sh-content">
+      <div>
+        <h2 class="sh-title">Inspeções de<br><strong>Qualidade</strong></h2>
+        <div class="sh-accent-bar"></div>
+      </div>
+      <span class="sh-vertical">Inspeções</span>
+      <div>
+        <ul class="sh-list">
+          <li>Inspeções Pré-embarque</li>
+          <li>Auditorias de Fábrica</li>
+          <li>Controle de Processos</li>
+        </ul>
+        <a href="https://leandrocentomo-arch.github.io/cqt-site/inspecoes.html" class="sh-cta" target="_blank">Portfólio</a>
+      </div>
+    </div>
+    <div class="sh-label">
+      <svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      Cadeia Produtiva
+    </div>
+  </section>
+  <!-- Column 3: Sustentabilidade ESG -->
+  <section class="sh-column sh-column--esg">
+    <div class="sh-content">
+      <div>
+        <h2 class="sh-title">Sustentabilidade<br><strong>ESG</strong></h2>
+        <div class="sh-accent-bar"></div>
+      </div>
+      <span class="sh-vertical">Sustentável</span>
+      <div>
+        <ul class="sh-list">
+          <li>Pegada de Carbono</li>
+          <li>SEDEX / SMETA</li>
+          <li>Relatórios de Impacto</li>
+        </ul>
+        <a href="https://leandrocentomo-arch.github.io/cqt-site/esg.html" class="sh-cta" target="_blank">Consultoria</a>
+      </div>
+    </div>
+    <div class="sh-label">
+      <svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      Impacto Positivo
+    </div>
+  </section>
+  <!-- Column 4: Segurança Alimentar -->
+  <section class="sh-column sh-column--food">
+    <div class="sh-content">
+      <div>
+        <h2 class="sh-title">Segurança<br><strong>Alimentar</strong></h2>
+        <div class="sh-accent-bar"></div>
+      </div>
+      <span class="sh-vertical">Alimentos</span>
+      <div>
+        <ul class="sh-list">
+          <li>HACCP / APPCC</li>
+          <li>ISO 22000</li>
+          <li>Treinamentos BPF</li>
+        </ul>
+        <a href="https://leandrocentomo-arch.github.io/cqt-site/seguranca-alimentos.html" class="sh-cta" target="_blank">Especialistas</a>
+      </div>
+    </div>
+    <div class="sh-label">
+      <svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      Saúde Pública
+    </div>
+  </section>
+</div>
