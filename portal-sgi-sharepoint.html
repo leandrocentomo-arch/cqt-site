@@ -254,15 +254,21 @@
     inset 0 1px 0 rgba(255,255,255,0.7);
 }
 
-/* Barra lateral */
-.sgi__feat::before {
+/* Linha inferior que cresce no hover */
+.sgi__feat::after {
   content: '';
   position: absolute;
-  left: 0;
-  top: 0;
   bottom: 0;
-  width: 3px;
-  background: var(--sodexo);
+  left: 24px;
+  right: 24px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--sodexo), rgba(35,31,116,0.2));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease);
+}
+.sgi__feat:hover::after {
+  transform: scaleX(1);
 }
 
 .sgi__feat-ico {
