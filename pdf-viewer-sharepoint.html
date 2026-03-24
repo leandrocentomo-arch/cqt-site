@@ -128,7 +128,7 @@
 .pdf-viewer__layout {
   display: flex;
   gap: 20px;
-  min-height: 520px;
+  min-height: 680px;
 }
 
 /* File list (sidebar) */
@@ -136,7 +136,7 @@
   width: 340px;
   flex-shrink: 0;
   overflow-y: auto;
-  max-height: 600px;
+  max-height: 680px;
   border: 1px solid #edebe9;
   border-radius: 6px;
   background: #fff;
@@ -394,7 +394,7 @@
   function fetchPDFs() {
     var apiUrl = CONFIG.siteUrl +
       "/_api/web/lists/getbytitle('" + encodeURIComponent(CONFIG.listTitle) + "')/items" +
-      "?$select=FileLeafRef,FileRef,File/Length,File/TimeLastModified" +
+      "?$select=FileLeafRef,FileRef,File/Length,File/TimeLastModified,File/UniqueId" +
       "&$expand=File" +
       "&$filter=substringof('.pdf',FileLeafRef)" +
       "&$orderby=FileLeafRef" +
@@ -412,10 +412,13 @@
       return r.json();
     })
     .then(function(data) {
+      var origin = new URL(CONFIG.siteUrl).origin;
       return data.d.results.map(function(item) {
         return {
           name: item.FileLeafRef,
           path: item.FileRef,
+          uniqueId: item.File.UniqueId,
+          absoluteUrl: origin + item.FileRef,
           size: item.File.Length ? formatSize(parseInt(item.File.Length, 10)) : '',
           modified: item.File.TimeLastModified ? formatDate(item.File.TimeLastModified) : ''
         };
@@ -474,6 +477,24 @@
     els.list.innerHTML = html;
   }
 
+  // Build preview URL — tries WopiFrame with UniqueId, falls back to direct URL
+  function buildPreviewUrl(file) {
+    if (file.uniqueId) {
+      return CONFIG.siteUrl + '/_layouts/15/WopiFrame.aspx?sourcedoc=%7B' +
+        encodeURIComponent(file.uniqueId) + '%7D&action=embedview';
+    }
+    // Fallback: direct PDF URL (browser native viewer)
+    return file.absoluteUrl;
+  }
+
+  function buildOpenUrl(file) {
+    if (file.uniqueId) {
+      return CONFIG.siteUrl + '/_layouts/15/WopiFrame.aspx?sourcedoc=%7B' +
+        encodeURIComponent(file.uniqueId) + '%7D&action=view';
+    }
+    return file.absoluteUrl;
+  }
+
   // Show preview
   function showPreview(index) {
     var file = state.filtered[index];
@@ -483,15 +504,19 @@
     // Re-render list to update active state
     renderList(state.filtered);
 
-    var previewUrl = CONFIG.siteUrl + '/_layouts/15/WopiFrame.aspx?sourcedoc=' +
-      encodeURIComponent(file.path) + '&action=embedview';
-    var openUrl = CONFIG.siteUrl + '/_layouts/15/WopiFrame.aspx?sourcedoc=' +
-      encodeURIComponent(file.path) + '&action=view';
+    var previewUrl = buildPreviewUrl(file);
+    var openUrl = buildOpenUrl(file);
 
     els.preview.innerHTML =
       '<div class="pdf-viewer__preview-bar">' +
         '<span class="pdf-viewer__preview-title" title="' + escapeHtml(file.name) + '">' + escapeHtml(file.name) + '</span>' +
         '<div class="pdf-viewer__preview-actions">' +
+          '<a href="' + escapeHtml(file.absoluteUrl) + '" target="_blank" class="pdf-viewer__btn" rel="noopener" title="Baixar PDF">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+              '<path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>' +
+            '</svg>' +
+            'Baixar' +
+          '</a>' +
           '<a href="' + escapeHtml(openUrl) + '" target="_blank" class="pdf-viewer__btn pdf-viewer__btn--primary" rel="noopener">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
               '<path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>' +
@@ -500,7 +525,7 @@
           '</a>' +
         '</div>' +
       '</div>' +
-      '<iframe class="pdf-viewer__preview-frame" src="' + escapeHtml(previewUrl) + '" title="Preview"></iframe>';
+      '<iframe class="pdf-viewer__preview-frame" src="' + escapeHtml(previewUrl) + '" title="Preview" sandbox="allow-same-origin allow-scripts allow-forms allow-popups"></iframe>';
   }
 
   // Event delegation
@@ -512,9 +537,7 @@
       var idx = parseInt(openBtn.getAttribute('data-open'), 10);
       var f = state.filtered[idx];
       if (f) {
-        var url = CONFIG.siteUrl + '/_layouts/15/WopiFrame.aspx?sourcedoc=' +
-          encodeURIComponent(f.path) + '&action=view';
-        window.open(url, '_blank');
+        window.open(buildOpenUrl(f), '_blank');
       }
       return;
     }
