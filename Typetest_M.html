@@ -196,21 +196,26 @@ h1 {
   background: #fff;
   border: 1px solid rgba(63,130,173,0.15);
   border-radius: 8px;
-  padding: 12px 16px;
+  padding: 14px 18px;
   margin-bottom: 12px;
   flex: 1;
-  min-height: 60px;
-  max-height: 140px;
-  line-height: 1.9;
+  min-height: 70px;
+  max-height: 150px;
+  line-height: 2.1;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
 }
+.word-area::-webkit-scrollbar { width: 4px; }
+.word-area::-webkit-scrollbar-thumb { background: rgba(63,130,173,0.2); border-radius: 2px; }
 .word-area .word {
   display: inline;
   font-family: Cambria, 'Times New Roman', serif;
   font-size: 17px;
   color: #b0b8bf;
-  transition: color 0.1s;
+  border-radius: 3px;
+  padding: 2px 3px;
+  transition: color 0.1s, background 0.15s;
 }
 .word-area .word + .word::before {
   content: ' ';
@@ -218,16 +223,22 @@ h1 {
 .word-area .word.current {
   color: #3f82ad;
   font-weight: 600;
-  background: rgba(63,130,173,0.08);
-  border-radius: 3px;
-  padding: 1px 2px;
+  background: rgba(63,130,173,0.1);
+}
+.word-area .word.current.typing-wrong {
+  color: #fff;
+  background: #d32f2f;
+  font-weight: 700;
 }
 .word-area .word.correct {
-  color: #4caf50;
+  color: #2e7d32;
+  background: rgba(46,125,50,0.08);
 }
 .word-area .word.incorrect {
-  color: #e53935;
-  text-decoration: underline wavy #e53935;
+  color: #fff;
+  background: #c62828;
+  font-weight: 600;
+  text-decoration: none;
 }
 
 /* Input */
@@ -281,31 +292,31 @@ h1 {
 
 /* Keyboard */
 .keyboard {
-  margin-top: 8px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   flex-shrink: 0;
 }
-.kb-row { display: flex; gap: 5px; }
+.kb-row { display: flex; gap: 6px; }
 .key {
-  width: 44px;
-  height: 38px;
+  width: 54px;
+  height: 46px;
   background: rgba(63,130,173,0.06);
-  border: 1px solid rgba(63,130,173,0.15);
-  border-radius: 6px;
+  border: 1px solid rgba(63,130,173,0.18);
+  border-radius: 7px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
-  color: #8a9ba8;
+  color: #7a8e9c;
   transition: all 0.1s;
   user-select: none;
 }
-.key.wide { width: 66px; font-size: 11px; }
-.key.space { width: 280px; }
+.key.wide { width: 80px; font-size: 12px; }
+.key.space { width: 340px; }
 .key.active {
   background: #3f82ad;
   color: #fff;
@@ -518,7 +529,7 @@ h1 {
   .word-area .word { font-size: 15px; }
   #typing-input { font-size: 15px; padding: 7px 10px; }
   .btn-restart { padding: 7px 12px; font-size: 12px; }
-  .keyboard { display: none; }
+  .keyboard { display: none !important; }
   .results-card { padding: 24px 20px; }
   .result-item .value { font-size: 22px; }
   .dash-summary { grid-template-columns: 1fr 1fr; gap: 6px; }
@@ -537,19 +548,21 @@ h1 {
   .tab-btn { padding: 5px 14px; font-size: 12px; }
 }
 
-@media (max-height: 600px) {
+@media (max-height: 700px) {
   .header { height: 32px; }
-  .container { padding: 6px 10px 4px; }
+  .container { padding: 6px 12px 4px; }
   h1 { font-size: 16px; }
   .subtitle { display: none; }
-  .top-row { margin-bottom: 4px; }
+  .top-row { margin-bottom: 6px; }
   .timer-display { font-size: 20px; }
-  .word-area { max-height: 70px; padding: 8px 10px; }
-  .input-row { margin-bottom: 2px; }
-  .keyboard { gap: 2px; }
-  .key { width: 30px; height: 24px; font-size: 10px; }
-  .key.wide { width: 42px; }
-  .key.space { width: 160px; }
+  .word-area { max-height: 80px; padding: 8px 12px; }
+  .input-row { margin-bottom: 4px; }
+  .keyboard { gap: 4px; margin-top: 4px; }
+  .key { width: 42px; height: 36px; font-size: 13px; }
+  .key.wide { width: 62px; }
+  .key.space { width: 260px; }
+  .context-row { margin-bottom: 6px; }
+  .tabs { margin-bottom: 6px; }
 }
 </style>
 </head>
@@ -774,12 +787,14 @@ function renderWords() {
 
 function scrollToCurrentWord() {
   const current = wordArea.querySelector('.word.current');
-  if (current) {
-    const areaRect = wordArea.getBoundingClientRect();
-    const wordRect = current.getBoundingClientRect();
-    if (wordRect.top > areaRect.top + 50) {
-      wordArea.scrollTop += wordRect.top - areaRect.top - 16;
-    }
+  if (!current) return;
+  const areaTop = wordArea.scrollTop;
+  const areaHeight = wordArea.clientHeight;
+  const wordTop = current.offsetTop;
+  const lineHeight = current.offsetHeight * 2.1;
+  // Keep current word on first visible line, so next lines are always visible
+  if (wordTop - areaTop > lineHeight) {
+    wordArea.scrollTo({ top: wordTop - 8, behavior: 'smooth' });
   }
 }
 
@@ -942,10 +957,25 @@ function resetGame() {
   renderWords();
 }
 
-// Input
+// Real-time typing feedback — highlight wrong input as you type
+input.addEventListener('input', () => {
+  if (gameState.finished) return;
+  if (!gameState.started && input.value.length > 0) startTimer();
+  const typed = input.value;
+  const target = gameState.words[gameState.currentIndex];
+  const wordEl = wordArea.querySelector(`.word[data-index="${gameState.currentIndex}"]`);
+  if (wordEl && typed.length > 0) {
+    if (!target.startsWith(typed)) {
+      wordEl.classList.add('typing-wrong');
+    } else {
+      wordEl.classList.remove('typing-wrong');
+    }
+  }
+});
+
+// Keydown for space (submit word) and keystroke counting
 input.addEventListener('keydown', (e) => {
   if (gameState.finished) return;
-  if (!gameState.started && e.key.length === 1) startTimer();
   if (e.key.length === 1 || e.key === 'Backspace') gameState.keystrokes++;
   highlightKey(e.key);
   if (e.key === ' ') {
@@ -954,6 +984,7 @@ input.addEventListener('keydown', (e) => {
     if (typed === '') return;
     const target = gameState.words[gameState.currentIndex];
     const wordEl = wordArea.querySelector(`.word[data-index="${gameState.currentIndex}"]`);
+    wordEl.classList.remove('typing-wrong');
     if (typed === target) { gameState.correctCount++; gameState.correctChars += target.length; wordEl.classList.add('correct'); }
     else { gameState.wrongCount++; wordEl.classList.add('incorrect'); }
     wordEl.classList.remove('current');
