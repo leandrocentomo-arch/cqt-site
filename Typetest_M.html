@@ -67,7 +67,7 @@ body {
   max-width: 860px;
   width: 100%;
   margin: 0 auto;
-  padding: 12px 16px 8px;
+  padding: 16px 20px 10px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -93,12 +93,12 @@ h1 {
 .tabs {
   display: flex;
   gap: 0;
-  margin-bottom: 8px;
+  margin-bottom: 14px;
   border-bottom: 2px solid rgba(63,130,173,0.15);
   flex-shrink: 0;
 }
 .tab-btn {
-  padding: 6px 20px;
+  padding: 8px 20px;
   background: none;
   border: none;
   font-family: inherit;
@@ -132,8 +132,8 @@ h1 {
 .top-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
+  gap: 14px;
+  margin-bottom: 14px;
   flex-shrink: 0;
   flex-wrap: wrap;
 }
@@ -197,7 +197,7 @@ h1 {
   border: 1px solid rgba(63,130,173,0.15);
   border-radius: 8px;
   padding: 12px 16px;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   flex: 1;
   min-height: 60px;
   max-height: 140px;
@@ -233,8 +233,8 @@ h1 {
 /* Input */
 .input-row {
   display: flex;
-  gap: 8px;
-  margin-bottom: 6px;
+  gap: 10px;
+  margin-bottom: 10px;
   flex-shrink: 0;
 }
 #typing-input {
@@ -281,36 +281,72 @@ h1 {
 
 /* Keyboard */
 .keyboard {
-  margin-top: 2px;
+  margin-top: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 5px;
   flex-shrink: 0;
 }
-.kb-row { display: flex; gap: 3px; }
+.kb-row { display: flex; gap: 5px; }
 .key {
-  width: 34px;
-  height: 28px;
+  width: 44px;
+  height: 38px;
   background: rgba(63,130,173,0.06);
   border: 1px solid rgba(63,130,173,0.15);
-  border-radius: 5px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 500;
   color: #8a9ba8;
   transition: all 0.1s;
   user-select: none;
 }
-.key.wide { width: 50px; font-size: 9px; }
-.key.space { width: 200px; }
+.key.wide { width: 66px; font-size: 11px; }
+.key.space { width: 280px; }
 .key.active {
   background: #3f82ad;
   color: #fff;
   border-color: #3f82ad;
   transform: translateY(1px);
+}
+
+/* Context selector */
+.context-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-shrink: 0;
+}
+.context-label {
+  font-size: 12px;
+  color: #8a9ba8;
+  white-space: nowrap;
+}
+.context-options {
+  display: flex;
+  gap: 4px;
+}
+.context-btn {
+  padding: 5px 14px;
+  border: 1px solid rgba(63,130,173,0.25);
+  background: transparent;
+  color: #8a9ba8;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.context-btn:hover { border-color: #3f82ad; color: #3f82ad; }
+.context-btn.active {
+  background: #3f82ad;
+  color: #fff;
+  border-color: #3f82ad;
 }
 
 /* Results overlay */
@@ -558,6 +594,15 @@ h1 {
     </div>
   </div>
 
+  <div class="context-row">
+    <span class="context-label">Contexto:</span>
+    <div class="context-options">
+      <button class="context-btn active" data-context="noticias">Notícias locais</button>
+      <button class="context-btn" data-context="normas">Normas ISO</button>
+      <button class="context-btn" data-context="ira">Guerra do Irã</button>
+    </div>
+  </div>
+
   <div class="word-area" id="word-area"></div>
 
   <div class="input-row">
@@ -649,8 +694,11 @@ h1 {
 </div>
 
 <script>
-// Textos inteiros de notícias locais brasileiras
-const NEWS_TEXTS = [
+let currentContext = 'noticias';
+
+const TEXTS = {};
+
+TEXTS.noticias = [
   "A Prefeitura de São Paulo anunciou nesta segunda-feira o início das obras de revitalização da região central da cidade. O projeto prevê a recuperação de calçadas, instalação de nova iluminação pública e plantio de árvores ao longo das principais avenidas. Segundo o secretário de urbanismo, as intervenções devem beneficiar mais de duzentos mil moradores e comerciantes da área nos próximos dois anos.",
   "O governo do estado do Rio de Janeiro confirmou investimentos de três bilhões de reais em infraestrutura de transporte público para o próximo ano. Entre as prioridades estão a ampliação da rede de metrô, a construção de novos corredores de ônibus e a modernização das estações ferroviárias. A expectativa é reduzir em trinta por cento o tempo médio de deslocamento dos passageiros na região metropolitana.",
   "Pesquisadores da Universidade Federal de Minas Gerais desenvolveram uma vacina experimental contra a dengue que apresentou resultados promissores nos testes clínicos de fase dois. O estudo, publicado em revista científica internacional, demonstrou que o imunizante foi capaz de gerar resposta imunológica em noventa e cinco por cento dos voluntários avaliados durante o período de acompanhamento.",
@@ -663,10 +711,36 @@ const NEWS_TEXTS = [
   "Especialistas em segurança pública alertam para o aumento dos casos de golpes digitais no Brasil durante o último trimestre. As fraudes envolvendo aplicativos bancários e mensagens falsas cresceram quarenta por cento em comparação com o mesmo período do ano anterior. As autoridades recomendam que os cidadãos verifiquem sempre a origem das mensagens antes de clicar em links ou fornecer dados pessoais."
 ];
 
+TEXTS.normas = [
+  "A norma ISO 9001 estabelece os requisitos para um sistema de gestão da qualidade quando uma organização precisa demonstrar sua capacidade de fornecer produtos e serviços que atendam de forma consistente aos requisitos do cliente e aos requisitos estatutários e regulamentares aplicáveis. A norma visa aumentar a satisfação do cliente por meio da aplicação eficaz do sistema.",
+  "O ciclo PDCA é a base da abordagem de processos na ISO 9001. Planejar significa estabelecer os objetivos do sistema e seus processos, bem como os recursos necessários para entregar resultados de acordo com os requisitos do cliente e com as políticas da organização. Executar significa implementar o que foi planejado. Verificar significa monitorar e medir os processos resultantes. Agir significa tomar ações para melhorar o desempenho.",
+  "A ISO 14001 especifica os requisitos para um sistema de gestão ambiental que uma organização pode usar para aumentar seu desempenho ambiental. A norma é destinada ao uso por organizações que buscam gerenciar suas responsabilidades ambientais de forma sistemática, contribuindo para o pilar ambiental da sustentabilidade e prevenindo a poluição em equilíbrio com as necessidades socioeconômicas.",
+  "A análise de riscos e oportunidades é um requisito fundamental da ISO 9001 versão 2015. A organização deve determinar os riscos e oportunidades que precisam ser abordados para assegurar que o sistema de gestão da qualidade possa alcançar seus resultados pretendidos, aumentar efeitos desejáveis, prevenir ou reduzir efeitos indesejáveis e alcançar melhoria contínua nos processos.",
+  "A ISO 45001 estabelece requisitos para um sistema de gestão de saúde e segurança ocupacional, fornecendo orientação para seu uso, permitindo que as organizações proporcionem locais de trabalho seguros e saudáveis, prevenindo lesões e problemas de saúde relacionados ao trabalho, além de melhorar proativamente seu desempenho em saúde e segurança ocupacional.",
+  "O contexto da organização conforme a ISO 9001 exige que a empresa determine as questões externas e internas pertinentes para seu propósito e direcionamento estratégico, que afetem sua capacidade de alcançar os resultados pretendidos de seu sistema de gestão da qualidade. A organização deve monitorar e analisar criticamente as informações sobre essas questões externas e internas periodicamente.",
+  "A ISO 22000 especifica requisitos para um sistema de gestão de segurança de alimentos, abrangendo a comunicação interativa ao longo da cadeia produtiva, a gestão de sistema, os programas de pré-requisitos e os princípios de análise de perigos e pontos críticos de controle. A norma se aplica a todas as organizações na cadeia produtiva de alimentos, independentemente de tamanho ou complexidade.",
+  "A auditoria interna conforme a ISO 19011 é um processo sistemático, independente e documentado para obter evidências objetivas e avaliá-las objetivamente, a fim de determinar a extensão na qual os critérios de auditoria são atendidos. As organizações devem conduzir auditorias internas em intervalos planejados para verificar a conformidade e a eficácia do sistema de gestão.",
+  "A liderança na ISO 9001 requer que a alta direção demonstre comprometimento com o sistema de gestão da qualidade, assegurando que a política da qualidade e os objetivos sejam estabelecidos e compatíveis com o contexto e a direção estratégica da organização. A alta direção deve promover o uso da abordagem de processo e do pensamento baseado em risco.",
+  "A ISO 27001 estabelece requisitos para um sistema de gestão de segurança da informação, incluindo requisitos para avaliação e tratamento de riscos de segurança da informação adequados às necessidades da organização. Os requisitos são genéricos e destinam-se a ser aplicáveis a todas as organizações, independentemente do tipo, tamanho ou natureza da atividade."
+];
+
+TEXTS.ira = [
+  "As tensões no Oriente Médio aumentaram significativamente após uma série de ataques aéreos contra instalações militares iranianas. A comunidade internacional reagiu com preocupação, pedindo contenção de ambos os lados envolvidos no conflito. Diplomatas de diversos países iniciaram conversas de emergência para tentar evitar uma escalada militar que poderia desestabilizar toda a região do Golfo Pérsico.",
+  "O Conselho de Segurança das Nações Unidas convocou uma reunião extraordinária para discutir a crise envolvendo o Irã. Representantes dos cinco membros permanentes apresentaram posições divergentes sobre como abordar a situação. Enquanto algumas delegações defenderam sanções mais rigorosas, outras argumentaram que o diálogo diplomático seria o caminho mais eficaz para alcançar uma resolução pacífica do conflito.",
+  "Sanções econômicas impostas ao Irã por potências ocidentais continuam afetando severamente as exportações de petróleo do país. A produção iraniana de barris por dia caiu drasticamente desde o início das restrições comerciais. Analistas econômicos alertam que o prolongamento das sanções pode gerar uma crise humanitária, com impacto direto sobre a população civil que já enfrenta escassez de medicamentos e alimentos básicos.",
+  "Refugiados iranianos cruzam as fronteiras em direção ao Iraque e à Turquia em busca de segurança. Organizações humanitárias internacionais montaram campos de acolhimento temporário para atender as famílias deslocadas pelo conflito. A Cruz Vermelha Internacional declarou que a situação é extremamente grave e que são necessários recursos urgentes para fornecer assistência médica e alimentar às vítimas do confronto armado.",
+  "Negociações sobre o programa nuclear iraniano foram retomadas em Viena com a participação de representantes de seis potências mundiais. O objetivo principal das conversas é chegar a um acordo que garanta o uso pacífico da energia nuclear pelo Irã, ao mesmo tempo em que oferece garantias de segurança para os países vizinhos. As delegações trabalham contra o tempo enquanto a situação militar se deteriora.",
+  "Protestos contra a guerra se espalharam por capitais europeias e americanas no último final de semana. Milhares de manifestantes marcharam pelas ruas de Londres, Paris, Berlim e Washington exigindo o fim das operações militares e o retorno às negociações diplomáticas. Organizadores dos movimentos pacifistas prometem intensificar as mobilizações caso não haja avanço nas conversas de paz.",
+  "O preço do barril de petróleo atingiu seu maior valor em cinco anos após ameaças de bloqueio do Estreito de Ormuz por parte do governo iraniano. A passagem marítima é responsável pelo transporte de aproximadamente vinte por cento do petróleo consumido globalmente. Países importadores de energia convocaram reuniões de emergência para discutir medidas de contingência e garantir o abastecimento durante a crise.",
+  "Forças armadas iranianas anunciaram o reforço de suas defesas aéreas nas principais cidades do país, incluindo a capital Teerã. O comandante militar declarou que o Irã está preparado para defender sua soberania contra qualquer agressão externa. Especialistas em defesa avaliam que a modernização dos sistemas de mísseis iranianos representa um desafio significativo para qualquer operação aérea na região.",
+  "A diplomacia brasileira ofereceu seus bons ofícios para mediar o conflito entre as partes envolvidas na crise iraniana. O Ministério das Relações Exteriores emitiu nota oficial defendendo o respeito ao direito internacional e a busca por soluções pacíficas. O Brasil mantém relações comerciais importantes com o Irã e tem histórico de participação em esforços de mediação internacional.",
+  "Organizações de direitos humanos denunciaram violações cometidas durante as operações militares no território iraniano. Relatórios documentaram ataques a áreas residenciais e infraestrutura civil, incluindo hospitais e escolas. As organizações pedem uma investigação independente sobre os incidentes e exigem que todas as partes envolvidas no conflito respeitem as convenções de Genebra e o direito internacional humanitário."
+];
+
 function getTextWords() {
-  const shuffled = NEWS_TEXTS.sort(() => Math.random() - 0.5);
-  const combined = shuffled.join(' ');
-  return combined.split(/\s+/);
+  const texts = TEXTS[currentContext];
+  const shuffled = texts.sort(() => Math.random() - 0.5);
+  return shuffled.join(' ').split(/\s+/);
 }
 
 let gameState = {
@@ -920,6 +994,16 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
     if (btn.dataset.tab === 'dashboard') renderDashboard();
     if (btn.dataset.tab === 'test') input.focus();
+  });
+});
+
+// Context buttons
+document.querySelectorAll('.context-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.context-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentContext = btn.dataset.context;
+    resetGame();
   });
 });
 
