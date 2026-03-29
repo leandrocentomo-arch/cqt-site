@@ -264,8 +264,8 @@ h1 {
 }
 #typing-input {
   flex: 1;
-  padding: 8px 14px;
-  font-size: 17px;
+  padding: 12px 18px;
+  font-size: 22px;
   font-family: Cambria, 'Times New Roman', serif;
   background: #fff;
   border: 2px solid rgba(63,130,173,0.25);
@@ -273,13 +273,17 @@ h1 {
   outline: none;
   color: #2c3e50;
   caret-color: #3f82ad;
+  caret-shape: bar;
   letter-spacing: 0.2px;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   will-change: contents;
   transition: border-color 0.15s, box-shadow 0.15s;
 }
-#typing-input::placeholder { color: #b8c4cc; }
+#typing-input::placeholder { color: #b8c4cc; font-size: 18px; }
+@supports (caret-color: #3f82ad) {
+  #typing-input { font-kerning: none; }
+}
 #typing-input:focus {
   border-color: #3f82ad;
   box-shadow: 0 0 0 3px rgba(63,130,173,0.1);
