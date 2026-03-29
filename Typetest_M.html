@@ -8,89 +8,84 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
 body {
   font-family: 'IBM Plex Sans Condensed', sans-serif;
-  background: #0033cc;
-  color: #fff;
-  height: 100vh;
-  overflow: hidden;
+  background: #f0eee7;
+  color: #3f82ad;
 }
 
 /* Progress bar */
 .progress-bar-wrap {
   position: fixed;
   top: 0; left: 0; right: 0;
-  height: 5px;
-  background: rgba(255,255,255,0.1);
+  height: 4px;
+  background: rgba(63,130,173,0.12);
   z-index: 200;
 }
 .progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #4fc3f7, #81d4fa, #b3e5fc);
+  background: linear-gradient(90deg, #3f82ad, #5a9ec4, #3f82ad);
   width: 100%;
   transition: width 0.3s linear;
-  border-radius: 0 3px 3px 0;
-  box-shadow: 0 0 12px rgba(79, 195, 247, 0.5);
+  border-radius: 0 2px 2px 0;
 }
 
 /* Header */
 .header {
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(12px);
-  padding: 0 40px;
-  height: 48px;
+  background: #3f82ad;
+  padding: 0 20px;
+  height: 40px;
   display: flex;
   align-items: center;
-  gap: 24px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  gap: 20px;
+  flex-shrink: 0;
 }
 .header a {
-  color: rgba(255,255,255,0.7);
+  color: rgba(255,255,255,0.8);
   text-decoration: none;
-  font-size: 14px;
+  font-size: 13px;
   transition: color 0.2s;
 }
 .header a:hover { color: #fff; }
 .header .brand {
   font-weight: 600;
-  font-size: 16px;
+  font-size: 15px;
   color: #fff;
-  letter-spacing: 0.5px;
 }
 
-/* Container */
-.container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px 20px 10px;
-  height: calc(100vh - 53px);
+/* Layout */
+.page {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  height: 100vh;
 }
-.tab-content.active {
+.container {
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 12px 16px 8px;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  flex: 1;
   min-height: 0;
   overflow: hidden;
 }
-#tab-dashboard.active {
-  overflow-y: auto;
-}
 
 h1 {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
-  color: #fff;
-  margin-bottom: 4px;
+  color: #3f82ad;
+  margin-bottom: 2px;
   flex-shrink: 0;
 }
 .subtitle {
-  color: rgba(255,255,255,0.5);
-  font-size: 14px;
-  margin-bottom: 12px;
+  color: #8a9ba8;
+  font-size: 13px;
+  margin-bottom: 8px;
   flex-shrink: 0;
 }
 
@@ -98,223 +93,224 @@ h1 {
 .tabs {
   display: flex;
   gap: 0;
-  margin-bottom: 12px;
-  border-bottom: 1px solid rgba(255,255,255,0.12);
+  margin-bottom: 8px;
+  border-bottom: 2px solid rgba(63,130,173,0.15);
   flex-shrink: 0;
 }
 .tab-btn {
-  padding: 10px 28px;
+  padding: 6px 20px;
   background: none;
   border: none;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 500;
-  color: rgba(255,255,255,0.45);
+  color: #8a9ba8;
   cursor: pointer;
   border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  transition: all 0.25s;
+  margin-bottom: -2px;
+  transition: all 0.2s;
 }
-.tab-btn:hover { color: rgba(255,255,255,0.8); }
+.tab-btn:hover { color: #3f82ad; }
 .tab-btn.active {
-  color: #fff;
+  color: #3f82ad;
   font-weight: 600;
-  border-bottom-color: #4fc3f7;
+  border-bottom-color: #3f82ad;
 }
 .tab-content { display: none; }
-.tab-content.active { display: block; animation: fadeIn 0.3s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-
-/* Stats bar */
-.stats-bar {
+.tab-content.active {
   display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-  flex-shrink: 0;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  animation: fadeIn 0.25s ease;
 }
-.stat {
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 8px;
-  padding: 6px 14px;
-  min-width: 80px;
-  text-align: center;
-  backdrop-filter: blur(8px);
-  transition: background 0.2s;
-}
-.stat:hover { background: rgba(255,255,255,0.1); }
-.stat-value {
-  font-size: 22px;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1.2;
-}
-.stat-label {
-  font-size: 10px;
-  color: rgba(255,255,255,0.45);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
+#tab-dashboard.active { overflow-y: auto; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-/* Timer */
-.timer-bar {
+/* Timer + Stats row */
+.top-row {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 10px;
+  gap: 12px;
+  margin-bottom: 8px;
   flex-shrink: 0;
+  flex-wrap: wrap;
 }
 .timer-display {
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 700;
-  color: #4fc3f7;
-  min-width: 50px;
+  color: #3f82ad;
+  min-width: 40px;
   font-variant-numeric: tabular-nums;
-  text-shadow: 0 0 20px rgba(79,195,247,0.3);
 }
 .timer-options {
   display: flex;
-  gap: 8px;
+  gap: 4px;
 }
 .timer-btn {
-  padding: 6px 14px;
-  border: 1px solid rgba(255,255,255,0.2);
-  background: rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.6);
-  border-radius: 6px;
+  padding: 4px 10px;
+  border: 1px solid rgba(63,130,173,0.25);
+  background: transparent;
+  color: #8a9ba8;
+  border-radius: 4px;
   cursor: pointer;
   font-family: inherit;
-  font-size: 13px;
-  transition: all 0.2s;
+  font-size: 12px;
+  transition: all 0.15s;
 }
-.timer-btn:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
+.timer-btn:hover { border-color: #3f82ad; color: #3f82ad; }
 .timer-btn.active {
-  background: #4fc3f7;
-  color: #0033cc;
-  border-color: #4fc3f7;
-  font-weight: 600;
+  background: #3f82ad;
+  color: #fff;
+  border-color: #3f82ad;
+}
+.stats-bar {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+.stat {
+  background: rgba(63,130,173,0.07);
+  border: 1px solid rgba(63,130,173,0.12);
+  border-radius: 6px;
+  padding: 4px 10px;
+  text-align: center;
+}
+.stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #3f82ad;
+  line-height: 1.2;
+}
+.stat-label {
+  font-size: 9px;
+  color: #8a9ba8;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
 
 /* Word display */
 .word-area {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 10px;
-  padding: 16px 20px;
-  margin-bottom: 10px;
-  height: 80px;
-  flex-shrink: 0;
-  line-height: 2;
+  background: #fff;
+  border: 1px solid rgba(63,130,173,0.15);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  flex: 1;
+  min-height: 60px;
+  max-height: 140px;
+  line-height: 1.9;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(8px);
 }
 .word-area .word {
-  display: inline-block;
-  font-size: 18px;
-  margin-right: 8px;
-  padding: 1px 4px;
-  border-radius: 4px;
-  color: rgba(255,255,255,0.5);
-  transition: all 0.15s;
+  display: inline;
+  font-family: Cambria, 'Times New Roman', serif;
+  font-size: 17px;
+  color: #b0b8bf;
+  transition: color 0.1s;
+}
+.word-area .word + .word::before {
+  content: ' ';
 }
 .word-area .word.current {
-  background: rgba(79,195,247,0.2);
-  color: #fff;
+  color: #3f82ad;
   font-weight: 600;
+  background: rgba(63,130,173,0.08);
+  border-radius: 3px;
+  padding: 1px 2px;
 }
 .word-area .word.correct {
-  color: #66bb6a;
+  color: #4caf50;
 }
 .word-area .word.incorrect {
-  color: #ef5350;
-  text-decoration: line-through;
+  color: #e53935;
+  text-decoration: underline wavy #e53935;
 }
 
 /* Input */
 .input-row {
   display: flex;
-  gap: 10px;
-  margin-bottom: 8px;
+  gap: 8px;
+  margin-bottom: 6px;
   flex-shrink: 0;
 }
 #typing-input {
   flex: 1;
-  padding: 10px 16px;
-  font-size: 18px;
-  font-family: inherit;
-  background: rgba(255,255,255,0.1);
-  border: 2px solid rgba(255,255,255,0.18);
-  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 17px;
+  font-family: Cambria, 'Times New Roman', serif;
+  background: #fff;
+  border: 2px solid rgba(63,130,173,0.25);
+  border-radius: 8px;
   outline: none;
-  color: #fff;
-  caret-color: #4fc3f7;
-  letter-spacing: 0.3px;
+  color: #2c3e50;
+  caret-color: #3f82ad;
+  letter-spacing: 0.2px;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   will-change: contents;
-  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
-#typing-input::placeholder { color: rgba(255,255,255,0.3); }
+#typing-input::placeholder { color: #b8c4cc; }
 #typing-input:focus {
-  border-color: #4fc3f7;
-  background: rgba(255,255,255,0.13);
-  box-shadow: 0 0 0 3px rgba(79,195,247,0.12);
+  border-color: #3f82ad;
+  box-shadow: 0 0 0 3px rgba(63,130,173,0.1);
 }
 #typing-input:disabled {
-  background: rgba(255,255,255,0.03);
-  border-color: rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.3);
+  background: #e8e6e0;
+  border-color: #d0cec8;
+  color: #999;
 }
 .btn-restart {
-  padding: 10px 20px;
-  background: #4fc3f7;
-  color: #0033cc;
+  padding: 8px 18px;
+  background: #3f82ad;
+  color: #fff;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.2s;
+  flex-shrink: 0;
 }
-.btn-restart:hover { background: #81d4fa; transform: translateY(-1px); }
+.btn-restart:hover { background: #2e6d94; }
 
 /* Keyboard */
 .keyboard {
-  margin-top: 4px;
+  margin-top: 2px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   flex-shrink: 0;
 }
-.kb-row { display: flex; gap: 4px; }
+.kb-row { display: flex; gap: 3px; }
 .key {
-  width: 38px;
-  height: 32px;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 6px;
+  width: 34px;
+  height: 28px;
+  background: rgba(63,130,173,0.06);
+  border: 1px solid rgba(63,130,173,0.15);
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 500;
-  color: rgba(255,255,255,0.5);
+  color: #8a9ba8;
   transition: all 0.1s;
   user-select: none;
 }
-.key.wide { width: 56px; font-size: 10px; }
-.key.space { width: 240px; }
+.key.wide { width: 50px; font-size: 9px; }
+.key.space { width: 200px; }
 .key.active {
-  background: #4fc3f7;
-  color: #0033cc;
-  border-color: #4fc3f7;
+  background: #3f82ad;
+  color: #fff;
+  border-color: #3f82ad;
   transform: translateY(1px);
-  box-shadow: 0 0 12px rgba(79,195,247,0.3);
 }
 
 /* Results overlay */
@@ -322,183 +318,207 @@ h1 {
   display: none;
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(10,22,40,0.85);
-  backdrop-filter: blur(8px);
+  background: rgba(63,130,173,0.15);
+  backdrop-filter: blur(6px);
   z-index: 100;
   justify-content: center;
   align-items: center;
 }
 .results-overlay.visible { display: flex; }
 .results-card {
-  background: linear-gradient(145deg, #0d2847, #103a6e);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 20px;
-  padding: 40px 48px;
+  background: #fff;
+  border: 1px solid rgba(63,130,173,0.2);
+  border-radius: 16px;
+  padding: 32px 40px;
   text-align: center;
-  max-width: 480px;
+  max-width: 420px;
   width: 90%;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.4);
-  animation: fadeIn 0.35s ease;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.1);
+  animation: fadeIn 0.3s ease;
 }
 .results-card h2 {
-  font-size: 24px;
-  color: #fff;
-  margin-bottom: 24px;
+  font-size: 22px;
+  color: #3f82ad;
+  margin-bottom: 20px;
 }
 .results-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 28px;
+  gap: 10px;
+  margin-bottom: 24px;
 }
 .result-item {
-  padding: 16px;
-  background: rgba(255,255,255,0.06);
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.08);
+  padding: 12px;
+  background: #f0eee7;
+  border-radius: 10px;
 }
 .result-item .value {
-  font-size: 30px;
+  font-size: 26px;
   font-weight: 700;
-  color: #fff;
+  color: #3f82ad;
 }
 .result-item .label {
-  font-size: 12px;
-  color: rgba(255,255,255,0.45);
+  font-size: 11px;
+  color: #8a9ba8;
 }
 .result-item.highlight {
-  background: rgba(79,195,247,0.15);
-  border-color: rgba(79,195,247,0.3);
+  background: #3f82ad;
 }
-.result-item.highlight .value { color: #4fc3f7; }
-.result-item.highlight .label { color: rgba(255,255,255,0.5); }
+.result-item.highlight .value { color: #fff; }
+.result-item.highlight .label { color: rgba(255,255,255,0.7); }
 
 /* Dashboard */
 .dash-summary {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  margin-bottom: 28px;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 .dash-card {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
-  padding: 20px;
+  background: #fff;
+  border: 1px solid rgba(63,130,173,0.12);
+  border-radius: 10px;
+  padding: 14px;
   text-align: center;
-  backdrop-filter: blur(8px);
-  transition: background 0.2s;
 }
-.dash-card:hover { background: rgba(255,255,255,0.09); }
-.dash-card.highlight {
-  background: rgba(79,195,247,0.12);
-  border-color: rgba(79,195,247,0.25);
-}
+.dash-card.highlight { background: #3f82ad; }
 .dash-card .dash-val {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
-  color: #fff;
+  color: #3f82ad;
   line-height: 1.2;
 }
-.dash-card.highlight .dash-val { color: #4fc3f7; }
+.dash-card.highlight .dash-val { color: #fff; }
 .dash-card .dash-lbl {
-  font-size: 11px;
-  color: rgba(255,255,255,0.4);
+  font-size: 10px;
+  color: #8a9ba8;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: 4px;
+  letter-spacing: 0.4px;
+  margin-top: 2px;
 }
-.dash-card.highlight .dash-lbl { color: rgba(255,255,255,0.5); }
+.dash-card.highlight .dash-lbl { color: rgba(255,255,255,0.7); }
 
 .dash-section-title {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
-  color: rgba(255,255,255,0.8);
-  margin-bottom: 12px;
+  color: #3f82ad;
+  margin-bottom: 8px;
 }
 
-/* Chart */
 .chart-container {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 28px;
-}
-#chart-canvas { width: 100%; height: 220px; }
-
-/* History table */
-.history-table-wrap {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
-  overflow: hidden;
+  background: #fff;
+  border: 1px solid rgba(63,130,173,0.12);
+  border-radius: 10px;
+  padding: 14px;
   margin-bottom: 16px;
+}
+#chart-canvas { width: 100%; height: 180px; }
+
+.history-table-wrap {
+  background: #fff;
+  border: 1px solid rgba(63,130,173,0.12);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
 }
 .history-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 13px;
 }
 .history-table th {
-  background: rgba(79,195,247,0.12);
-  color: rgba(255,255,255,0.7);
-  padding: 10px 14px;
+  background: #3f82ad;
+  color: #fff;
+  padding: 8px 10px;
   text-align: left;
   font-weight: 500;
-  font-size: 11px;
+  font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
 }
 .history-table td {
-  padding: 10px 14px;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  color: rgba(255,255,255,0.7);
+  padding: 8px 10px;
+  border-bottom: 1px solid #f0eee7;
+  color: #555;
 }
 .history-table tr:last-child td { border-bottom: none; }
-.history-table tr:hover td { background: rgba(255,255,255,0.04); }
-.history-table .best-mark { color: #4fc3f7; font-weight: 700; }
+.history-table tr:hover td { background: rgba(63,130,173,0.03); }
+.history-table .best-mark { color: #3f82ad; font-weight: 700; }
 
 .btn-clear {
-  padding: 10px 20px;
-  background: rgba(239,83,80,0.2);
-  color: #ef5350;
-  border: 1px solid rgba(239,83,80,0.3);
-  border-radius: 8px;
+  padding: 8px 16px;
+  background: transparent;
+  color: #e53935;
+  border: 1px solid rgba(229,57,53,0.3);
+  border-radius: 6px;
   font-family: inherit;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
 }
-.btn-clear:hover { background: rgba(239,83,80,0.3); }
+.btn-clear:hover { background: rgba(229,57,53,0.06); }
 
 .dash-empty {
   text-align: center;
-  padding: 60px 20px;
-  color: rgba(255,255,255,0.4);
-  font-size: 15px;
+  padding: 40px 20px;
+  color: #8a9ba8;
+  font-size: 14px;
 }
 
 /* Responsive */
-@media (max-width: 600px) {
-  .container { padding: 20px 12px; }
-  h1 { font-size: 22px; }
-  .stats-bar { gap: 8px; }
-  .stat { min-width: 70px; padding: 8px 10px; }
-  .stat-value { font-size: 20px; }
-  .word-area { padding: 14px; }
-  .word-area .word { font-size: 16px; }
-  #typing-input { font-size: 17px; padding: 12px; }
+@media (max-width: 768px) {
+  .header { padding: 0 12px; height: 36px; }
+  .container { padding: 8px 10px 6px; }
+  h1 { font-size: 18px; }
+  .subtitle { font-size: 12px; margin-bottom: 6px; }
+  .top-row { gap: 6px; }
+  .timer-display { font-size: 22px; }
+  .stats-bar { gap: 4px; margin-left: 0; width: 100%; justify-content: space-between; }
+  .stat { padding: 3px 6px; flex: 1; }
+  .stat-value { font-size: 15px; }
+  .stat-label { font-size: 8px; }
+  .word-area { padding: 10px 12px; max-height: 100px; }
+  .word-area .word { font-size: 15px; }
+  #typing-input { font-size: 15px; padding: 7px 10px; }
+  .btn-restart { padding: 7px 12px; font-size: 12px; }
   .keyboard { display: none; }
-  .results-card { padding: 28px 20px; }
-  .dash-summary { grid-template-columns: 1fr 1fr; }
-  .history-table { font-size: 12px; }
-  .history-table th, .history-table td { padding: 8px 10px; }
+  .results-card { padding: 24px 20px; }
+  .result-item .value { font-size: 22px; }
+  .dash-summary { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .dash-card { padding: 10px; }
+  .dash-card .dash-val { font-size: 22px; }
+  .history-table { font-size: 11px; }
+  .history-table th, .history-table td { padding: 6px 6px; }
+}
+
+@media (max-width: 480px) {
+  .top-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .timer-options { gap: 3px; }
+  .timer-btn { padding: 3px 8px; font-size: 11px; }
+  .word-area { max-height: 80px; }
+  .word-area .word { font-size: 14px; }
+  .tab-btn { padding: 5px 14px; font-size: 12px; }
+}
+
+@media (max-height: 600px) {
+  .header { height: 32px; }
+  .container { padding: 6px 10px 4px; }
+  h1 { font-size: 16px; }
+  .subtitle { display: none; }
+  .top-row { margin-bottom: 4px; }
+  .timer-display { font-size: 20px; }
+  .word-area { max-height: 70px; padding: 8px 10px; }
+  .input-row { margin-bottom: 2px; }
+  .keyboard { gap: 2px; }
+  .key { width: 30px; height: 24px; font-size: 10px; }
+  .key.wide { width: 42px; }
+  .key.space { width: 160px; }
 }
 </style>
 </head>
 <body>
+<div class="page">
 
 <!-- Progress bar -->
 <div class="progress-bar-wrap">
@@ -511,10 +531,9 @@ h1 {
 </div>
 
 <div class="container">
-  <h1>Exercício de Digitação</h1>
-  <p class="subtitle">Teste sua velocidade de digitação em português. Comece a digitar para iniciar o cronômetro.</p>
+  <h1>Typetest M</h1>
+  <p class="subtitle">Pratique digitação com textos reais de notícias. Comece a digitar para iniciar.</p>
 
-  <!-- Tabs -->
   <div class="tabs">
     <button class="tab-btn active" data-tab="test">Teste</button>
     <button class="tab-btn" data-tab="dashboard">Dashboard</button>
@@ -523,50 +542,29 @@ h1 {
   <!-- TAB: Test -->
   <div class="tab-content active" id="tab-test">
 
-  <!-- Timer -->
-  <div class="timer-bar">
+  <div class="top-row">
     <div class="timer-display" id="timer">60</div>
     <div class="timer-options">
       <button class="timer-btn" data-time="30">30s</button>
-      <button class="timer-btn active" data-time="60">60s</button>
+      <button class="timer-btn active" data-time="60">1min</button>
       <button class="timer-btn" data-time="120">2min</button>
     </div>
-  </div>
-
-  <!-- Stats -->
-  <div class="stats-bar">
-    <div class="stat">
-      <div class="stat-value" id="wpm">0</div>
-      <div class="stat-label">PPM</div>
-    </div>
-    <div class="stat">
-      <div class="stat-value" id="cpm">0</div>
-      <div class="stat-label">CPM</div>
-    </div>
-    <div class="stat">
-      <div class="stat-value" id="accuracy">100%</div>
-      <div class="stat-label">Precisão</div>
-    </div>
-    <div class="stat">
-      <div class="stat-value" id="correct-count">0</div>
-      <div class="stat-label">Corretas</div>
-    </div>
-    <div class="stat">
-      <div class="stat-value" id="wrong-count">0</div>
-      <div class="stat-label">Erros</div>
+    <div class="stats-bar">
+      <div class="stat"><div class="stat-value" id="wpm">0</div><div class="stat-label">PPM</div></div>
+      <div class="stat"><div class="stat-value" id="cpm">0</div><div class="stat-label">CPM</div></div>
+      <div class="stat"><div class="stat-value" id="accuracy">100%</div><div class="stat-label">Precisão</div></div>
+      <div class="stat"><div class="stat-value" id="correct-count">0</div><div class="stat-label">Corretas</div></div>
+      <div class="stat"><div class="stat-value" id="wrong-count">0</div><div class="stat-label">Erros</div></div>
     </div>
   </div>
 
-  <!-- Words -->
   <div class="word-area" id="word-area"></div>
 
-  <!-- Input -->
   <div class="input-row">
     <input type="text" id="typing-input" placeholder="Comece a digitar aqui..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false">
     <button class="btn-restart" id="btn-restart">Reiniciar</button>
   </div>
 
-  <!-- Keyboard -->
   <div class="keyboard" id="keyboard">
     <div class="kb-row">
       <div class="key">Q</div><div class="key">W</div><div class="key">E</div>
@@ -615,37 +613,23 @@ h1 {
           <div class="dash-lbl">Total de Testes</div>
         </div>
       </div>
-
       <h3 class="dash-section-title">Evolução PPM</h3>
       <div class="chart-container">
         <canvas id="chart-canvas"></canvas>
       </div>
-
       <h3 class="dash-section-title">Histórico</h3>
       <div class="history-table-wrap">
         <table class="history-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Data</th>
-              <th>Duração</th>
-              <th>PPM</th>
-              <th>CPM</th>
-              <th>Precisão</th>
-              <th>Corretas</th>
-              <th>Erros</th>
-            </tr>
-          </thead>
+          <thead><tr><th>#</th><th>Data</th><th>Duração</th><th>PPM</th><th>CPM</th><th>Precisão</th><th>Corretas</th><th>Erros</th></tr></thead>
           <tbody id="history-tbody"></tbody>
         </table>
       </div>
-      <div id="dash-empty" class="dash-empty" style="display:none;">
-        Nenhum resultado ainda. Complete um teste para ver seu dashboard.
-      </div>
+      <div id="dash-empty" class="dash-empty" style="display:none;">Nenhum resultado ainda. Complete um teste para ver seu dashboard.</div>
       <button class="btn-clear" id="btn-clear" style="display:none;">Limpar histórico</button>
     </div>
-  </div><!-- /tab-dashboard -->
+  </div>
 
+</div>
 </div>
 
 <!-- Results -->
@@ -653,72 +637,37 @@ h1 {
   <div class="results-card">
     <h2>Resultado</h2>
     <div class="results-grid">
-      <div class="result-item highlight">
-        <div class="value" id="r-wpm">0</div>
-        <div class="label">Palavras/min</div>
-      </div>
-      <div class="result-item highlight">
-        <div class="value" id="r-cpm">0</div>
-        <div class="label">Caracteres/min</div>
-      </div>
-      <div class="result-item">
-        <div class="value" id="r-correct">0</div>
-        <div class="label">Palavras corretas</div>
-      </div>
-      <div class="result-item">
-        <div class="value" id="r-wrong">0</div>
-        <div class="label">Palavras erradas</div>
-      </div>
-      <div class="result-item">
-        <div class="value" id="r-accuracy">0%</div>
-        <div class="label">Precisão</div>
-      </div>
-      <div class="result-item">
-        <div class="value" id="r-keystrokes">0</div>
-        <div class="label">Teclas pressionadas</div>
-      </div>
+      <div class="result-item highlight"><div class="value" id="r-wpm">0</div><div class="label">Palavras/min</div></div>
+      <div class="result-item highlight"><div class="value" id="r-cpm">0</div><div class="label">Caracteres/min</div></div>
+      <div class="result-item"><div class="value" id="r-correct">0</div><div class="label">Corretas</div></div>
+      <div class="result-item"><div class="value" id="r-wrong">0</div><div class="label">Erros</div></div>
+      <div class="result-item"><div class="value" id="r-accuracy">0%</div><div class="label">Precisão</div></div>
+      <div class="result-item"><div class="value" id="r-keystrokes">0</div><div class="label">Teclas</div></div>
     </div>
     <button class="btn-restart" id="btn-restart-modal" style="width:100%">Tentar novamente</button>
   </div>
 </div>
 
 <script>
-// Frases sobre a guerra no Irã fragmentadas em palavras
-const PHRASES = [
-  "tensões no oriente médio aumentam após ataques aéreos contra alvos militares iranianos",
-  "diplomatas buscam acordo de cessar fogo enquanto conflito se intensifica na região",
-  "conselho de segurança da ONU convoca reunião de emergência sobre crise no irã",
-  "sanções econômicas contra o irã afetam exportações de petróleo e gás natural",
-  "refugiados fogem da zona de conflito em busca de abrigo nos países vizinhos",
-  "negociações nucleares entre potências mundiais e governo iraniano são retomadas",
-  "forças armadas iranianas reforçam defesas aéreas após ameaças de novos bombardeios",
-  "população civil sofre com escassez de alimentos e medicamentos durante o conflito",
-  "aliança militar ocidental debate estratégia para conter escalada bélica no golfo pérsico",
-  "organizações humanitárias pedem corredor seguro para envio de ajuda ao irã",
-  "mísseis balísticos são interceptados pelo sistema de defesa aérea da coalizão",
-  "protestos contra a guerra se espalham por capitais europeias e americanas",
-  "embargo de armas ao irã divide membros permanentes do conselho de segurança",
-  "imprensa internacional denuncia violações de direitos humanos durante o conflito",
-  "preço do barril de petróleo dispara após bloqueio do estreito de ormuz",
-  "governo iraniano acusa potências estrangeiras de interferência em assuntos internos",
-  "operações militares na fronteira iraquiana geram preocupação entre países árabes",
-  "cessar fogo temporário permite evacuação de civis de áreas bombardeadas",
-  "inteligência militar revela túneis subterrâneos usados para armazenar armamentos",
-  "comunidade internacional cobra transparência sobre programa nuclear do irã",
-  "drones de reconhecimento sobrevoam território iraniano coletando dados estratégicos",
-  "veteranos de guerra alertam sobre consequências devastadoras de invasão terrestre",
-  "parlamento iraniano aprova aumento dos gastos militares para defesa nacional",
-  "diplomacia brasileira oferece mediação para resolver impasse entre as partes em conflito",
-  "ciberataques contra infraestrutura crítica do irã são atribuídos a nações rivais",
-  "acordo de paz parece distante enquanto ambos os lados recusam concessões",
-  "jornalistas estrangeiros são expulsos do irã após reportagens sobre baixas civis",
-  "navios de guerra patrulham o golfo pérsico em demonstração de força militar",
-  "agências de espionagem monitoram movimentação de tropas na fronteira iraniana",
-  "crise humanitária no irã se agrava com chegada do inverno rigoroso"
+// Textos inteiros de notícias locais brasileiras
+const NEWS_TEXTS = [
+  "A Prefeitura de São Paulo anunciou nesta segunda-feira o início das obras de revitalização da região central da cidade. O projeto prevê a recuperação de calçadas, instalação de nova iluminação pública e plantio de árvores ao longo das principais avenidas. Segundo o secretário de urbanismo, as intervenções devem beneficiar mais de duzentos mil moradores e comerciantes da área nos próximos dois anos.",
+  "O governo do estado do Rio de Janeiro confirmou investimentos de três bilhões de reais em infraestrutura de transporte público para o próximo ano. Entre as prioridades estão a ampliação da rede de metrô, a construção de novos corredores de ônibus e a modernização das estações ferroviárias. A expectativa é reduzir em trinta por cento o tempo médio de deslocamento dos passageiros na região metropolitana.",
+  "Pesquisadores da Universidade Federal de Minas Gerais desenvolveram uma vacina experimental contra a dengue que apresentou resultados promissores nos testes clínicos de fase dois. O estudo, publicado em revista científica internacional, demonstrou que o imunizante foi capaz de gerar resposta imunológica em noventa e cinco por cento dos voluntários avaliados durante o período de acompanhamento.",
+  "A produção agrícola brasileira deve atingir um novo recorde neste ano, segundo estimativas divulgadas pelo Instituto Brasileiro de Geografia e Estatística. A safra de grãos está projetada em trezentos milhões de toneladas, impulsionada principalmente pelo desempenho da soja e do milho nas regiões Centro-Oeste e Sul do país. O setor agropecuário representa cerca de vinte e cinco por cento do produto interno bruto nacional.",
+  "A Câmara dos Deputados aprovou em primeiro turno o projeto de lei que estabelece novas regras para o mercado de trabalho digital no Brasil. A proposta regulamenta direitos e obrigações de trabalhadores de plataformas de aplicativos, incluindo garantias de remuneração mínima, seguro contra acidentes e contribuição previdenciária. O texto segue agora para votação no Senado Federal.",
+  "O Banco Central do Brasil decidiu manter a taxa básica de juros em seu patamar atual, citando a necessidade de cautela diante do cenário econômico global incerto. Em comunicado oficial, o comitê de política monetária destacou que a inflação segue dentro da meta estabelecida pelo governo, mas alertou para riscos relacionados à volatilidade cambial e às tensões geopolíticas internacionais.",
+  "Moradores do bairro Jardim América em Curitiba organizaram um mutirão de limpeza nas margens do rio que corta a região. Cerca de duzentos voluntários participaram da ação, recolhendo mais de cinco toneladas de resíduos sólidos em um único dia de trabalho. A iniciativa contou com apoio da prefeitura, que disponibilizou caminhões e equipamentos de proteção individual para os participantes.",
+  "O aeroporto internacional de Guarulhos registrou movimento recorde no mês passado, com mais de quatro milhões de passageiros embarcando e desembarcando nas duas semanas de alta temporada. A administradora do terminal informou que foram necessários voos extras para atender a demanda crescente, especialmente nas rotas para o Nordeste e para destinos internacionais na América do Sul.",
+  "A Secretaria Municipal de Educação de Porto Alegre inaugurou cinco novas creches em bairros periféricos da capital gaúcha. As unidades têm capacidade para atender seiscentas crianças de zero a três anos, oferecendo alimentação balanceada, acompanhamento pedagógico e atendimento médico básico. O investimento total nas construções foi de quarenta e dois milhões de reais.",
+  "Especialistas em segurança pública alertam para o aumento dos casos de golpes digitais no Brasil durante o último trimestre. As fraudes envolvendo aplicativos bancários e mensagens falsas cresceram quarenta por cento em comparação com o mesmo período do ano anterior. As autoridades recomendam que os cidadãos verifiquem sempre a origem das mensagens antes de clicar em links ou fornecer dados pessoais."
 ];
 
-// Fragmenta frases em palavras individuais
-const WORDS = PHRASES.join(' ').split(' ');
+function getTextWords() {
+  const shuffled = NEWS_TEXTS.sort(() => Math.random() - 0.5);
+  const combined = shuffled.join(' ');
+  return combined.split(/\s+/);
+}
 
 let gameState = {
   duration: 60, timeLeft: 60, started: false, finished: false, timer: null,
@@ -737,21 +686,6 @@ const overlay = document.getElementById('results-overlay');
 const keyboard = document.getElementById('keyboard');
 const progressBar = document.getElementById('progress-bar');
 
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-function generateWords(count = 100) {
-  let result = [];
-  while (result.length < count) result = result.concat(shuffle(WORDS));
-  return result.slice(0, count);
-}
-
 function renderWords() {
   wordArea.innerHTML = '';
   gameState.words.forEach((w, i) => {
@@ -769,15 +703,14 @@ function scrollToCurrentWord() {
   if (current) {
     const areaRect = wordArea.getBoundingClientRect();
     const wordRect = current.getBoundingClientRect();
-    if (wordRect.top > areaRect.top + 80) {
-      wordArea.scrollTop += wordRect.top - areaRect.top - 20;
+    if (wordRect.top > areaRect.top + 50) {
+      wordArea.scrollTop += wordRect.top - areaRect.top - 16;
     }
   }
 }
 
 function updateProgressBar() {
-  const pct = (gameState.timeLeft / gameState.duration) * 100;
-  progressBar.style.width = pct + '%';
+  progressBar.style.width = ((gameState.timeLeft / gameState.duration) * 100) + '%';
 }
 
 function startTimer() {
@@ -810,20 +743,17 @@ function endGame() {
   gameState.finished = true;
   clearInterval(gameState.timer);
   input.disabled = true;
-
   const elapsed = gameState.duration / 60;
   const wpm = Math.round(gameState.correctCount / elapsed);
   const cpm = Math.round(gameState.correctChars / elapsed);
   const total = gameState.correctCount + gameState.wrongCount;
   const acc = total > 0 ? Math.round((gameState.correctCount / total) * 100) : 100;
-
   document.getElementById('r-wpm').textContent = wpm;
   document.getElementById('r-cpm').textContent = cpm;
   document.getElementById('r-correct').textContent = gameState.correctCount;
   document.getElementById('r-wrong').textContent = gameState.wrongCount;
   document.getElementById('r-accuracy').textContent = acc + '%';
   document.getElementById('r-keystrokes').textContent = gameState.keystrokes;
-
   overlay.classList.add('visible');
   saveResult(wpm, cpm, acc, gameState.correctCount, gameState.wrongCount, gameState.keystrokes, gameState.duration);
 }
@@ -832,18 +762,13 @@ function endGame() {
 function getHistory() {
   try { return JSON.parse(localStorage.getItem('typing-history') || '[]'); } catch { return []; }
 }
-
 function saveResult(wpm, cpm, accuracy, correct, wrong, keystrokes, duration) {
   const history = getHistory();
   history.push({ date: new Date().toISOString(), wpm, cpm, accuracy, correct, wrong, keystrokes, duration });
   if (history.length > 100) history.splice(0, history.length - 100);
   localStorage.setItem('typing-history', JSON.stringify(history));
 }
-
-function clearHistory() {
-  localStorage.removeItem('typing-history');
-  renderDashboard();
-}
+function clearHistory() { localStorage.removeItem('typing-history'); renderDashboard(); }
 
 // === DASHBOARD ===
 function renderDashboard() {
@@ -851,45 +776,33 @@ function renderDashboard() {
   const tbody = document.getElementById('history-tbody');
   const emptyMsg = document.getElementById('dash-empty');
   const clearBtn = document.getElementById('btn-clear');
-
   if (history.length === 0) {
-    emptyMsg.style.display = 'block';
-    clearBtn.style.display = 'none';
+    emptyMsg.style.display = 'block'; clearBtn.style.display = 'none';
     document.querySelector('.dash-summary').style.display = 'none';
     document.querySelector('.chart-container').style.display = 'none';
     document.querySelector('.history-table-wrap').style.display = 'none';
     document.querySelectorAll('.dash-section-title').forEach(el => el.style.display = 'none');
     return;
   }
-
-  emptyMsg.style.display = 'none';
-  clearBtn.style.display = 'inline-block';
+  emptyMsg.style.display = 'none'; clearBtn.style.display = 'inline-block';
   document.querySelector('.dash-summary').style.display = '';
   document.querySelector('.chart-container').style.display = '';
   document.querySelector('.history-table-wrap').style.display = '';
   document.querySelectorAll('.dash-section-title').forEach(el => el.style.display = '');
-
-  const wpms = history.map(h => h.wpm);
-  const accs = history.map(h => h.accuracy);
+  const wpms = history.map(h => h.wpm), accs = history.map(h => h.accuracy);
   const bestWpm = Math.max(...wpms);
-  const avgWpm = Math.round(wpms.reduce((a, b) => a + b, 0) / wpms.length);
-  const avgAcc = Math.round(accs.reduce((a, b) => a + b, 0) / accs.length);
-
   document.getElementById('d-best-wpm').textContent = bestWpm;
-  document.getElementById('d-avg-wpm').textContent = avgWpm;
-  document.getElementById('d-avg-acc').textContent = avgAcc + '%';
+  document.getElementById('d-avg-wpm').textContent = Math.round(wpms.reduce((a,b)=>a+b,0)/wpms.length);
+  document.getElementById('d-avg-acc').textContent = Math.round(accs.reduce((a,b)=>a+b,0)/accs.length) + '%';
   document.getElementById('d-total').textContent = history.length;
-
   const recent = history.slice(-20).reverse();
-  tbody.innerHTML = recent.map((h, i) => {
-    const idx = history.length - i;
-    const d = new Date(h.date);
-    const dateStr = d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
-    const durLabel = h.duration >= 60 ? (h.duration / 60) + 'min' : h.duration + 's';
-    const isBest = h.wpm === bestWpm ? ' class="best-mark"' : '';
-    return `<tr><td>${idx}</td><td>${dateStr}</td><td>${durLabel}</td><td${isBest}>${h.wpm}</td><td>${h.cpm}</td><td>${h.accuracy}%</td><td>${h.correct}</td><td>${h.wrong}</td></tr>`;
+  tbody.innerHTML = recent.map((h,i) => {
+    const idx = history.length - i, d = new Date(h.date);
+    const dateStr = d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    const durLabel = h.duration >= 60 ? (h.duration/60)+'min' : h.duration+'s';
+    const cls = h.wpm === bestWpm ? ' class="best-mark"' : '';
+    return `<tr><td>${idx}</td><td>${dateStr}</td><td>${durLabel}</td><td${cls}>${h.wpm}</td><td>${h.cpm}</td><td>${h.accuracy}%</td><td>${h.correct}</td><td>${h.wrong}</td></tr>`;
   }).join('');
-
   drawChart(history);
 }
 
@@ -898,83 +811,43 @@ function drawChart(history) {
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
-  canvas.width = rect.width * dpr;
-  canvas.height = rect.height * dpr;
+  canvas.width = rect.width * dpr; canvas.height = rect.height * dpr;
   ctx.scale(dpr, dpr);
   const W = rect.width, H = rect.height;
   ctx.clearRect(0, 0, W, H);
-
   if (history.length < 2) {
-    ctx.fillStyle = 'rgba(255,255,255,0.4)';
-    ctx.font = '14px IBM Plex Sans Condensed';
-    ctx.textAlign = 'center';
-    ctx.fillText('Complete mais testes para ver o gráfico', W / 2, H / 2);
-    return;
+    ctx.fillStyle = '#8a9ba8'; ctx.font = '13px IBM Plex Sans Condensed'; ctx.textAlign = 'center';
+    ctx.fillText('Complete mais testes para ver o gráfico', W/2, H/2); return;
   }
-
-  const wpms = history.map(h => h.wpm);
-  const maxWpm = Math.max(...wpms, 10);
-  const padL = 44, padR = 16, padT = 16, padB = 32;
-  const chartW = W - padL - padR, chartH = H - padT - padB;
-
-  // Grid
-  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-  ctx.lineWidth = 1;
-  ctx.fillStyle = 'rgba(255,255,255,0.35)';
-  ctx.font = '11px IBM Plex Sans Condensed';
-  ctx.textAlign = 'right';
+  const wpms = history.map(h => h.wpm), maxWpm = Math.max(...wpms, 10);
+  const padL = 40, padR = 12, padT = 12, padB = 28;
+  const chartW = W-padL-padR, chartH = H-padT-padB;
+  ctx.strokeStyle = 'rgba(63,130,173,0.1)'; ctx.lineWidth = 1;
+  ctx.fillStyle = '#8a9ba8'; ctx.font = '10px IBM Plex Sans Condensed'; ctx.textAlign = 'right';
   for (let i = 0; i <= 5; i++) {
-    const y = padT + (chartH / 5) * i;
-    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke();
-    ctx.fillText(Math.round(maxWpm - (maxWpm / 5) * i), padL - 8, y + 4);
+    const y = padT + (chartH/5)*i;
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W-padR, y); ctx.stroke();
+    ctx.fillText(Math.round(maxWpm-(maxWpm/5)*i), padL-6, y+3);
   }
   ctx.textAlign = 'center';
-  const step = Math.max(1, Math.floor(wpms.length / 8));
+  const step = Math.max(1, Math.floor(wpms.length/8));
   for (let i = 0; i < wpms.length; i += step) {
-    const x = padL + (i / (wpms.length - 1)) * chartW;
-    ctx.fillText('#' + (i + 1), x, H - 8);
+    const x = padL + (i/(wpms.length-1))*chartW;
+    ctx.fillText('#'+(i+1), x, H-6);
   }
-
-  // Area fill
   ctx.beginPath();
-  wpms.forEach((v, i) => {
-    const x = padL + (i / (wpms.length - 1)) * chartW;
-    const y = padT + chartH - (v / maxWpm) * chartH;
-    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-  });
-  ctx.lineTo(padL + chartW, padT + chartH);
-  ctx.lineTo(padL, padT + chartH);
-  ctx.closePath();
-  const grad = ctx.createLinearGradient(0, padT, 0, padT + chartH);
-  grad.addColorStop(0, 'rgba(79,195,247,0.2)');
-  grad.addColorStop(1, 'rgba(79,195,247,0.02)');
-  ctx.fillStyle = grad;
-  ctx.fill();
-
-  // Line
-  ctx.beginPath();
-  ctx.strokeStyle = '#4fc3f7';
-  ctx.lineWidth = 2.5;
-  ctx.lineJoin = 'round';
-  wpms.forEach((v, i) => {
-    const x = padL + (i / (wpms.length - 1)) * chartW;
-    const y = padT + chartH - (v / maxWpm) * chartH;
-    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-  });
+  wpms.forEach((v,i) => { const x = padL+(i/(wpms.length-1))*chartW, y = padT+chartH-(v/maxWpm)*chartH; i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y); });
+  ctx.lineTo(padL+chartW, padT+chartH); ctx.lineTo(padL, padT+chartH); ctx.closePath();
+  const grad = ctx.createLinearGradient(0,padT,0,padT+chartH);
+  grad.addColorStop(0,'rgba(63,130,173,0.15)'); grad.addColorStop(1,'rgba(63,130,173,0.02)');
+  ctx.fillStyle = grad; ctx.fill();
+  ctx.beginPath(); ctx.strokeStyle = '#3f82ad'; ctx.lineWidth = 2; ctx.lineJoin = 'round';
+  wpms.forEach((v,i) => { const x = padL+(i/(wpms.length-1))*chartW, y = padT+chartH-(v/maxWpm)*chartH; i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y); });
   ctx.stroke();
-
-  // Dots
   const best = Math.max(...wpms);
-  wpms.forEach((v, i) => {
-    const x = padL + (i / (wpms.length - 1)) * chartW;
-    const y = padT + chartH - (v / maxWpm) * chartH;
-    ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2);
-    ctx.fillStyle = v === best ? '#fff' : '#4fc3f7';
-    ctx.fill();
-    if (v === best) {
-      ctx.beginPath(); ctx.arc(x, y, 7, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(79,195,247,0.5)'; ctx.lineWidth = 2; ctx.stroke();
-    }
+  wpms.forEach((v,i) => {
+    const x = padL+(i/(wpms.length-1))*chartW, y = padT+chartH-(v/maxWpm)*chartH;
+    ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fillStyle = v===best?'#e53935':'#3f82ad'; ctx.fill();
   });
 }
 
@@ -984,23 +857,18 @@ function resetGame() {
   gameState = {
     duration: gameState.duration, timeLeft: gameState.duration,
     started: false, finished: false, timer: null,
-    words: generateWords(100), currentIndex: 0,
+    words: getTextWords(), currentIndex: 0,
     correctCount: 0, wrongCount: 0, keystrokes: 0, correctChars: 0
   };
   timerDisplay.textContent = gameState.timeLeft;
-  wpmDisplay.textContent = '0';
-  cpmDisplay.textContent = '0';
-  accuracyDisplay.textContent = '100%';
-  correctDisplay.textContent = '0';
-  wrongDisplay.textContent = '0';
+  wpmDisplay.textContent = '0'; cpmDisplay.textContent = '0';
+  accuracyDisplay.textContent = '100%'; correctDisplay.textContent = '0'; wrongDisplay.textContent = '0';
   progressBar.style.width = '100%';
-  input.value = '';
-  input.disabled = false;
-  input.focus();
+  input.value = ''; input.disabled = false; input.focus();
   renderWords();
 }
 
-// Input — single keydown handler for zero-lag response
+// Input
 input.addEventListener('keydown', (e) => {
   if (gameState.finished) return;
   if (!gameState.started && e.key.length === 1) startTimer();
@@ -1012,23 +880,15 @@ input.addEventListener('keydown', (e) => {
     if (typed === '') return;
     const target = gameState.words[gameState.currentIndex];
     const wordEl = wordArea.querySelector(`.word[data-index="${gameState.currentIndex}"]`);
-    if (typed === target) {
-      gameState.correctCount++;
-      gameState.correctChars += target.length;
-      wordEl.classList.add('correct');
-    } else {
-      gameState.wrongCount++;
-      wordEl.classList.add('incorrect');
-    }
+    if (typed === target) { gameState.correctCount++; gameState.correctChars += target.length; wordEl.classList.add('correct'); }
+    else { gameState.wrongCount++; wordEl.classList.add('incorrect'); }
     wordEl.classList.remove('current');
     gameState.currentIndex++;
     if (gameState.currentIndex < gameState.words.length) {
       const next = wordArea.querySelector(`.word[data-index="${gameState.currentIndex}"]`);
       if (next) next.classList.add('current');
     }
-    input.value = '';
-    updateStats();
-    scrollToCurrentWord();
+    input.value = ''; updateStats(); scrollToCurrentWord();
   }
 });
 
@@ -1043,7 +903,6 @@ function highlightKey(key) {
   setTimeout(() => keys.forEach(k => k.classList.remove('active')), 150);
 }
 
-// Timer buttons
 document.querySelectorAll('.timer-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.timer-btn').forEach(b => b.classList.remove('active'));
@@ -1053,7 +912,6 @@ document.querySelectorAll('.timer-btn').forEach(btn => {
   });
 });
 
-// Tabs
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -1065,15 +923,11 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// Restart & clear
 document.getElementById('btn-restart').addEventListener('click', resetGame);
 document.getElementById('btn-restart-modal').addEventListener('click', resetGame);
-document.getElementById('btn-clear').addEventListener('click', () => {
-  if (confirm('Tem certeza que deseja apagar todo o histórico?')) clearHistory();
-});
+document.getElementById('btn-clear').addEventListener('click', () => { if (confirm('Apagar todo o histórico?')) clearHistory(); });
 overlay.addEventListener('click', (e) => { if (e.target === overlay) resetGame(); });
 
-// Init
 resetGame();
 </script>
 </body>
