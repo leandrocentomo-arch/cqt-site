@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercício de Digitação | CQT Sistemas da Qualidade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'IBM Plex Sans Condensed', sans-serif;
+  background: #f5f5f5;
+  color: #1a1a2e;
+  min-height: 100vh;
+}
+
+/* Header */
+.header {
+  background: #3D394A;
+  padding: 0 40px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.header a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+.header a:hover { opacity: 1; }
+.header .brand {
+  font-weight: 600;
+  font-size: 16px;
+  opacity: 1;
+  letter-spacing: 0.5px;
+}
+
+/* Main container */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #0B1D33;
+  margin-bottom: 8px;
+}
+.subtitle {
+  color: #6B7280;
+  font-size: 15px;
+  margin-bottom: 32px;
+}
+
+/* Stats bar */
+.stats-bar {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.stat {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px 20px;
+  min-width: 120px;
+  text-align: center;
+}
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0B1D33;
+  line-height: 1.2;
+}
+.stat-label {
+  font-size: 12px;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Timer */
+.timer-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.timer-display {
+  font-size: 36px;
+  font-weight: 700;
+  color: #EF4545;
+  min-width: 60px;
+  font-variant-numeric: tabular-nums;
+}
+.timer-options {
+  display: flex;
+  gap: 8px;
+}
+.timer-btn {
+  padding: 6px 14px;
+  border: 1px solid #ccc;
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  transition: all 0.15s;
+}
+.timer-btn:hover { border-color: #0B1D33; }
+.timer-btn.active {
+  background: #0B1D33;
+  color: #fff;
+  border-color: #0B1D33;
+}
+
+/* Word display */
+.word-area {
+  background: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+  min-height: 120px;
+  line-height: 2.2;
+  position: relative;
+  overflow: hidden;
+}
+.word-area .word {
+  display: inline-block;
+  font-size: 20px;
+  margin-right: 10px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: background 0.15s;
+}
+.word-area .word.current {
+  background: #DFDDE8;
+  font-weight: 600;
+}
+.word-area .word.correct {
+  color: #16a34a;
+}
+.word-area .word.incorrect {
+  color: #EF4545;
+  text-decoration: line-through;
+}
+
+/* Input */
+.input-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+#typing-input {
+  flex: 1;
+  padding: 14px 18px;
+  font-size: 20px;
+  font-family: inherit;
+  border: 2px solid #0B1D33;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+#typing-input:focus {
+  border-color: #B8952A;
+  box-shadow: 0 0 0 3px rgba(184, 149, 42, 0.15);
+}
+#typing-input:disabled {
+  background: #f0f0f0;
+  border-color: #ccc;
+}
+.btn-restart {
+  padding: 14px 24px;
+  background: #0B1D33;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-restart:hover { background: #152E4A; }
+
+/* Results overlay */
+.results-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 100;
+  justify-content: center;
+  align-items: center;
+}
+.results-overlay.visible {
+  display: flex;
+}
+.results-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 48px;
+  text-align: center;
+  max-width: 480px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.results-card h2 {
+  font-size: 24px;
+  color: #0B1D33;
+  margin-bottom: 24px;
+}
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.result-item {
+  padding: 16px;
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+.result-item .value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #0B1D33;
+}
+.result-item .label {
+  font-size: 13px;
+  color: #6B7280;
+}
+.result-item.highlight {
+  background: #0B1D33;
+}
+.result-item.highlight .value { color: #B8952A; }
+.result-item.highlight .label { color: #ccc; }
+
+/* Keyboard visual */
+.keyboard {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.kb-row {
+  display: flex;
+  gap: 5px;
+}
+.key {
+  width: 42px;
+  height: 40px;
+  background: #fff;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  transition: all 0.1s;
+  user-select: none;
+}
+.key.wide { width: 64px; font-size: 11px; }
+.key.space { width: 280px; }
+.key.active {
+  background: #0B1D33;
+  color: #fff;
+  border-color: #0B1D33;
+  transform: translateY(1px);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .container { padding: 20px 12px; }
+  h1 { font-size: 22px; }
+  .stats-bar { gap: 8px; }
+  .stat { min-width: 80px; padding: 8px 12px; }
+  .stat-value { font-size: 22px; }
+  .word-area { padding: 16px; }
+  .word-area .word { font-size: 17px; }
+  #typing-input { font-size: 17px; padding: 12px; }
+  .keyboard { display: none; }
+  .results-card { padding: 28px 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="index.html" class="brand">CQT</a>
+  <a href="index.html">Voltar ao site</a>
+</div>
+
+<div class="container">
+  <h1>Exercício de Digitação</h1>
+  <p class="subtitle">Teste sua velocidade de digitação em português. Comece a digitar para iniciar o cronômetro.</p>
+
+  <!-- Timer -->
+  <div class="timer-bar">
+    <div class="timer-display" id="timer">60</div>
+    <div class="timer-options">
+      <button class="timer-btn" data-time="30">30s</button>
+      <button class="timer-btn active" data-time="60">60s</button>
+      <button class="timer-btn" data-time="120">2min</button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-value" id="wpm">0</div>
+      <div class="stat-label">PPM</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="cpm">0</div>
+      <div class="stat-label">CPM</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="accuracy">100%</div>
+      <div class="stat-label">Precisão</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="correct-count">0</div>
+      <div class="stat-label">Corretas</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="wrong-count">0</div>
+      <div class="stat-label">Erros</div>
+    </div>
+  </div>
+
+  <!-- Words -->
+  <div class="word-area" id="word-area"></div>
+
+  <!-- Input -->
+  <div class="input-row">
+    <input type="text" id="typing-input" placeholder="Comece a digitar aqui..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <button class="btn-restart" id="btn-restart">Reiniciar</button>
+  </div>
+
+  <!-- Keyboard -->
+  <div class="keyboard" id="keyboard">
+    <div class="kb-row">
+      <div class="key">Q</div><div class="key">W</div><div class="key">E</div>
+      <div class="key">R</div><div class="key">T</div><div class="key">Y</div>
+      <div class="key">U</div><div class="key">I</div><div class="key">O</div>
+      <div class="key">P</div>
+    </div>
+    <div class="kb-row">
+      <div class="key">A</div><div class="key">S</div><div class="key">D</div>
+      <div class="key">F</div><div class="key">G</div><div class="key">H</div>
+      <div class="key">J</div><div class="key">K</div><div class="key">L</div>
+      <div class="key">Ç</div>
+    </div>
+    <div class="kb-row">
+      <div class="key wide">Shift</div>
+      <div class="key">Z</div><div class="key">X</div><div class="key">C</div>
+      <div class="key">V</div><div class="key">B</div><div class="key">N</div>
+      <div class="key">M</div>
+      <div class="key wide">⌫</div>
+    </div>
+    <div class="kb-row">
+      <div class="key space">Espaço</div>
+    </div>
+  </div>
+</div>
+
+<!-- Results -->
+<div class="results-overlay" id="results-overlay">
+  <div class="results-card">
+    <h2>Resultado</h2>
+    <div class="results-grid">
+      <div class="result-item highlight">
+        <div class="value" id="r-wpm">0</div>
+        <div class="label">Palavras/min</div>
+      </div>
+      <div class="result-item highlight">
+        <div class="value" id="r-cpm">0</div>
+        <div class="label">Caracteres/min</div>
+      </div>
+      <div class="result-item">
+        <div class="value" id="r-correct">0</div>
+        <div class="label">Palavras corretas</div>
+      </div>
+      <div class="result-item">
+        <div class="value" id="r-wrong">0</div>
+        <div class="label">Palavras erradas</div>
+      </div>
+      <div class="result-item">
+        <div class="value" id="r-accuracy">0%</div>
+        <div class="label">Precisão</div>
+      </div>
+      <div class="result-item">
+        <div class="value" id="r-keystrokes">0</div>
+        <div class="label">Teclas pressionadas</div>
+      </div>
+    </div>
+    <button class="btn-restart" id="btn-restart-modal" style="width:100%">Tentar novamente</button>
+  </div>
+</div>
+
+<script>
+// Portuguese word list (200 common words)
+const WORDS = [
+  "que","não","de","um","para","com","uma","os","no","se","na","por","mais","as","dos",
+  "como","mas","foi","ao","ele","das","tem","seu","sua","ou","ser","quando","muito",
+  "há","nos","já","está","eu","também","só","pelo","pela","até","isso","ela","entre",
+  "era","depois","sem","mesmo","aos","ter","seus","quem","nas","me","esse","eles",
+  "estão","você","tinha","foram","essa","num","nem","suas","meu","minha","têm","numa",
+  "pelos","elas","havia","seja","qual","será","nós","tenho","lhe","deles","essas",
+  "esses","pelas","este","fosse","dele","tu","cada","lhes","desta","aqui","onde",
+  "casa","tempo","todos","mundo","cidade","ainda","vida","trabalho","parte","pessoas",
+  "anos","dia","bem","pode","grande","qual","sobre","então","governo","empresa","estado",
+  "país","escola","grupo","problema","sistema","social","novo","forma","caso","alguns",
+  "poder","conta","exemplo","gente","água","família","ponto","vezes","área","número",
+  "programa","processo","questão","durante","lugar","coisa","nome","mercado","nada",
+  "hora","tipo","palavra","livro","terra","homem","mulher","olhos","mão","porta",
+  "noite","senhor","história","dinheiro","filho","lado","acordo","momento","político",
+  "certo","projeto","brasil","centro","direito","melhor","ponto","menos","sempre",
+  "alguma","pessoa","nenhum","valor","final","coisa","razão","guerra","fazer","dizer",
+  "saber","poder","querer","dever","ficar","passar","pensar","chegar","levar","começar",
+  "parecer","conhecer","viver","sentir","deixar","olhar","chamar","falar","perder",
+  "acabar","partir","esperar","entrar","morrer","buscar","seguir","lembrar","encontrar",
+  "escrever","pedir","receber","tornar","abrir","ouvir","acontecer","trabalhar","criar",
+  "entender","correr","usar","ler","jogar","andar","comer","dormir","amar","brincar"
+];
+
+let gameState = {
+  duration: 60,
+  timeLeft: 60,
+  started: false,
+  finished: false,
+  timer: null,
+  words: [],
+  currentIndex: 0,
+  correctCount: 0,
+  wrongCount: 0,
+  keystrokes: 0,
+  correctChars: 0
+};
+
+const wordArea = document.getElementById('word-area');
+const input = document.getElementById('typing-input');
+const timerDisplay = document.getElementById('timer');
+const wpmDisplay = document.getElementById('wpm');
+const cpmDisplay = document.getElementById('cpm');
+const accuracyDisplay = document.getElementById('accuracy');
+const correctDisplay = document.getElementById('correct-count');
+const wrongDisplay = document.getElementById('wrong-count');
+const overlay = document.getElementById('results-overlay');
+const keyboard = document.getElementById('keyboard');
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function generateWords(count = 100) {
+  let result = [];
+  while (result.length < count) {
+    result = result.concat(shuffle(WORDS));
+  }
+  return result.slice(0, count);
+}
+
+function renderWords() {
+  wordArea.innerHTML = '';
+  gameState.words.forEach((w, i) => {
+    const span = document.createElement('span');
+    span.className = 'word' + (i === gameState.currentIndex ? ' current' : '');
+    span.textContent = w;
+    span.dataset.index = i;
+    wordArea.appendChild(span);
+  });
+  scrollToCurrentWord();
+}
+
+function scrollToCurrentWord() {
+  const current = wordArea.querySelector('.word.current');
+  if (current) {
+    const areaRect = wordArea.getBoundingClientRect();
+    const wordRect = current.getBoundingClientRect();
+    if (wordRect.top > areaRect.top + 80) {
+      wordArea.scrollTop += wordRect.top - areaRect.top - 20;
+    }
+  }
+}
+
+function startTimer() {
+  if (gameState.started) return;
+  gameState.started = true;
+  gameState.startTime = Date.now();
+  gameState.timer = setInterval(() => {
+    gameState.timeLeft--;
+    timerDisplay.textContent = gameState.timeLeft;
+    updateStats();
+    if (gameState.timeLeft <= 0) {
+      endGame();
+    }
+  }, 1000);
+}
+
+function updateStats() {
+  const elapsed = (Date.now() - gameState.startTime) / 1000 / 60; // minutes
+  if (elapsed > 0) {
+    const wpm = Math.round(gameState.correctCount / elapsed);
+    const cpm = Math.round(gameState.correctChars / elapsed);
+    wpmDisplay.textContent = wpm;
+    cpmDisplay.textContent = cpm;
+  }
+  const total = gameState.correctCount + gameState.wrongCount;
+  const acc = total > 0 ? Math.round((gameState.correctCount / total) * 100) : 100;
+  accuracyDisplay.textContent = acc + '%';
+  correctDisplay.textContent = gameState.correctCount;
+  wrongDisplay.textContent = gameState.wrongCount;
+}
+
+function endGame() {
+  gameState.finished = true;
+  clearInterval(gameState.timer);
+  input.disabled = true;
+
+  const elapsed = gameState.duration / 60;
+  const wpm = Math.round(gameState.correctCount / elapsed);
+  const cpm = Math.round(gameState.correctChars / elapsed);
+  const total = gameState.correctCount + gameState.wrongCount;
+  const acc = total > 0 ? Math.round((gameState.correctCount / total) * 100) : 100;
+
+  document.getElementById('r-wpm').textContent = wpm;
+  document.getElementById('r-cpm').textContent = cpm;
+  document.getElementById('r-correct').textContent = gameState.correctCount;
+  document.getElementById('r-wrong').textContent = gameState.wrongCount;
+  document.getElementById('r-accuracy').textContent = acc + '%';
+  document.getElementById('r-keystrokes').textContent = gameState.keystrokes;
+
+  overlay.classList.add('visible');
+}
+
+function resetGame() {
+  clearInterval(gameState.timer);
+  overlay.classList.remove('visible');
+  gameState = {
+    duration: gameState.duration,
+    timeLeft: gameState.duration,
+    started: false,
+    finished: false,
+    timer: null,
+    words: generateWords(100),
+    currentIndex: 0,
+    correctCount: 0,
+    wrongCount: 0,
+    keystrokes: 0,
+    correctChars: 0
+  };
+  timerDisplay.textContent = gameState.timeLeft;
+  wpmDisplay.textContent = '0';
+  cpmDisplay.textContent = '0';
+  accuracyDisplay.textContent = '100%';
+  correctDisplay.textContent = '0';
+  wrongDisplay.textContent = '0';
+  input.value = '';
+  input.disabled = false;
+  input.focus();
+  renderWords();
+}
+
+// Input handling
+input.addEventListener('input', () => {
+  if (gameState.finished) return;
+  if (!gameState.started) startTimer();
+  gameState.keystrokes++;
+});
+
+input.addEventListener('keydown', (e) => {
+  // Highlight keyboard
+  highlightKey(e.key);
+
+  if (e.key === ' ' && !gameState.finished) {
+    e.preventDefault();
+    const typed = input.value.trim();
+    if (typed === '') return;
+
+    const target = gameState.words[gameState.currentIndex];
+    const wordEl = wordArea.querySelector(`.word[data-index="${gameState.currentIndex}"]`);
+
+    if (typed === target) {
+      gameState.correctCount++;
+      gameState.correctChars += target.length;
+      wordEl.classList.add('correct');
+    } else {
+      gameState.wrongCount++;
+      wordEl.classList.add('incorrect');
+    }
+
+    wordEl.classList.remove('current');
+    gameState.currentIndex++;
+
+    if (gameState.currentIndex < gameState.words.length) {
+      const next = wordArea.querySelector(`.word[data-index="${gameState.currentIndex}"]`);
+      if (next) next.classList.add('current');
+    }
+
+    input.value = '';
+    updateStats();
+    scrollToCurrentWord();
+  }
+});
+
+// Keyboard highlighting
+function highlightKey(key) {
+  const keys = keyboard.querySelectorAll('.key');
+  keys.forEach(k => k.classList.remove('active'));
+
+  let label = key.toUpperCase();
+  if (key === ' ') label = 'Espaço';
+  if (key === 'Backspace') label = '⌫';
+  if (key === 'Shift') label = 'Shift';
+
+  keys.forEach(k => {
+    if (k.textContent === label) k.classList.add('active');
+  });
+
+  setTimeout(() => {
+    keys.forEach(k => k.classList.remove('active'));
+  }, 150);
+}
+
+// Timer buttons
+document.querySelectorAll('.timer-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.timer-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    gameState.duration = parseInt(btn.dataset.time);
+    resetGame();
+  });
+});
+
+// Restart buttons
+document.getElementById('btn-restart').addEventListener('click', resetGame);
+document.getElementById('btn-restart-modal').addEventListener('click', resetGame);
+
+// Close overlay on outside click
+overlay.addEventListener('click', (e) => {
+  if (e.target === overlay) resetGame();
+});
+
+// Init
+resetGame();
+</script>
+</body>
+</html>
