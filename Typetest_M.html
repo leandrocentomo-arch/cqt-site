@@ -13,7 +13,8 @@ body {
   font-family: 'IBM Plex Sans Condensed', sans-serif;
   background: #0033cc;
   color: #fff;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* Progress bar */
@@ -62,27 +63,44 @@ body {
 .container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 36px 20px;
+  padding: 20px 20px 10px;
+  height: calc(100vh - 53px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.tab-content.active {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+#tab-dashboard.active {
+  overflow-y: auto;
 }
 
 h1 {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 600;
   color: #fff;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
+  flex-shrink: 0;
 }
 .subtitle {
   color: rgba(255,255,255,0.5);
-  font-size: 15px;
-  margin-bottom: 28px;
+  font-size: 14px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
 }
 
 /* Tabs */
 .tabs {
   display: flex;
   gap: 0;
-  margin-bottom: 28px;
+  margin-bottom: 12px;
   border-bottom: 1px solid rgba(255,255,255,0.12);
+  flex-shrink: 0;
 }
 .tab-btn {
   padding: 10px 28px;
@@ -110,29 +128,30 @@ h1 {
 /* Stats bar */
 .stats-bar {
   display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 10px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 .stat {
   background: rgba(255,255,255,0.07);
   border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 10px;
-  padding: 10px 18px;
-  min-width: 100px;
+  border-radius: 8px;
+  padding: 6px 14px;
+  min-width: 80px;
   text-align: center;
   backdrop-filter: blur(8px);
   transition: background 0.2s;
 }
 .stat:hover { background: rgba(255,255,255,0.1); }
 .stat-value {
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 700;
   color: #fff;
   line-height: 1.2;
 }
 .stat-label {
-  font-size: 11px;
+  font-size: 10px;
   color: rgba(255,255,255,0.45);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -143,13 +162,14 @@ h1 {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
+  flex-shrink: 0;
 }
 .timer-display {
-  font-size: 36px;
+  font-size: 30px;
   font-weight: 700;
   color: #4fc3f7;
-  min-width: 60px;
+  min-width: 50px;
   font-variant-numeric: tabular-nums;
   text-shadow: 0 0 20px rgba(79,195,247,0.3);
 }
@@ -182,8 +202,9 @@ h1 {
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 10px;
   padding: 16px 20px;
-  margin-bottom: 14px;
-  height: 96px;
+  margin-bottom: 10px;
+  height: 80px;
+  flex-shrink: 0;
   line-height: 2;
   position: relative;
   overflow: hidden;
@@ -214,13 +235,14 @@ h1 {
 /* Input */
 .input-row {
   display: flex;
-  gap: 12px;
-  margin-bottom: 28px;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
 }
 #typing-input {
   flex: 1;
-  padding: 14px 18px;
-  font-size: 20px;
+  padding: 10px 16px;
+  font-size: 18px;
   font-family: inherit;
   background: rgba(255,255,255,0.1);
   border: 2px solid rgba(255,255,255,0.18);
@@ -247,7 +269,7 @@ h1 {
   color: rgba(255,255,255,0.3);
 }
 .btn-restart {
-  padding: 14px 24px;
+  padding: 10px 20px;
   background: #4fc3f7;
   color: #0033cc;
   border: none;
@@ -262,16 +284,17 @@ h1 {
 
 /* Keyboard */
 .keyboard {
-  margin-top: 12px;
+  margin-top: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
+  flex-shrink: 0;
 }
-.kb-row { display: flex; gap: 5px; }
+.kb-row { display: flex; gap: 4px; }
 .key {
-  width: 42px;
-  height: 38px;
+  width: 38px;
+  height: 32px;
   background: rgba(255,255,255,0.07);
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 6px;
@@ -284,8 +307,8 @@ h1 {
   transition: all 0.1s;
   user-select: none;
 }
-.key.wide { width: 64px; font-size: 11px; }
-.key.space { width: 280px; }
+.key.wide { width: 56px; font-size: 10px; }
+.key.space { width: 240px; }
 .key.active {
   background: #4fc3f7;
   color: #0033cc;
@@ -660,29 +683,42 @@ h1 {
 </div>
 
 <script>
-const WORDS = [
-  "que","não","de","um","para","com","uma","os","no","se","na","por","mais","as","dos",
-  "como","mas","foi","ao","ele","das","tem","seu","sua","ou","ser","quando","muito",
-  "há","nos","já","está","eu","também","só","pelo","pela","até","isso","ela","entre",
-  "era","depois","sem","mesmo","aos","ter","seus","quem","nas","me","esse","eles",
-  "estão","você","tinha","foram","essa","num","nem","suas","meu","minha","têm","numa",
-  "pelos","elas","havia","seja","qual","será","nós","tenho","lhe","deles","essas",
-  "esses","pelas","este","fosse","dele","tu","cada","lhes","desta","aqui","onde",
-  "casa","tempo","todos","mundo","cidade","ainda","vida","trabalho","parte","pessoas",
-  "anos","dia","bem","pode","grande","qual","sobre","então","governo","empresa","estado",
-  "país","escola","grupo","problema","sistema","social","novo","forma","caso","alguns",
-  "poder","conta","exemplo","gente","água","família","ponto","vezes","área","número",
-  "programa","processo","questão","durante","lugar","coisa","nome","mercado","nada",
-  "hora","tipo","palavra","livro","terra","homem","mulher","olhos","mão","porta",
-  "noite","senhor","história","dinheiro","filho","lado","acordo","momento","político",
-  "certo","projeto","brasil","centro","direito","melhor","ponto","menos","sempre",
-  "alguma","pessoa","nenhum","valor","final","coisa","razão","guerra","fazer","dizer",
-  "saber","poder","querer","dever","ficar","passar","pensar","chegar","levar","começar",
-  "parecer","conhecer","viver","sentir","deixar","olhar","chamar","falar","perder",
-  "acabar","partir","esperar","entrar","morrer","buscar","seguir","lembrar","encontrar",
-  "escrever","pedir","receber","tornar","abrir","ouvir","acontecer","trabalhar","criar",
-  "entender","correr","usar","ler","jogar","andar","comer","dormir","amar","brincar"
+// Frases sobre a guerra no Irã fragmentadas em palavras
+const PHRASES = [
+  "tensões no oriente médio aumentam após ataques aéreos contra alvos militares iranianos",
+  "diplomatas buscam acordo de cessar fogo enquanto conflito se intensifica na região",
+  "conselho de segurança da ONU convoca reunião de emergência sobre crise no irã",
+  "sanções econômicas contra o irã afetam exportações de petróleo e gás natural",
+  "refugiados fogem da zona de conflito em busca de abrigo nos países vizinhos",
+  "negociações nucleares entre potências mundiais e governo iraniano são retomadas",
+  "forças armadas iranianas reforçam defesas aéreas após ameaças de novos bombardeios",
+  "população civil sofre com escassez de alimentos e medicamentos durante o conflito",
+  "aliança militar ocidental debate estratégia para conter escalada bélica no golfo pérsico",
+  "organizações humanitárias pedem corredor seguro para envio de ajuda ao irã",
+  "mísseis balísticos são interceptados pelo sistema de defesa aérea da coalizão",
+  "protestos contra a guerra se espalham por capitais europeias e americanas",
+  "embargo de armas ao irã divide membros permanentes do conselho de segurança",
+  "imprensa internacional denuncia violações de direitos humanos durante o conflito",
+  "preço do barril de petróleo dispara após bloqueio do estreito de ormuz",
+  "governo iraniano acusa potências estrangeiras de interferência em assuntos internos",
+  "operações militares na fronteira iraquiana geram preocupação entre países árabes",
+  "cessar fogo temporário permite evacuação de civis de áreas bombardeadas",
+  "inteligência militar revela túneis subterrâneos usados para armazenar armamentos",
+  "comunidade internacional cobra transparência sobre programa nuclear do irã",
+  "drones de reconhecimento sobrevoam território iraniano coletando dados estratégicos",
+  "veteranos de guerra alertam sobre consequências devastadoras de invasão terrestre",
+  "parlamento iraniano aprova aumento dos gastos militares para defesa nacional",
+  "diplomacia brasileira oferece mediação para resolver impasse entre as partes em conflito",
+  "ciberataques contra infraestrutura crítica do irã são atribuídos a nações rivais",
+  "acordo de paz parece distante enquanto ambos os lados recusam concessões",
+  "jornalistas estrangeiros são expulsos do irã após reportagens sobre baixas civis",
+  "navios de guerra patrulham o golfo pérsico em demonstração de força militar",
+  "agências de espionagem monitoram movimentação de tropas na fronteira iraniana",
+  "crise humanitária no irã se agrava com chegada do inverno rigoroso"
 ];
+
+// Fragmenta frases em palavras individuais
+const WORDS = PHRASES.join(' ').split(' ');
 
 let gameState = {
   duration: 60, timeLeft: 60, started: false, finished: false, timer: null,
