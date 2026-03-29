@@ -241,6 +241,20 @@ h1 {
   text-decoration: none;
 }
 
+/* Topic indicator */
+.topic-indicator {
+  font-size: 11px;
+  color: #8a9ba8;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+  font-style: italic;
+}
+.topic-indicator strong {
+  color: #3f82ad;
+  font-style: normal;
+  font-weight: 600;
+}
+
 /* Input */
 .input-row {
   display: flex;
@@ -610,13 +624,14 @@ h1 {
   <div class="context-row">
     <span class="context-label">Contexto:</span>
     <div class="context-options">
-      <button class="context-btn active" data-context="noticias">Notícias locais</button>
-      <button class="context-btn" data-context="normas">Normas ISO</button>
+      <button class="context-btn active" data-context="normas">Normas ISO</button>
+      <button class="context-btn" data-context="noticias">Notícias locais</button>
       <button class="context-btn" data-context="ira">Guerra do Irã</button>
     </div>
   </div>
 
   <div class="word-area" id="word-area"></div>
+  <div class="topic-indicator" id="topic-indicator"></div>
 
   <div class="input-row">
     <input type="text" id="typing-input" placeholder="Comece a digitar aqui..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false">
@@ -707,7 +722,7 @@ h1 {
 </div>
 
 <script>
-let currentContext = 'noticias';
+let currentContext = 'normas';
 
 const TEXTS = {};
 
@@ -726,15 +741,20 @@ TEXTS.noticias = [
 
 TEXTS.normas = [
   "A norma ISO 9001 estabelece os requisitos para um sistema de gestão da qualidade quando uma organização precisa demonstrar sua capacidade de fornecer produtos e serviços que atendam de forma consistente aos requisitos do cliente e aos requisitos estatutários e regulamentares aplicáveis. A norma visa aumentar a satisfação do cliente por meio da aplicação eficaz do sistema.",
-  "O ciclo PDCA é a base da abordagem de processos na ISO 9001. Planejar significa estabelecer os objetivos do sistema e seus processos, bem como os recursos necessários para entregar resultados de acordo com os requisitos do cliente e com as políticas da organização. Executar significa implementar o que foi planejado. Verificar significa monitorar e medir os processos resultantes. Agir significa tomar ações para melhorar o desempenho.",
   "A ISO 14001 especifica os requisitos para um sistema de gestão ambiental que uma organização pode usar para aumentar seu desempenho ambiental. A norma é destinada ao uso por organizações que buscam gerenciar suas responsabilidades ambientais de forma sistemática, contribuindo para o pilar ambiental da sustentabilidade e prevenindo a poluição em equilíbrio com as necessidades socioeconômicas.",
-  "A análise de riscos e oportunidades é um requisito fundamental da ISO 9001 versão 2015. A organização deve determinar os riscos e oportunidades que precisam ser abordados para assegurar que o sistema de gestão da qualidade possa alcançar seus resultados pretendidos, aumentar efeitos desejáveis, prevenir ou reduzir efeitos indesejáveis e alcançar melhoria contínua nos processos.",
   "A ISO 45001 estabelece requisitos para um sistema de gestão de saúde e segurança ocupacional, fornecendo orientação para seu uso, permitindo que as organizações proporcionem locais de trabalho seguros e saudáveis, prevenindo lesões e problemas de saúde relacionados ao trabalho, além de melhorar proativamente seu desempenho em saúde e segurança ocupacional.",
-  "O contexto da organização conforme a ISO 9001 exige que a empresa determine as questões externas e internas pertinentes para seu propósito e direcionamento estratégico, que afetem sua capacidade de alcançar os resultados pretendidos de seu sistema de gestão da qualidade. A organização deve monitorar e analisar criticamente as informações sobre essas questões externas e internas periodicamente.",
   "A ISO 22000 especifica requisitos para um sistema de gestão de segurança de alimentos, abrangendo a comunicação interativa ao longo da cadeia produtiva, a gestão de sistema, os programas de pré-requisitos e os princípios de análise de perigos e pontos críticos de controle. A norma se aplica a todas as organizações na cadeia produtiva de alimentos, independentemente de tamanho ou complexidade.",
+  "A ISO 27001 estabelece requisitos para um sistema de gestão de segurança da informação, incluindo requisitos para avaliação e tratamento de riscos de segurança da informação adequados às necessidades da organização. A norma protege a confidencialidade, integridade e disponibilidade das informações por meio da aplicação de um processo de gestão de riscos.",
+  "A ISO 50001 fornece requisitos para estabelecer, implementar, manter e melhorar um sistema de gestão de energia. O objetivo é permitir que a organização siga uma abordagem sistemática para alcançar a melhoria contínua do desempenho energético, incluindo eficiência energética, uso e consumo de energia, reduzindo assim os custos operacionais e as emissões de gases de efeito estufa.",
+  "A ISO 31000 fornece diretrizes sobre gestão de riscos para organizações de qualquer tipo e tamanho. A norma descreve um processo sistemático para identificar, analisar, avaliar, tratar e monitorar riscos em todos os níveis da organização. O gerenciamento de riscos permite que a organização aumente a probabilidade de atingir seus objetivos e melhore a identificação de oportunidades e ameaças.",
+  "A ISO 37001 especifica requisitos e fornece orientação para estabelecer, implementar, manter e melhorar um sistema de gestão antissuborno. A norma aborda suborno no setor público, privado e sem fins lucrativos, incluindo suborno por parte da organização, de seu pessoal ou de parceiros de negócios que atuam em seu nome ou para seu benefício.",
+  "A ISO 17025 estabelece os requisitos gerais para a competência de laboratórios de ensaio e calibração. A norma abrange ensaios e calibrações realizados utilizando métodos normalizados, métodos não normalizados e métodos desenvolvidos pelo laboratório. A conformidade com esta norma demonstra que o laboratório opera de forma competente e é capaz de gerar resultados tecnicamente válidos.",
   "A auditoria interna conforme a ISO 19011 é um processo sistemático, independente e documentado para obter evidências objetivas e avaliá-las objetivamente, a fim de determinar a extensão na qual os critérios de auditoria são atendidos. As organizações devem conduzir auditorias internas em intervalos planejados para verificar a conformidade e a eficácia do sistema de gestão.",
-  "A liderança na ISO 9001 requer que a alta direção demonstre comprometimento com o sistema de gestão da qualidade, assegurando que a política da qualidade e os objetivos sejam estabelecidos e compatíveis com o contexto e a direção estratégica da organização. A alta direção deve promover o uso da abordagem de processo e do pensamento baseado em risco.",
-  "A ISO 27001 estabelece requisitos para um sistema de gestão de segurança da informação, incluindo requisitos para avaliação e tratamento de riscos de segurança da informação adequados às necessidades da organização. Os requisitos são genéricos e destinam-se a ser aplicáveis a todas as organizações, independentemente do tipo, tamanho ou natureza da atividade."
+  "A ISO 26000 fornece orientação sobre responsabilidade social para organizações de todos os tipos. A norma aborda sete temas centrais: governança organizacional, direitos humanos, práticas de trabalho, meio ambiente, práticas leais de operação, questões relativas ao consumidor e envolvimento e desenvolvimento da comunidade. A norma não é certificável mas serve como guia de boas práticas.",
+  "A ISO 22301 especifica requisitos para planejar, estabelecer, implementar, operar, monitorar, analisar criticamente, manter e melhorar continuamente um sistema de gestão de continuidade de negócios. A norma tem como objetivo proteger a organização contra incidentes disruptivos, reduzir sua probabilidade de ocorrência e assegurar a recuperação das operações em tempo adequado.",
+  "O ciclo PDCA é a base da abordagem de processos em todas as normas ISO de sistemas de gestão. Planejar significa estabelecer os objetivos e os recursos necessários para entregar resultados. Executar significa implementar o que foi planejado. Verificar significa monitorar e medir os processos. Agir significa tomar ações para melhorar continuamente o desempenho do sistema.",
+  "A ISO 20000 estabelece requisitos para um sistema de gestão de serviços de tecnologia da informação. A norma promove a adoção de uma abordagem de processos integrados para gerenciar serviços de TI que atendam aos requisitos do negócio e dos clientes. Ela abrange o planejamento, desenho, transição, entrega e melhoria dos serviços de tecnologia da informação.",
+  "A ISO 13485 especifica requisitos para um sistema de gestão da qualidade aplicável a organizações envolvidas no ciclo de vida de dispositivos médicos, incluindo projeto, desenvolvimento, produção, armazenamento, distribuição, instalação e assistência técnica. A norma garante que os dispositivos médicos sejam seguros e eficazes conforme seu uso pretendido."
 ];
 
 TEXTS.ira = [
@@ -750,8 +770,20 @@ TEXTS.ira = [
   "Organizações de direitos humanos denunciaram violações cometidas durante as operações militares no território iraniano. Relatórios documentaram ataques a áreas residenciais e infraestrutura civil, incluindo hospitais e escolas. As organizações pedem uma investigação independente sobre os incidentes e exigem que todas as partes envolvidas no conflito respeitem as convenções de Genebra e o direito internacional humanitário."
 ];
 
+const TOPIC_LABELS = {
+  normas: 'Sistemas de gestão e normas técnicas ISO — qualidade, meio ambiente, segurança, alimentos, energia, riscos e continuidade de negócios',
+  noticias: 'Notícias locais brasileiras — urbanismo, transporte, saúde, agricultura, economia, educação e segurança pública',
+  ira: 'Conflito geopolítico no Irã — diplomacia, sanções, refugiados, programa nuclear, petróleo e direitos humanos'
+};
+
+const topicIndicator = document.getElementById('topic-indicator');
+
+function updateTopicIndicator() {
+  topicIndicator.innerHTML = '<strong>Assunto:</strong> ' + TOPIC_LABELS[currentContext];
+}
+
 function getTextWords() {
-  const texts = TEXTS[currentContext];
+  const texts = [...TEXTS[currentContext]];
   const shuffled = texts.sort(() => Math.random() - 0.5);
   return shuffled.join(' ').split(/\s+/);
 }
@@ -955,6 +987,7 @@ function resetGame() {
   progressBar.style.width = '100%';
   input.value = ''; input.disabled = false; input.focus();
   renderWords();
+  updateTopicIndicator();
 }
 
 // Real-time typing feedback — highlight wrong input as you type
