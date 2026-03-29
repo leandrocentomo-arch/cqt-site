@@ -31,7 +31,10 @@
       "Bash(for f in clientes.html contato.html sobre.html suporte.html padroes-mercado.html implantacao-iso.html pegada-carbono.html servicos.html nrs.html produtos-inspecionamos.html esg.html blog.html inspecoes.html seguranca-alimentos.html sedex-smeta.html)",
       "Bash(do sed -i 's|img/CQT_Logo_Regular.svg|img/logo-cqt.svg|g' \"$f\")",
       "Bash(done)",
-      "Bash(git add css/style.css index.html clientes.html contato.html sobre.html suporte.html padroes-mercado.html implantacao-iso.html pegada-carbono.html servicos.html nrs.html produtos-inspecionamos.html esg.html blog.html inspecoes.html seguranca-alimentos.html sedex-smeta.html)"
+      "Bash(git add css/style.css index.html clientes.html contato.html sobre.html suporte.html padroes-mercado.html implantacao-iso.html pegada-carbono.html servicos.html nrs.html produtos-inspecionamos.html esg.html blog.html inspecoes.html seguranca-alimentos.html sedex-smeta.html)",
+      "Bash(git pull)",
+      "Bash(git add clientes.html contato.html sobre.html suporte.html padroes-mercado.html implantacao-iso.html pegada-carbono.html servicos.html nrs.html produtos-inspecionamos.html esg.html blog.html inspecoes.html seguranca-alimentos.html sedex-smeta.html)",
+      "Bash(git add index.html)"
     ]
   }
 }

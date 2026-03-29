@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Exercício de Digitação | CQT Sistemas da Qualidade</title>
+<title>Typetest M | CQT Sistemas da Qualidade</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -11,7 +11,7 @@
 html { scroll-behavior: smooth; }
 body {
   font-family: 'IBM Plex Sans Condensed', sans-serif;
-  background: linear-gradient(135deg, #0a1628 0%, #0d2847 40%, #103a6e 100%);
+  background: #0033cc;
   color: #fff;
   min-height: 100vh;
 }
@@ -171,7 +171,7 @@ h1 {
 .timer-btn:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
 .timer-btn.active {
   background: #4fc3f7;
-  color: #0a1628;
+  color: #0033cc;
   border-color: #4fc3f7;
   font-weight: 600;
 }
@@ -222,18 +222,24 @@ h1 {
   padding: 14px 18px;
   font-size: 20px;
   font-family: inherit;
-  background: rgba(255,255,255,0.08);
-  border: 2px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.18);
   border-radius: 10px;
   outline: none;
   color: #fff;
-  transition: all 0.25s;
+  caret-color: #4fc3f7;
+  letter-spacing: 0.3px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  will-change: contents;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
 }
 #typing-input::placeholder { color: rgba(255,255,255,0.3); }
 #typing-input:focus {
   border-color: #4fc3f7;
-  background: rgba(255,255,255,0.1);
-  box-shadow: 0 0 0 3px rgba(79,195,247,0.15);
+  background: rgba(255,255,255,0.13);
+  box-shadow: 0 0 0 3px rgba(79,195,247,0.12);
 }
 #typing-input:disabled {
   background: rgba(255,255,255,0.03);
@@ -243,7 +249,7 @@ h1 {
 .btn-restart {
   padding: 14px 24px;
   background: #4fc3f7;
-  color: #0a1628;
+  color: #0033cc;
   border: none;
   border-radius: 10px;
   font-family: inherit;
@@ -282,7 +288,7 @@ h1 {
 .key.space { width: 280px; }
 .key.active {
   background: #4fc3f7;
-  color: #0a1628;
+  color: #0033cc;
   border-color: #4fc3f7;
   transform: translateY(1px);
   box-shadow: 0 0 12px rgba(79,195,247,0.3);
@@ -533,7 +539,7 @@ h1 {
 
   <!-- Input -->
   <div class="input-row">
-    <input type="text" id="typing-input" placeholder="Comece a digitar aqui..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <input type="text" id="typing-input" placeholder="Comece a digitar aqui..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false">
     <button class="btn-restart" id="btn-restart">Reiniciar</button>
   </div>
 
@@ -958,16 +964,13 @@ function resetGame() {
   renderWords();
 }
 
-// Input
-input.addEventListener('input', () => {
-  if (gameState.finished) return;
-  if (!gameState.started) startTimer();
-  gameState.keystrokes++;
-});
-
+// Input — single keydown handler for zero-lag response
 input.addEventListener('keydown', (e) => {
+  if (gameState.finished) return;
+  if (!gameState.started && e.key.length === 1) startTimer();
+  if (e.key.length === 1 || e.key === 'Backspace') gameState.keystrokes++;
   highlightKey(e.key);
-  if (e.key === ' ' && !gameState.finished) {
+  if (e.key === ' ') {
     e.preventDefault();
     const typed = input.value.trim();
     if (typed === '') return;
