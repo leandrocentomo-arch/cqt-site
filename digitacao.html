@@ -11,78 +11,129 @@
 html { scroll-behavior: smooth; }
 body {
   font-family: 'IBM Plex Sans Condensed', sans-serif;
-  background: #f5f5f5;
-  color: #1a1a2e;
+  background: linear-gradient(135deg, #0a1628 0%, #0d2847 40%, #103a6e 100%);
+  color: #fff;
   min-height: 100vh;
+}
+
+/* Progress bar */
+.progress-bar-wrap {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: rgba(255,255,255,0.1);
+  z-index: 200;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4fc3f7, #81d4fa, #b3e5fc);
+  width: 100%;
+  transition: width 0.3s linear;
+  border-radius: 0 3px 3px 0;
+  box-shadow: 0 0 12px rgba(79, 195, 247, 0.5);
 }
 
 /* Header */
 .header {
-  background: #3D394A;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
   padding: 0 40px;
   height: 48px;
   display: flex;
   align-items: center;
   gap: 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 .header a {
-  color: #fff;
+  color: rgba(255,255,255,0.7);
   text-decoration: none;
   font-size: 14px;
-  opacity: 0.8;
-  transition: opacity 0.2s;
+  transition: color 0.2s;
 }
-.header a:hover { opacity: 1; }
+.header a:hover { color: #fff; }
 .header .brand {
   font-weight: 600;
   font-size: 16px;
-  opacity: 1;
+  color: #fff;
   letter-spacing: 0.5px;
 }
 
-/* Main container */
+/* Container */
 .container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 36px 20px;
 }
 
 h1 {
   font-size: 28px;
   font-weight: 600;
-  color: #0B1D33;
-  margin-bottom: 8px;
+  color: #fff;
+  margin-bottom: 6px;
 }
 .subtitle {
-  color: #6B7280;
+  color: rgba(255,255,255,0.5);
   font-size: 15px;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+.tab-btn {
+  padding: 10px 28px;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.25s;
+}
+.tab-btn:hover { color: rgba(255,255,255,0.8); }
+.tab-btn.active {
+  color: #fff;
+  font-weight: 600;
+  border-bottom-color: #4fc3f7;
+}
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
 /* Stats bar */
 .stats-bar {
   display: flex;
-  gap: 24px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
 }
 .stat {
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 12px 20px;
-  min-width: 120px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 10px 18px;
+  min-width: 100px;
   text-align: center;
+  backdrop-filter: blur(8px);
+  transition: background 0.2s;
 }
+.stat:hover { background: rgba(255,255,255,0.1); }
 .stat-value {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
-  color: #0B1D33;
+  color: #fff;
   line-height: 1.2;
 }
 .stat-label {
-  font-size: 12px;
-  color: #6B7280;
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -92,14 +143,15 @@ h1 {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 .timer-display {
   font-size: 36px;
   font-weight: 700;
-  color: #EF4545;
+  color: #4fc3f7;
   min-width: 60px;
   font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 20px rgba(79,195,247,0.3);
 }
 .timer-options {
   display: flex;
@@ -107,50 +159,55 @@ h1 {
 }
 .timer-btn {
   padding: 6px 14px;
-  border: 1px solid #ccc;
-  background: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.6);
   border-radius: 6px;
   cursor: pointer;
   font-family: inherit;
   font-size: 13px;
-  transition: all 0.15s;
+  transition: all 0.2s;
 }
-.timer-btn:hover { border-color: #0B1D33; }
+.timer-btn:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
 .timer-btn.active {
-  background: #0B1D33;
-  color: #fff;
-  border-color: #0B1D33;
+  background: #4fc3f7;
+  color: #0a1628;
+  border-color: #4fc3f7;
+  font-weight: 600;
 }
 
 /* Word display */
 .word-area {
-  background: #fff;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
   padding: 16px 20px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   height: 96px;
   line-height: 2;
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(8px);
 }
 .word-area .word {
   display: inline-block;
   font-size: 18px;
   margin-right: 8px;
-  padding: 1px 3px;
-  border-radius: 3px;
-  transition: background 0.15s;
+  padding: 1px 4px;
+  border-radius: 4px;
+  color: rgba(255,255,255,0.5);
+  transition: all 0.15s;
 }
 .word-area .word.current {
-  background: #DFDDE8;
+  background: rgba(79,195,247,0.2);
+  color: #fff;
   font-weight: 600;
 }
 .word-area .word.correct {
-  color: #16a34a;
+  color: #66bb6a;
 }
 .word-area .word.incorrect {
-  color: #EF4545;
+  color: #ef5350;
   text-decoration: line-through;
 }
 
@@ -158,216 +215,194 @@ h1 {
 .input-row {
   display: flex;
   gap: 12px;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 #typing-input {
   flex: 1;
   padding: 14px 18px;
   font-size: 20px;
   font-family: inherit;
-  border: 2px solid #0B1D33;
+  background: rgba(255,255,255,0.08);
+  border: 2px solid rgba(255,255,255,0.15);
   border-radius: 10px;
   outline: none;
-  transition: border-color 0.2s;
+  color: #fff;
+  transition: all 0.25s;
 }
+#typing-input::placeholder { color: rgba(255,255,255,0.3); }
 #typing-input:focus {
-  border-color: #B8952A;
-  box-shadow: 0 0 0 3px rgba(184, 149, 42, 0.15);
+  border-color: #4fc3f7;
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 0 0 3px rgba(79,195,247,0.15);
 }
 #typing-input:disabled {
-  background: #f0f0f0;
-  border-color: #ccc;
+  background: rgba(255,255,255,0.03);
+  border-color: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.3);
 }
 .btn-restart {
   padding: 14px 24px;
-  background: #0B1D33;
-  color: #fff;
+  background: #4fc3f7;
+  color: #0a1628;
   border: none;
   border-radius: 10px;
   font-family: inherit;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
-.btn-restart:hover { background: #152E4A; }
+.btn-restart:hover { background: #81d4fa; transform: translateY(-1px); }
 
-/* Results overlay */
-.results-overlay {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.5);
-  z-index: 100;
-  justify-content: center;
-  align-items: center;
-}
-.results-overlay.visible {
-  display: flex;
-}
-.results-card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 40px 48px;
-  text-align: center;
-  max-width: 480px;
-  width: 90%;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-}
-.results-card h2 {
-  font-size: 24px;
-  color: #0B1D33;
-  margin-bottom: 24px;
-}
-.results-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 28px;
-}
-.result-item {
-  padding: 16px;
-  background: #f5f5f5;
-  border-radius: 10px;
-}
-.result-item .value {
-  font-size: 32px;
-  font-weight: 700;
-  color: #0B1D33;
-}
-.result-item .label {
-  font-size: 13px;
-  color: #6B7280;
-}
-.result-item.highlight {
-  background: #0B1D33;
-}
-.result-item.highlight .value { color: #B8952A; }
-.result-item.highlight .label { color: #ccc; }
-
-/* Keyboard visual */
+/* Keyboard */
 .keyboard {
-  margin-top: 16px;
+  margin-top: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-}
-.kb-row {
-  display: flex;
   gap: 5px;
 }
+.kb-row { display: flex; gap: 5px; }
 .key {
   width: 42px;
-  height: 40px;
-  background: #fff;
-  border: 1px solid #d0d0d0;
+  height: 38px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 13px;
   font-weight: 500;
-  color: #333;
+  color: rgba(255,255,255,0.5);
   transition: all 0.1s;
   user-select: none;
 }
 .key.wide { width: 64px; font-size: 11px; }
 .key.space { width: 280px; }
 .key.active {
-  background: #0B1D33;
-  color: #fff;
-  border-color: #0B1D33;
+  background: #4fc3f7;
+  color: #0a1628;
+  border-color: #4fc3f7;
   transform: translateY(1px);
+  box-shadow: 0 0 12px rgba(79,195,247,0.3);
 }
 
-/* Tabs */
-.tabs {
-  display: flex;
-  gap: 0;
+/* Results overlay */
+.results-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10,22,40,0.85);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  justify-content: center;
+  align-items: center;
+}
+.results-overlay.visible { display: flex; }
+.results-card {
+  background: linear-gradient(145deg, #0d2847, #103a6e);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  padding: 40px 48px;
+  text-align: center;
+  max-width: 480px;
+  width: 90%;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+  animation: fadeIn 0.35s ease;
+}
+.results-card h2 {
+  font-size: 24px;
+  color: #fff;
+  margin-bottom: 24px;
+}
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
   margin-bottom: 28px;
-  border-bottom: 2px solid #e0e0e0;
 }
-.tab-btn {
-  padding: 10px 28px;
-  background: none;
-  border: none;
-  font-family: inherit;
-  font-size: 15px;
-  font-weight: 500;
-  color: #6B7280;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -2px;
-  transition: all 0.2s;
+.result-item {
+  padding: 16px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
 }
-.tab-btn:hover { color: #0B1D33; }
-.tab-btn.active {
-  color: #0B1D33;
-  font-weight: 600;
-  border-bottom-color: #B8952A;
+.result-item .value {
+  font-size: 30px;
+  font-weight: 700;
+  color: #fff;
 }
-.tab-content { display: none; }
-.tab-content.active { display: block; }
+.result-item .label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+}
+.result-item.highlight {
+  background: rgba(79,195,247,0.15);
+  border-color: rgba(79,195,247,0.3);
+}
+.result-item.highlight .value { color: #4fc3f7; }
+.result-item.highlight .label { color: rgba(255,255,255,0.5); }
 
 /* Dashboard */
 .dash-summary {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 14px;
   margin-bottom: 28px;
 }
 .dash-card {
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
   padding: 20px;
   text-align: center;
+  backdrop-filter: blur(8px);
+  transition: background 0.2s;
 }
+.dash-card:hover { background: rgba(255,255,255,0.09); }
 .dash-card.highlight {
-  background: #0B1D33;
+  background: rgba(79,195,247,0.12);
+  border-color: rgba(79,195,247,0.25);
 }
 .dash-card .dash-val {
   font-size: 32px;
   font-weight: 700;
-  color: #0B1D33;
+  color: #fff;
   line-height: 1.2;
 }
-.dash-card.highlight .dash-val { color: #B8952A; }
+.dash-card.highlight .dash-val { color: #4fc3f7; }
 .dash-card .dash-lbl {
-  font-size: 12px;
-  color: #6B7280;
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-top: 4px;
 }
-.dash-card.highlight .dash-lbl { color: #aaa; }
+.dash-card.highlight .dash-lbl { color: rgba(255,255,255,0.5); }
 
 .dash-section-title {
   font-size: 16px;
   font-weight: 600;
-  color: #0B1D33;
+  color: rgba(255,255,255,0.8);
   margin-bottom: 12px;
 }
 
 /* Chart */
 .chart-container {
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
   padding: 20px;
   margin-bottom: 28px;
 }
-#chart-canvas {
-  width: 100%;
-  height: 220px;
-}
+#chart-canvas { width: 100%; height: 220px; }
 
 /* History table */
 .history-table-wrap {
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
   overflow: hidden;
   margin-bottom: 16px;
 }
@@ -377,42 +412,42 @@ h1 {
   font-size: 14px;
 }
 .history-table th {
-  background: #0B1D33;
-  color: #fff;
+  background: rgba(79,195,247,0.12);
+  color: rgba(255,255,255,0.7);
   padding: 10px 14px;
   text-align: left;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 .history-table td {
   padding: 10px 14px;
-  border-bottom: 1px solid #f0f0f0;
-  color: #333;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.7);
 }
 .history-table tr:last-child td { border-bottom: none; }
-.history-table tr:hover td { background: #f9f9f9; }
-.history-table .best-mark { color: #B8952A; font-weight: 700; }
+.history-table tr:hover td { background: rgba(255,255,255,0.04); }
+.history-table .best-mark { color: #4fc3f7; font-weight: 700; }
 
 .btn-clear {
   padding: 10px 20px;
-  background: #EF4545;
-  color: #fff;
-  border: none;
+  background: rgba(239,83,80,0.2);
+  color: #ef5350;
+  border: 1px solid rgba(239,83,80,0.3);
   border-radius: 8px;
   font-family: inherit;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
-.btn-clear:hover { background: #d63030; }
+.btn-clear:hover { background: rgba(239,83,80,0.3); }
 
 .dash-empty {
   text-align: center;
   padding: 60px 20px;
-  color: #6B7280;
+  color: rgba(255,255,255,0.4);
   font-size: 15px;
 }
 
@@ -421,10 +456,10 @@ h1 {
   .container { padding: 20px 12px; }
   h1 { font-size: 22px; }
   .stats-bar { gap: 8px; }
-  .stat { min-width: 80px; padding: 8px 12px; }
-  .stat-value { font-size: 22px; }
-  .word-area { padding: 16px; }
-  .word-area .word { font-size: 17px; }
+  .stat { min-width: 70px; padding: 8px 10px; }
+  .stat-value { font-size: 20px; }
+  .word-area { padding: 14px; }
+  .word-area .word { font-size: 16px; }
   #typing-input { font-size: 17px; padding: 12px; }
   .keyboard { display: none; }
   .results-card { padding: 28px 20px; }
@@ -435,6 +470,11 @@ h1 {
 </style>
 </head>
 <body>
+
+<!-- Progress bar -->
+<div class="progress-bar-wrap">
+  <div class="progress-bar-fill" id="progress-bar"></div>
+</div>
 
 <div class="header">
   <a href="index.html" class="brand">CQT</a>
@@ -614,7 +654,6 @@ h1 {
 </div>
 
 <script>
-// Portuguese word list (200 common words)
 const WORDS = [
   "que","não","de","um","para","com","uma","os","no","se","na","por","mais","as","dos",
   "como","mas","foi","ao","ele","das","tem","seu","sua","ou","ser","quando","muito",
@@ -640,17 +679,8 @@ const WORDS = [
 ];
 
 let gameState = {
-  duration: 60,
-  timeLeft: 60,
-  started: false,
-  finished: false,
-  timer: null,
-  words: [],
-  currentIndex: 0,
-  correctCount: 0,
-  wrongCount: 0,
-  keystrokes: 0,
-  correctChars: 0
+  duration: 60, timeLeft: 60, started: false, finished: false, timer: null,
+  words: [], currentIndex: 0, correctCount: 0, wrongCount: 0, keystrokes: 0, correctChars: 0
 };
 
 const wordArea = document.getElementById('word-area');
@@ -663,6 +693,7 @@ const correctDisplay = document.getElementById('correct-count');
 const wrongDisplay = document.getElementById('wrong-count');
 const overlay = document.getElementById('results-overlay');
 const keyboard = document.getElementById('keyboard');
+const progressBar = document.getElementById('progress-bar');
 
 function shuffle(arr) {
   const a = [...arr];
@@ -675,9 +706,7 @@ function shuffle(arr) {
 
 function generateWords(count = 100) {
   let result = [];
-  while (result.length < count) {
-    result = result.concat(shuffle(WORDS));
-  }
+  while (result.length < count) result = result.concat(shuffle(WORDS));
   return result.slice(0, count);
 }
 
@@ -704,6 +733,11 @@ function scrollToCurrentWord() {
   }
 }
 
+function updateProgressBar() {
+  const pct = (gameState.timeLeft / gameState.duration) * 100;
+  progressBar.style.width = pct + '%';
+}
+
 function startTimer() {
   if (gameState.started) return;
   gameState.started = true;
@@ -711,20 +745,17 @@ function startTimer() {
   gameState.timer = setInterval(() => {
     gameState.timeLeft--;
     timerDisplay.textContent = gameState.timeLeft;
+    updateProgressBar();
     updateStats();
-    if (gameState.timeLeft <= 0) {
-      endGame();
-    }
+    if (gameState.timeLeft <= 0) endGame();
   }, 1000);
 }
 
 function updateStats() {
-  const elapsed = (Date.now() - gameState.startTime) / 1000 / 60; // minutes
+  const elapsed = (Date.now() - gameState.startTime) / 1000 / 60;
   if (elapsed > 0) {
-    const wpm = Math.round(gameState.correctCount / elapsed);
-    const cpm = Math.round(gameState.correctChars / elapsed);
-    wpmDisplay.textContent = wpm;
-    cpmDisplay.textContent = cpm;
+    wpmDisplay.textContent = Math.round(gameState.correctCount / elapsed);
+    cpmDisplay.textContent = Math.round(gameState.correctChars / elapsed);
   }
   const total = gameState.correctCount + gameState.wrongCount;
   const acc = total > 0 ? Math.round((gameState.correctCount / total) * 100) : 100;
@@ -752,24 +783,17 @@ function endGame() {
   document.getElementById('r-keystrokes').textContent = gameState.keystrokes;
 
   overlay.classList.add('visible');
-
-  // Save result to localStorage
   saveResult(wpm, cpm, acc, gameState.correctCount, gameState.wrongCount, gameState.keystrokes, gameState.duration);
 }
 
-// === HISTORY / LOCALSTORAGE ===
+// === HISTORY ===
 function getHistory() {
-  try {
-    return JSON.parse(localStorage.getItem('typing-history') || '[]');
-  } catch { return []; }
+  try { return JSON.parse(localStorage.getItem('typing-history') || '[]'); } catch { return []; }
 }
 
 function saveResult(wpm, cpm, accuracy, correct, wrong, keystrokes, duration) {
   const history = getHistory();
-  history.push({
-    date: new Date().toISOString(),
-    wpm, cpm, accuracy, correct, wrong, keystrokes, duration
-  });
+  history.push({ date: new Date().toISOString(), wpm, cpm, accuracy, correct, wrong, keystrokes, duration });
   if (history.length > 100) history.splice(0, history.length - 100);
   localStorage.setItem('typing-history', JSON.stringify(history));
 }
@@ -803,7 +827,6 @@ function renderDashboard() {
   document.querySelector('.history-table-wrap').style.display = '';
   document.querySelectorAll('.dash-section-title').forEach(el => el.style.display = '');
 
-  // Summary cards
   const wpms = history.map(h => h.wpm);
   const accs = history.map(h => h.accuracy);
   const bestWpm = Math.max(...wpms);
@@ -815,28 +838,16 @@ function renderDashboard() {
   document.getElementById('d-avg-acc').textContent = avgAcc + '%';
   document.getElementById('d-total').textContent = history.length;
 
-  // Table (most recent first, last 20)
   const recent = history.slice(-20).reverse();
-  const globalBest = bestWpm;
   tbody.innerHTML = recent.map((h, i) => {
     const idx = history.length - i;
     const d = new Date(h.date);
     const dateStr = d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
     const durLabel = h.duration >= 60 ? (h.duration / 60) + 'min' : h.duration + 's';
-    const isBest = h.wpm === globalBest ? ' class="best-mark"' : '';
-    return `<tr>
-      <td>${idx}</td>
-      <td>${dateStr}</td>
-      <td>${durLabel}</td>
-      <td${isBest}>${h.wpm}</td>
-      <td>${h.cpm}</td>
-      <td>${h.accuracy}%</td>
-      <td>${h.correct}</td>
-      <td>${h.wrong}</td>
-    </tr>`;
+    const isBest = h.wpm === bestWpm ? ' class="best-mark"' : '';
+    return `<tr><td>${idx}</td><td>${dateStr}</td><td>${durLabel}</td><td${isBest}>${h.wpm}</td><td>${h.cpm}</td><td>${h.accuracy}%</td><td>${h.correct}</td><td>${h.wrong}</td></tr>`;
   }).join('');
 
-  // Chart
   drawChart(history);
 }
 
@@ -848,13 +859,11 @@ function drawChart(history) {
   canvas.width = rect.width * dpr;
   canvas.height = rect.height * dpr;
   ctx.scale(dpr, dpr);
-  const W = rect.width;
-  const H = rect.height;
-
+  const W = rect.width, H = rect.height;
   ctx.clearRect(0, 0, W, H);
 
   if (history.length < 2) {
-    ctx.fillStyle = '#6B7280';
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
     ctx.font = '14px IBM Plex Sans Condensed';
     ctx.textAlign = 'center';
     ctx.fillText('Complete mais testes para ver o gráfico', W / 2, H / 2);
@@ -864,65 +873,66 @@ function drawChart(history) {
   const wpms = history.map(h => h.wpm);
   const maxWpm = Math.max(...wpms, 10);
   const padL = 44, padR = 16, padT = 16, padB = 32;
-  const chartW = W - padL - padR;
-  const chartH = H - padT - padB;
+  const chartW = W - padL - padR, chartH = H - padT - padB;
 
-  // Grid lines
-  const gridLines = 5;
-  ctx.strokeStyle = '#eee';
+  // Grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.06)';
   ctx.lineWidth = 1;
-  ctx.fillStyle = '#999';
+  ctx.fillStyle = 'rgba(255,255,255,0.35)';
   ctx.font = '11px IBM Plex Sans Condensed';
   ctx.textAlign = 'right';
-  for (let i = 0; i <= gridLines; i++) {
-    const y = padT + (chartH / gridLines) * i;
-    const val = Math.round(maxWpm - (maxWpm / gridLines) * i);
-    ctx.beginPath();
-    ctx.moveTo(padL, y);
-    ctx.lineTo(W - padR, y);
-    ctx.stroke();
-    ctx.fillText(val, padL - 8, y + 4);
+  for (let i = 0; i <= 5; i++) {
+    const y = padT + (chartH / 5) * i;
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke();
+    ctx.fillText(Math.round(maxWpm - (maxWpm / 5) * i), padL - 8, y + 4);
   }
-
-  // X axis labels
   ctx.textAlign = 'center';
-  ctx.fillStyle = '#999';
   const step = Math.max(1, Math.floor(wpms.length / 8));
   for (let i = 0; i < wpms.length; i += step) {
     const x = padL + (i / (wpms.length - 1)) * chartW;
     ctx.fillText('#' + (i + 1), x, H - 8);
   }
 
+  // Area fill
+  ctx.beginPath();
+  wpms.forEach((v, i) => {
+    const x = padL + (i / (wpms.length - 1)) * chartW;
+    const y = padT + chartH - (v / maxWpm) * chartH;
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  });
+  ctx.lineTo(padL + chartW, padT + chartH);
+  ctx.lineTo(padL, padT + chartH);
+  ctx.closePath();
+  const grad = ctx.createLinearGradient(0, padT, 0, padT + chartH);
+  grad.addColorStop(0, 'rgba(79,195,247,0.2)');
+  grad.addColorStop(1, 'rgba(79,195,247,0.02)');
+  ctx.fillStyle = grad;
+  ctx.fill();
+
   // Line
   ctx.beginPath();
-  ctx.strokeStyle = '#0B1D33';
-  ctx.lineWidth = 2;
+  ctx.strokeStyle = '#4fc3f7';
+  ctx.lineWidth = 2.5;
   ctx.lineJoin = 'round';
   wpms.forEach((v, i) => {
     const x = padL + (i / (wpms.length - 1)) * chartW;
     const y = padT + chartH - (v / maxWpm) * chartH;
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
   });
   ctx.stroke();
 
-  // Fill area
-  const lastX = padL + chartW;
-  const firstX = padL;
-  ctx.lineTo(lastX, padT + chartH);
-  ctx.lineTo(firstX, padT + chartH);
-  ctx.closePath();
-  ctx.fillStyle = 'rgba(11, 29, 51, 0.06)';
-  ctx.fill();
-
   // Dots
+  const best = Math.max(...wpms);
   wpms.forEach((v, i) => {
     const x = padL + (i / (wpms.length - 1)) * chartW;
     const y = padT + chartH - (v / maxWpm) * chartH;
-    ctx.beginPath();
-    ctx.arc(x, y, 4, 0, Math.PI * 2);
-    ctx.fillStyle = v === Math.max(...wpms) ? '#B8952A' : '#0B1D33';
+    ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2);
+    ctx.fillStyle = v === best ? '#fff' : '#4fc3f7';
     ctx.fill();
+    if (v === best) {
+      ctx.beginPath(); ctx.arc(x, y, 7, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(79,195,247,0.5)'; ctx.lineWidth = 2; ctx.stroke();
+    }
   });
 }
 
@@ -930,17 +940,10 @@ function resetGame() {
   clearInterval(gameState.timer);
   overlay.classList.remove('visible');
   gameState = {
-    duration: gameState.duration,
-    timeLeft: gameState.duration,
-    started: false,
-    finished: false,
-    timer: null,
-    words: generateWords(100),
-    currentIndex: 0,
-    correctCount: 0,
-    wrongCount: 0,
-    keystrokes: 0,
-    correctChars: 0
+    duration: gameState.duration, timeLeft: gameState.duration,
+    started: false, finished: false, timer: null,
+    words: generateWords(100), currentIndex: 0,
+    correctCount: 0, wrongCount: 0, keystrokes: 0, correctChars: 0
   };
   timerDisplay.textContent = gameState.timeLeft;
   wpmDisplay.textContent = '0';
@@ -948,13 +951,14 @@ function resetGame() {
   accuracyDisplay.textContent = '100%';
   correctDisplay.textContent = '0';
   wrongDisplay.textContent = '0';
+  progressBar.style.width = '100%';
   input.value = '';
   input.disabled = false;
   input.focus();
   renderWords();
 }
 
-// Input handling
+// Input
 input.addEventListener('input', () => {
   if (gameState.finished) return;
   if (!gameState.started) startTimer();
@@ -962,17 +966,13 @@ input.addEventListener('input', () => {
 });
 
 input.addEventListener('keydown', (e) => {
-  // Highlight keyboard
   highlightKey(e.key);
-
   if (e.key === ' ' && !gameState.finished) {
     e.preventDefault();
     const typed = input.value.trim();
     if (typed === '') return;
-
     const target = gameState.words[gameState.currentIndex];
     const wordEl = wordArea.querySelector(`.word[data-index="${gameState.currentIndex}"]`);
-
     if (typed === target) {
       gameState.correctCount++;
       gameState.correctChars += target.length;
@@ -981,38 +981,27 @@ input.addEventListener('keydown', (e) => {
       gameState.wrongCount++;
       wordEl.classList.add('incorrect');
     }
-
     wordEl.classList.remove('current');
     gameState.currentIndex++;
-
     if (gameState.currentIndex < gameState.words.length) {
       const next = wordArea.querySelector(`.word[data-index="${gameState.currentIndex}"]`);
       if (next) next.classList.add('current');
     }
-
     input.value = '';
     updateStats();
     scrollToCurrentWord();
   }
 });
 
-// Keyboard highlighting
 function highlightKey(key) {
   const keys = keyboard.querySelectorAll('.key');
   keys.forEach(k => k.classList.remove('active'));
-
   let label = key.toUpperCase();
   if (key === ' ') label = 'Espaço';
   if (key === 'Backspace') label = '⌫';
   if (key === 'Shift') label = 'Shift';
-
-  keys.forEach(k => {
-    if (k.textContent === label) k.classList.add('active');
-  });
-
-  setTimeout(() => {
-    keys.forEach(k => k.classList.remove('active'));
-  }, 150);
+  keys.forEach(k => { if (k.textContent === label) k.classList.add('active'); });
+  setTimeout(() => keys.forEach(k => k.classList.remove('active')), 150);
 }
 
 // Timer buttons
@@ -1023,15 +1012,6 @@ document.querySelectorAll('.timer-btn').forEach(btn => {
     gameState.duration = parseInt(btn.dataset.time);
     resetGame();
   });
-});
-
-// Restart buttons
-document.getElementById('btn-restart').addEventListener('click', resetGame);
-document.getElementById('btn-restart-modal').addEventListener('click', resetGame);
-
-// Close overlay on outside click
-overlay.addEventListener('click', (e) => {
-  if (e.target === overlay) resetGame();
 });
 
 // Tabs
@@ -1046,12 +1026,13 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// Clear history
+// Restart & clear
+document.getElementById('btn-restart').addEventListener('click', resetGame);
+document.getElementById('btn-restart-modal').addEventListener('click', resetGame);
 document.getElementById('btn-clear').addEventListener('click', () => {
-  if (confirm('Tem certeza que deseja apagar todo o histórico?')) {
-    clearHistory();
-  }
+  if (confirm('Tem certeza que deseja apagar todo o histórico?')) clearHistory();
 });
+overlay.addEventListener('click', (e) => { if (e.target === overlay) resetGame(); });
 
 // Init
 resetGame();
