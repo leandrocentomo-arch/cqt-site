@@ -281,6 +281,141 @@ h1 {
   transform: translateY(1px);
 }
 
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 28px;
+  border-bottom: 2px solid #e0e0e0;
+}
+.tab-btn {
+  padding: 10px 28px;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: #6B7280;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+}
+.tab-btn:hover { color: #0B1D33; }
+.tab-btn.active {
+  color: #0B1D33;
+  font-weight: 600;
+  border-bottom-color: #B8952A;
+}
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Dashboard */
+.dash-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.dash-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+.dash-card.highlight {
+  background: #0B1D33;
+}
+.dash-card .dash-val {
+  font-size: 32px;
+  font-weight: 700;
+  color: #0B1D33;
+  line-height: 1.2;
+}
+.dash-card.highlight .dash-val { color: #B8952A; }
+.dash-card .dash-lbl {
+  font-size: 12px;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+.dash-card.highlight .dash-lbl { color: #aaa; }
+
+.dash-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0B1D33;
+  margin-bottom: 12px;
+}
+
+/* Chart */
+.chart-container {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 28px;
+}
+#chart-canvas {
+  width: 100%;
+  height: 220px;
+}
+
+/* History table */
+.history-table-wrap {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.history-table th {
+  background: #0B1D33;
+  color: #fff;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.history-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+}
+.history-table tr:last-child td { border-bottom: none; }
+.history-table tr:hover td { background: #f9f9f9; }
+.history-table .best-mark { color: #B8952A; font-weight: 700; }
+
+.btn-clear {
+  padding: 10px 20px;
+  background: #EF4545;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-clear:hover { background: #d63030; }
+
+.dash-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6B7280;
+  font-size: 15px;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   .container { padding: 20px 12px; }
@@ -293,6 +428,9 @@ h1 {
   #typing-input { font-size: 17px; padding: 12px; }
   .keyboard { display: none; }
   .results-card { padding: 28px 20px; }
+  .dash-summary { grid-template-columns: 1fr 1fr; }
+  .history-table { font-size: 12px; }
+  .history-table th, .history-table td { padding: 8px 10px; }
 }
 </style>
 </head>
@@ -306,6 +444,15 @@ h1 {
 <div class="container">
   <h1>Exercício de Digitação</h1>
   <p class="subtitle">Teste sua velocidade de digitação em português. Comece a digitar para iniciar o cronômetro.</p>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="test">Teste</button>
+    <button class="tab-btn" data-tab="dashboard">Dashboard</button>
+  </div>
+
+  <!-- TAB: Test -->
+  <div class="tab-content active" id="tab-test">
 
   <!-- Timer -->
   <div class="timer-bar">
@@ -375,6 +522,61 @@ h1 {
       <div class="key space">Espaço</div>
     </div>
   </div>
+
+  </div><!-- /tab-test -->
+
+  <!-- TAB: Dashboard -->
+  <div class="tab-content" id="tab-dashboard">
+    <div id="dash-content">
+      <div class="dash-summary">
+        <div class="dash-card highlight">
+          <div class="dash-val" id="d-best-wpm">—</div>
+          <div class="dash-lbl">Melhor PPM</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-val" id="d-avg-wpm">—</div>
+          <div class="dash-lbl">Média PPM</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-val" id="d-avg-acc">—</div>
+          <div class="dash-lbl">Média Precisão</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-val" id="d-total">0</div>
+          <div class="dash-lbl">Total de Testes</div>
+        </div>
+      </div>
+
+      <h3 class="dash-section-title">Evolução PPM</h3>
+      <div class="chart-container">
+        <canvas id="chart-canvas"></canvas>
+      </div>
+
+      <h3 class="dash-section-title">Histórico</h3>
+      <div class="history-table-wrap">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Data</th>
+              <th>Duração</th>
+              <th>PPM</th>
+              <th>CPM</th>
+              <th>Precisão</th>
+              <th>Corretas</th>
+              <th>Erros</th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody"></tbody>
+        </table>
+      </div>
+      <div id="dash-empty" class="dash-empty" style="display:none;">
+        Nenhum resultado ainda. Complete um teste para ver seu dashboard.
+      </div>
+      <button class="btn-clear" id="btn-clear" style="display:none;">Limpar histórico</button>
+    </div>
+  </div><!-- /tab-dashboard -->
+
 </div>
 
 <!-- Results -->
@@ -550,6 +752,178 @@ function endGame() {
   document.getElementById('r-keystrokes').textContent = gameState.keystrokes;
 
   overlay.classList.add('visible');
+
+  // Save result to localStorage
+  saveResult(wpm, cpm, acc, gameState.correctCount, gameState.wrongCount, gameState.keystrokes, gameState.duration);
+}
+
+// === HISTORY / LOCALSTORAGE ===
+function getHistory() {
+  try {
+    return JSON.parse(localStorage.getItem('typing-history') || '[]');
+  } catch { return []; }
+}
+
+function saveResult(wpm, cpm, accuracy, correct, wrong, keystrokes, duration) {
+  const history = getHistory();
+  history.push({
+    date: new Date().toISOString(),
+    wpm, cpm, accuracy, correct, wrong, keystrokes, duration
+  });
+  if (history.length > 100) history.splice(0, history.length - 100);
+  localStorage.setItem('typing-history', JSON.stringify(history));
+}
+
+function clearHistory() {
+  localStorage.removeItem('typing-history');
+  renderDashboard();
+}
+
+// === DASHBOARD ===
+function renderDashboard() {
+  const history = getHistory();
+  const tbody = document.getElementById('history-tbody');
+  const emptyMsg = document.getElementById('dash-empty');
+  const clearBtn = document.getElementById('btn-clear');
+
+  if (history.length === 0) {
+    emptyMsg.style.display = 'block';
+    clearBtn.style.display = 'none';
+    document.querySelector('.dash-summary').style.display = 'none';
+    document.querySelector('.chart-container').style.display = 'none';
+    document.querySelector('.history-table-wrap').style.display = 'none';
+    document.querySelectorAll('.dash-section-title').forEach(el => el.style.display = 'none');
+    return;
+  }
+
+  emptyMsg.style.display = 'none';
+  clearBtn.style.display = 'inline-block';
+  document.querySelector('.dash-summary').style.display = '';
+  document.querySelector('.chart-container').style.display = '';
+  document.querySelector('.history-table-wrap').style.display = '';
+  document.querySelectorAll('.dash-section-title').forEach(el => el.style.display = '');
+
+  // Summary cards
+  const wpms = history.map(h => h.wpm);
+  const accs = history.map(h => h.accuracy);
+  const bestWpm = Math.max(...wpms);
+  const avgWpm = Math.round(wpms.reduce((a, b) => a + b, 0) / wpms.length);
+  const avgAcc = Math.round(accs.reduce((a, b) => a + b, 0) / accs.length);
+
+  document.getElementById('d-best-wpm').textContent = bestWpm;
+  document.getElementById('d-avg-wpm').textContent = avgWpm;
+  document.getElementById('d-avg-acc').textContent = avgAcc + '%';
+  document.getElementById('d-total').textContent = history.length;
+
+  // Table (most recent first, last 20)
+  const recent = history.slice(-20).reverse();
+  const globalBest = bestWpm;
+  tbody.innerHTML = recent.map((h, i) => {
+    const idx = history.length - i;
+    const d = new Date(h.date);
+    const dateStr = d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+    const durLabel = h.duration >= 60 ? (h.duration / 60) + 'min' : h.duration + 's';
+    const isBest = h.wpm === globalBest ? ' class="best-mark"' : '';
+    return `<tr>
+      <td>${idx}</td>
+      <td>${dateStr}</td>
+      <td>${durLabel}</td>
+      <td${isBest}>${h.wpm}</td>
+      <td>${h.cpm}</td>
+      <td>${h.accuracy}%</td>
+      <td>${h.correct}</td>
+      <td>${h.wrong}</td>
+    </tr>`;
+  }).join('');
+
+  // Chart
+  drawChart(history);
+}
+
+function drawChart(history) {
+  const canvas = document.getElementById('chart-canvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.scale(dpr, dpr);
+  const W = rect.width;
+  const H = rect.height;
+
+  ctx.clearRect(0, 0, W, H);
+
+  if (history.length < 2) {
+    ctx.fillStyle = '#6B7280';
+    ctx.font = '14px IBM Plex Sans Condensed';
+    ctx.textAlign = 'center';
+    ctx.fillText('Complete mais testes para ver o gráfico', W / 2, H / 2);
+    return;
+  }
+
+  const wpms = history.map(h => h.wpm);
+  const maxWpm = Math.max(...wpms, 10);
+  const padL = 44, padR = 16, padT = 16, padB = 32;
+  const chartW = W - padL - padR;
+  const chartH = H - padT - padB;
+
+  // Grid lines
+  const gridLines = 5;
+  ctx.strokeStyle = '#eee';
+  ctx.lineWidth = 1;
+  ctx.fillStyle = '#999';
+  ctx.font = '11px IBM Plex Sans Condensed';
+  ctx.textAlign = 'right';
+  for (let i = 0; i <= gridLines; i++) {
+    const y = padT + (chartH / gridLines) * i;
+    const val = Math.round(maxWpm - (maxWpm / gridLines) * i);
+    ctx.beginPath();
+    ctx.moveTo(padL, y);
+    ctx.lineTo(W - padR, y);
+    ctx.stroke();
+    ctx.fillText(val, padL - 8, y + 4);
+  }
+
+  // X axis labels
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#999';
+  const step = Math.max(1, Math.floor(wpms.length / 8));
+  for (let i = 0; i < wpms.length; i += step) {
+    const x = padL + (i / (wpms.length - 1)) * chartW;
+    ctx.fillText('#' + (i + 1), x, H - 8);
+  }
+
+  // Line
+  ctx.beginPath();
+  ctx.strokeStyle = '#0B1D33';
+  ctx.lineWidth = 2;
+  ctx.lineJoin = 'round';
+  wpms.forEach((v, i) => {
+    const x = padL + (i / (wpms.length - 1)) * chartW;
+    const y = padT + chartH - (v / maxWpm) * chartH;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // Fill area
+  const lastX = padL + chartW;
+  const firstX = padL;
+  ctx.lineTo(lastX, padT + chartH);
+  ctx.lineTo(firstX, padT + chartH);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(11, 29, 51, 0.06)';
+  ctx.fill();
+
+  // Dots
+  wpms.forEach((v, i) => {
+    const x = padL + (i / (wpms.length - 1)) * chartW;
+    const y = padT + chartH - (v / maxWpm) * chartH;
+    ctx.beginPath();
+    ctx.arc(x, y, 4, 0, Math.PI * 2);
+    ctx.fillStyle = v === Math.max(...wpms) ? '#B8952A' : '#0B1D33';
+    ctx.fill();
+  });
 }
 
 function resetGame() {
@@ -658,6 +1032,25 @@ document.getElementById('btn-restart-modal').addEventListener('click', resetGame
 // Close overlay on outside click
 overlay.addEventListener('click', (e) => {
   if (e.target === overlay) resetGame();
+});
+
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    if (btn.dataset.tab === 'dashboard') renderDashboard();
+    if (btn.dataset.tab === 'test') input.focus();
+  });
+});
+
+// Clear history
+document.getElementById('btn-clear').addEventListener('click', () => {
+  if (confirm('Tem certeza que deseja apagar todo o histórico?')) {
+    clearHistory();
+  }
 });
 
 // Init
