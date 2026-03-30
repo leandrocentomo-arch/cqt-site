@@ -628,7 +628,8 @@ h1 {
   <div class="context-row">
     <span class="context-label">Contexto:</span>
     <div class="context-options">
-      <button class="context-btn active" data-context="normas">Normas ISO</button>
+      <button class="context-btn active" data-context="palavras">Palavras</button>
+      <button class="context-btn" data-context="normas">Normas ISO</button>
       <button class="context-btn" data-context="noticias">Notícias locais</button>
       <button class="context-btn" data-context="ira">Guerra do Irã</button>
     </div>
@@ -726,9 +727,34 @@ h1 {
 </div>
 
 <script>
-let currentContext = 'normas';
+let currentContext = 'palavras';
 
 const TEXTS = {};
+
+// 200 palavras comuns em português (estilo 10fastfingers)
+const RANDOM_WORDS = [
+  "que","não","de","um","para","com","uma","os","no","se","na","por","mais","as","dos",
+  "como","mas","foi","ao","ele","das","tem","seu","sua","ou","ser","quando","muito",
+  "há","nos","já","está","eu","também","só","pelo","pela","até","isso","ela","entre",
+  "era","depois","sem","mesmo","aos","ter","seus","quem","nas","me","esse","eles",
+  "estão","você","tinha","foram","essa","num","nem","suas","meu","minha","têm","numa",
+  "pelos","elas","havia","seja","qual","será","nós","tenho","lhe","deles","essas",
+  "esses","pelas","este","fosse","dele","tu","cada","lhes","desta","aqui","onde",
+  "casa","tempo","todos","mundo","cidade","ainda","vida","trabalho","parte","pessoas",
+  "anos","dia","bem","pode","grande","sobre","então","governo","empresa","estado",
+  "país","escola","grupo","problema","sistema","social","novo","forma","caso","alguns",
+  "poder","conta","exemplo","gente","água","família","ponto","vezes","área","número",
+  "programa","processo","questão","durante","lugar","coisa","nome","mercado","nada",
+  "hora","tipo","palavra","livro","terra","homem","mulher","olhos","mão","porta",
+  "noite","senhor","história","dinheiro","filho","lado","acordo","momento","político",
+  "certo","projeto","brasil","centro","direito","melhor","menos","sempre","alguma",
+  "pessoa","nenhum","valor","final","razão","guerra","fazer","dizer","saber","querer",
+  "dever","ficar","passar","pensar","chegar","levar","começar","parecer","conhecer",
+  "viver","sentir","deixar","olhar","chamar","falar","perder","acabar","partir",
+  "esperar","entrar","morrer","buscar","seguir","lembrar","encontrar","escrever",
+  "pedir","receber","tornar","abrir","ouvir","acontecer","trabalhar","criar",
+  "entender","correr","usar","ler","jogar","andar","comer","dormir","amar","brincar"
+];
 
 TEXTS.noticias = [
   "A Prefeitura de São Paulo anunciou nesta segunda-feira o início das obras de revitalização da região central da cidade. O projeto prevê a recuperação de calçadas, instalação de nova iluminação pública e plantio de árvores ao longo das principais avenidas. Segundo o secretário de urbanismo, as intervenções devem beneficiar mais de duzentos mil moradores e comerciantes da área nos próximos dois anos.",
@@ -775,6 +801,7 @@ TEXTS.ira = [
 ];
 
 const TOPIC_LABELS = {
+  palavras: 'Palavras comuns em português — treino de velocidade com palavras aleatórias',
   normas: 'Sistemas de gestão e normas técnicas ISO — qualidade, meio ambiente, segurança, alimentos, energia, riscos e continuidade de negócios',
   noticias: 'Notícias locais brasileiras — urbanismo, transporte, saúde, agricultura, economia, educação e segurança pública',
   ira: 'Conflito geopolítico no Irã — diplomacia, sanções, refugiados, programa nuclear, petróleo e direitos humanos'
@@ -786,7 +813,21 @@ function updateTopicIndicator() {
   topicIndicator.innerHTML = '<strong>Assunto:</strong> ' + TOPIC_LABELS[currentContext];
 }
 
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function getTextWords() {
+  if (currentContext === 'palavras') {
+    let result = [];
+    while (result.length < 150) result = result.concat(shuffle(RANDOM_WORDS));
+    return result.slice(0, 150);
+  }
   const texts = [...TEXTS[currentContext]];
   const shuffled = texts.sort(() => Math.random() - 0.5);
   return shuffled.join(' ').split(/\s+/);
