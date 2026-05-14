@@ -1,6 +1,6 @@
 {
   "_comment": "URLs por Element do QMS Playbook. Edite os valores e commit + push. O HTML em Sodexo Cards — Elements/00.-playbook-chapter-cards.html lê este arquivo no load.",
-  "01": "",
+  "01": "https://test-github-sync.example.com/01",
   "02": "",
   "03": "",
   "04": "",
