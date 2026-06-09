@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Unlisted client view — keep out of search engines -->
+    <meta name="robots" content="noindex, nofollow">
+    <title>Operational KPI Dashboard — Client View</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@500;700&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Public CDN libs (no SharePoint, no XLSX — data comes from local JSON) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+    <style>
+        html, body { margin: 0; padding: 0; }
+        body { background: #eef0f4; font-family: 'Roboto', sans-serif; }
+
+        /* Standalone sheet — centered white panel on a light backdrop */
+        #kpi-dashboard-root {
+            --primary: #1a1a1a;
+            --primary-light: #333333;
+            --accent: #1a1a1a;
+            --bg: #ffffff;
+            --card-bg: #ffffff;
+            --text: #1a1a1a;
+            --text-light: #1a1a1a;
+            --border: #d6dcef;
+            --sodexo-blue: #293b95;
+            --border-thin-blue: #d6dcef;
+            --text-muted: #555;
+            --text-faint: #888;
+            --success: #48bb78;
+            --danger: #fc8181;
+
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--bg);
+            color: var(--text);
+            padding: 10px 28px 40px;
+            box-sizing: border-box;
+            line-height: 1.5;
+            min-height: 500px;
+            border: 1px solid #e6e9f2;
+        }
+
+        #kpi-dashboard-root * { box-sizing: border-box; font-family: inherit; }
+
+        /* ====== Differential header — client edition (lockup + tonal band) ======
+           Sanctioned variant of fixers §12.4: logo lockup + faint band mark this
+           as the external client deliverable. Internal SP pages stay logo-less. */
+        #kpi-dashboard-root .ce-header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 22px;
+            padding: 20px 22px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-thin-blue);
+            border-radius: 3px;
+            background: linear-gradient(115deg, #e7ecfb 0%, #f1f4fc 42%, #ffffff 82%);
+        }
+        #kpi-dashboard-root .ce-brand {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            padding-right: 22px;
+            border-right: 1px solid #d6dcef;
+        }
+        #kpi-dashboard-root .ce-logo { display: block; height: 40px; width: auto; }
+        #kpi-dashboard-root .ce-titleblock { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+
+        #kpi-dashboard-root .dh-eyebrow {
+            font-family: 'Roboto Mono', ui-monospace, Menlo, Consolas, monospace;
+            font-size: 9.5px; font-weight: 400; letter-spacing: .18em;
+            text-transform: uppercase; color: var(--text-faint);
+            margin: 0 0 32px; text-wrap: pretty;
+        }
+        #kpi-dashboard-root .ce-titleblock h1 {
+            margin: 0 0 4px; padding: 0;
+            font-family: 'Roboto Slab', 'Roboto', Arial, sans-serif;
+            font-weight: 700; font-size: 22px; color: var(--text);
+            letter-spacing: -0.2px; line-height: 1.2; text-wrap: pretty;
+        }
+        #kpi-dashboard-root .dh-subtitle {
+            font-family: 'Roboto Mono', ui-monospace, Menlo, Consolas, monospace;
+            font-size: 10.5px; font-weight: 500; letter-spacing: .14em;
+            text-transform: uppercase; color: #7a7a7a; margin: 0 0 28px; text-wrap: pretty;
+        }
+        #kpi-dashboard-root .dh-stats { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+        #kpi-dashboard-root .dh-stat {
+            font-family: 'Roboto Mono', ui-monospace, Menlo, Consolas, monospace;
+            display: inline-flex; align-items: baseline; gap: 5px; padding: 2px 8px;
+            font-size: 9.5px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+            color: var(--text-muted); background: transparent;
+            border: 1px solid var(--border-thin-blue); border-radius: 3px;
+        }
+        #kpi-dashboard-root .dh-stat b {
+            color: var(--text); font-weight: 400; font-size: 11px; letter-spacing: 0; text-transform: none;
+        }
+
+        /* ====== Tabs — canonical folder/fichário ====== */
+        #kpi-dashboard-root .tabs-container {
+            position: relative; margin: 18px 0 30px; display: inline-flex; gap: 0;
+            width: 100%; border-bottom: 1px solid #d6dcef; padding: 0; background: transparent;
+        }
+        #kpi-dashboard-root .tabs-container::after {
+            content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 18px;
+            background: linear-gradient(to bottom, #eef0f8 0%, #ffffff 100%); pointer-events: none;
+        }
+        #kpi-dashboard-root .tab-btn {
+            flex: 0 0 auto; min-width: 180px; padding: 9px 18px 10px;
+            font-family: 'Roboto', Arial, sans-serif; font-size: 12px; font-weight: 500;
+            color: #293b95; background: #ffffff; border: 1px solid #d6dcef; border-bottom: none;
+            border-radius: 3px 3px 0 0; cursor: pointer; position: relative; overflow: hidden;
+            white-space: nowrap; margin-bottom: -1px; transition: color .15s, background .15s, border-color .15s;
+        }
+        #kpi-dashboard-root .tab-btn + .tab-btn { margin-left: -1px; }
+        #kpi-dashboard-root .tab-btn:hover { background: #f6f8fc; }
+        #kpi-dashboard-root .tab-btn.active {
+            background: #eef0f8; border-color: #d6dcef; font-weight: 600; font-size: 13px; z-index: 2;
+        }
+        #kpi-dashboard-root .tab-btn.active::after {
+            content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(41,59,149,.15) 30%, #293b95 50%, rgba(41,59,149,.15) 70%, transparent 100%);
+            background-size: 200% 100%; animation: kpiTabShimmer 1.6s linear infinite;
+        }
+        @keyframes kpiTabShimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+        @media (prefers-reduced-motion: reduce) {
+            #kpi-dashboard-root .tab-btn.active::after { animation: none; background: #293b95; }
+        }
+        #kpi-dashboard-root .tab-panel { display: none; }
+        #kpi-dashboard-root .tab-panel.active { display: block; }
+
+        /* ====== Layout rows ====== */
+        #kpi-dashboard-root .layout-top-row { display: flex; gap: 12px; align-items: stretch; margin-bottom: 12px; }
+        #kpi-dashboard-root .layout-top-left { width: 200px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; }
+        #kpi-dashboard-root .layout-top-right { flex: 1; min-width: 0; display: flex; }
+        #kpi-dashboard-root .layout-bottom-row { display: flex; gap: 12px; align-items: stretch; }
+        #kpi-dashboard-root .layout-bottom-left { width: 200px; flex-shrink: 0; display: flex; flex-direction: column; gap: 6px; }
+        #kpi-dashboard-root .layout-bottom-left > .meta-card { flex: 1 1 0px; min-height: 0; display: flex; flex-direction: column; justify-content: center; }
+        #kpi-dashboard-root .layout-bottom-left > .kpi-stack { flex: 3 1 0px; min-height: 0; }
+
+        /* ====== Cards ====== */
+        #kpi-dashboard-root .filter-card,
+        #kpi-dashboard-root .meta-card,
+        #kpi-dashboard-root .kpi-card,
+        #kpi-dashboard-root .chart-card {
+            background: var(--card-bg); border-radius: 3px; padding: 12px; box-shadow: none; border: 1px solid var(--border-thin-blue);
+        }
+        #kpi-dashboard-root .chart-card { padding: 14px 18px; flex: 1; min-width: 0; display: flex; flex-direction: column; position: relative; }
+        #kpi-dashboard-root .kpi-card { padding: 8px 12px; text-align: center; }
+        #kpi-dashboard-root .meta-card { margin-bottom: 0; }
+
+        #kpi-dashboard-root h3 {
+            font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--primary);
+            margin: 0 0 8px 0; font-weight: 700; display: flex; align-items: center; gap: 4px;
+        }
+        #kpi-dashboard-root h3::before { content: ''; display: inline-block; width: 3px; height: 14px; background: var(--accent); border-radius: 2px; }
+
+        #kpi-dashboard-root .filter-group { margin-bottom: 8px; }
+        #kpi-dashboard-root .filter-group:last-child { margin-bottom: 0; }
+        #kpi-dashboard-root .filter-group > .filter-title,
+        #kpi-dashboard-root .indicator-panel .filter-title {
+            display: block; font-size: 10px; font-weight: 600; color: var(--text-light);
+            margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        /* Radio group */
+        #kpi-dashboard-root .radio-group { display: flex; flex-direction: column; gap: 0; }
+        #kpi-dashboard-root .radio-group.scrollable { max-height: 240px; overflow-y: auto; border: none; border-radius: 4px; padding: 2px 0; }
+        #kpi-dashboard-root .radio-group.scrollable::-webkit-scrollbar { width: 5px; }
+        #kpi-dashboard-root .radio-group.scrollable::-webkit-scrollbar-track { background: transparent; }
+        #kpi-dashboard-root .radio-group.scrollable::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+        #kpi-dashboard-root .radio-option {
+            display: flex; align-items: center; gap: 5px; padding: 3px 8px; cursor: pointer;
+            font-size: 11px; color: var(--text); transition: background 0.15s; user-select: none;
+        }
+        #kpi-dashboard-root .radio-option:hover { background: #eef0f5; }
+        #kpi-dashboard-root .radio-option input[type="radio"] { display: none; }
+        #kpi-dashboard-root .radio-option .radio-circle {
+            width: 12px; height: 12px; min-width: 12px; border-radius: 50%; border: 2px solid #999;
+            display: flex; align-items: center; justify-content: center; transition: border-color 0.15s;
+        }
+        #kpi-dashboard-root .radio-option .radio-circle::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: transparent; transition: background 0.15s; }
+        #kpi-dashboard-root .radio-option input[type="radio"]:checked + .radio-circle { border-color: #293b95; }
+        #kpi-dashboard-root .radio-option input[type="radio"]:checked + .radio-circle::after { background: #293b95; }
+        #kpi-dashboard-root .radio-option .radio-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* Reload button */
+        #kpi-dashboard-root .sidebar-actions { display: flex; gap: 8px; }
+        #kpi-dashboard-root .reload-btn {
+            flex: 1; padding: 6px; height: 48px; background: var(--bg); border: 1px solid var(--border);
+            border-radius: 4px; cursor: pointer; font-family: 'Roboto', sans-serif; font-size: 11px;
+            line-height: 1.2; color: var(--text); transition: all 0.2s; display: flex;
+            align-items: center; justify-content: center; text-align: center;
+        }
+        #kpi-dashboard-root .reload-btn:hover { background: #e8ecf1; }
+
+        /* Chart card header */
+        #kpi-dashboard-root .chart-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        #kpi-dashboard-root .chart-card-header h2 {
+            font-size: 15px; font-weight: 600; color: var(--text); margin: 0;
+            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+        }
+        #kpi-dashboard-root .chart-target-info { font-size: 11px; font-weight: 400; color: #666; display: inline-flex; align-items: center; gap: 3px; }
+        #kpi-dashboard-root .chart-target-info span.diff { display: inline-flex; align-items: center; gap: 2px; font-weight: 500; }
+        #kpi-dashboard-root .chart-target-info span.diff.positive { color: #293b95; }
+        #kpi-dashboard-root .chart-target-info span.diff.negative { color: #d64550; }
+        #kpi-dashboard-root .chart-target-info span.diff.neutral { color: #718096; }
+        #kpi-dashboard-root .chart-card-header .badge {
+            background: #e8eaf6; color: var(--primary); padding: 3px 10px; border-radius: 20px;
+            font-size: 11px; font-weight: 500; white-space: nowrap;
+        }
+        #kpi-dashboard-root .measure-badge {
+            display: inline-block; background: #e8eaf6; color: var(--primary); padding: 3px 10px;
+            border-radius: 4px; font-size: 11px; font-weight: 500; margin-left: 8px;
+        }
+        #kpi-dashboard-root .chart-wrapper { flex: 1; position: relative; min-height: 360px; }
+        #kpi-dashboard-root #loading {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.95);
+            display: flex; justify-content: center; align-items: center; z-index: 20; flex-direction: column;
+            gap: 12px; color: var(--primary); font-size: 15px;
+        }
+        #kpi-dashboard-root .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Indicator panel */
+        #kpi-dashboard-root .indicator-panel {
+            flex: 1; min-width: 0; background: #ffffff; border-radius: 3px; padding: 10px 14px;
+            border: 1px solid var(--border-thin-blue); display: flex; flex-direction: column; overflow: hidden;
+        }
+        #kpi-dashboard-root .indicator-panel .radio-group.scrollable { flex: 1; max-height: none; min-height: 0; overflow-y: auto; }
+
+        /* KPI stack */
+        #kpi-dashboard-root .kpi-stack { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+        #kpi-dashboard-root .kpi-stack .kpi-card { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; text-align: left; flex: 1 1 0px; min-height: 0; }
+        #kpi-dashboard-root .kpi-stack .kpi-value { font-size: 18px; font-weight: 700; color: var(--primary); }
+        #kpi-dashboard-root .kpi-stack .kpi-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-light); margin-top: 1px; }
+
+        /* Meta card */
+        #kpi-dashboard-root .meta-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); margin-bottom: 6px; font-weight: 700; }
+        #kpi-dashboard-root .meta-value { font-size: 28px; font-weight: 700; color: var(--primary); background: transparent; padding: 4px 0 0; line-height: 1; }
+
+        /* Action table */
+        #kpi-dashboard-root .action-card { background: var(--card-bg); border: none; border-radius: 8px; padding: 0; margin-top: 24px; }
+        #kpi-dashboard-root .action-card h3 {
+            font-size: 14px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.8px;
+            margin: 0 0 14px 0; padding-bottom: 10px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;
+        }
+        #kpi-dashboard-root .action-card h3::before { content: ''; display: inline-block; width: 3px; height: 14px; background: var(--accent); border-radius: 2px; }
+        #kpi-dashboard-root .table-scroll-wrapper { max-height: 230px; overflow-y: auto; border-bottom: 1px solid var(--border); }
+        #kpi-dashboard-root .action-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 9.5px; }
+        #kpi-dashboard-root .action-table th {
+            position: sticky; top: 0; z-index: 10; background: var(--bg); color: var(--text-light); font-weight: 700;
+            font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.4px; padding: 8px 10px; text-align: left;
+            border-bottom: 1px solid var(--border); white-space: nowrap;
+        }
+        #kpi-dashboard-root .action-table td { padding: 8px 10px; color: var(--text); line-height: 1.4; font-size: 10px; border-bottom: 1px solid var(--border); vertical-align: top; height: 48px; box-sizing: border-box; }
+        #kpi-dashboard-root .action-table tr:last-child td { border-bottom: none; }
+        #kpi-dashboard-root .action-table tr:hover td { background: #e6e5e4; }
+        #kpi-dashboard-root .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; max-height: 2.8em; }
+        #kpi-dashboard-root .col-period { width: 14%; color: #999; font-weight: 700; text-transform: uppercase; }
+        #kpi-dashboard-root .col-unit { width: 12%; }
+        #kpi-dashboard-root .col-analysis { width: 44%; }
+        #kpi-dashboard-root .col-assigned { width: 12%; }
+        #kpi-dashboard-root .col-due { width: 9%; }
+        #kpi-dashboard-root .col-status { width: 9%; }
+
+        /* Tab 2 — adverse */
+        #kpi-dashboard-root .neg-header { display: flex; justify-content: space-between; align-items: flex-end; margin: 0 0 14px; padding: 0 0 12px; border-bottom: 1px solid var(--border-thin-blue); gap: 16px; }
+        #kpi-dashboard-root .neg-title { font-family: 'Roboto Slab', 'Roboto', Arial, sans-serif; font-size: 18px; font-weight: 700; color: var(--text); margin: 0; letter-spacing: -0.2px; text-wrap: pretty; }
+        #kpi-dashboard-root .neg-subtitle { font-family: 'Roboto Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10.5px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); margin-top: 6px; }
+        #kpi-dashboard-root .neg-stat { font-family: 'Roboto Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 9.5px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); padding: 4px 10px; border: 1px solid var(--border-thin-blue); border-radius: 3px; white-space: nowrap; }
+        #kpi-dashboard-root .neg-stat b { color: #d64550; font-weight: 700; font-size: 12px; letter-spacing: 0; }
+        #kpi-dashboard-root .neg-table-card { border: 1px solid var(--border-thin-blue); border-radius: 3px; overflow: hidden; }
+        #kpi-dashboard-root .neg-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 11px; }
+        #kpi-dashboard-root .neg-table th { position: sticky; top: 0; z-index: 10; background: #f3f4f6; color: var(--text-muted); font-family: 'Roboto Mono', ui-monospace, Menlo, Consolas, monospace; font-weight: 600; font-size: 9.5px; text-transform: uppercase; letter-spacing: .1em; padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border-thin-blue); white-space: nowrap; }
+        #kpi-dashboard-root .neg-table td { padding: 9px 12px; border-bottom: 1px solid var(--border-thin-blue); color: var(--text); line-height: 1.4; vertical-align: top; }
+        #kpi-dashboard-root .neg-table tr:last-child td { border-bottom: none; }
+        #kpi-dashboard-root .neg-table tr:hover td { background: #f9fafc; }
+        #kpi-dashboard-root .neg-table .ng-period { width: 9%; font-family: 'Roboto Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10px; color: var(--text); font-weight: 600; }
+        #kpi-dashboard-root .neg-table .ng-ind { font-weight: 600; color: var(--text); width: 18%; }
+        #kpi-dashboard-root .neg-table .ng-unit { width: 8%; color: var(--text-muted); }
+        #kpi-dashboard-root .neg-table .ng-result { width: 7%; font-family: 'Roboto Mono', ui-monospace, Menlo, Consolas, monospace; font-weight: 600; }
+        #kpi-dashboard-root .neg-table .ng-target { width: 7%; font-family: 'Roboto Mono', ui-monospace, Menlo, Consolas, monospace; color: var(--text-muted); }
+        #kpi-dashboard-root .neg-table .ng-gap { width: 8%; font-family: 'Roboto Mono', ui-monospace, Menlo, Consolas, monospace; color: #d64550; font-weight: 600; }
+        #kpi-dashboard-root .neg-table .ng-gap .ng-arrow { font-size: 11px; }
+        #kpi-dashboard-root .neg-table .ng-analysis { width: 22%; font-size: 10.5px; }
+        #kpi-dashboard-root .neg-table .ng-assigned { width: 9%; color: var(--text-muted); font-size: 10.5px; }
+        #kpi-dashboard-root .neg-table .ng-due { width: 8%; color: var(--text-muted); font-size: 10.5px; font-family: 'Roboto Mono', ui-monospace, Menlo, Consolas, monospace; }
+        #kpi-dashboard-root .neg-table .ng-status { width: 8%; color: var(--text-muted); font-size: 10.5px; }
+
+        /* Responsive — stack columns on narrow screens */
+        @media (max-width: 820px) {
+            #kpi-dashboard-root { padding: 10px 16px 32px; }
+            #kpi-dashboard-root .layout-top-row,
+            #kpi-dashboard-root .layout-bottom-row { flex-direction: column; }
+            #kpi-dashboard-root .layout-top-left,
+            #kpi-dashboard-root .layout-bottom-left { width: auto; }
+            #kpi-dashboard-root .layout-top-right { min-height: 220px; }
+            #kpi-dashboard-root .ce-header { flex-direction: column; align-items: flex-start; gap: 14px; }
+            #kpi-dashboard-root .ce-brand { border-right: none; padding-right: 0; border-bottom: 1px solid #d6dcef; padding-bottom: 12px; width: 100%; }
+            #kpi-dashboard-root .tab-btn { min-width: 0; flex: 1 1 0; }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="kpi-dashboard-root">
+
+        <!-- Differential header — client edition (logo lockup + tonal band) -->
+        <div class="ce-header">
+            <div class="ce-brand">
+                <img class="ce-logo" src="img/logo-sodexo.svg" alt="Sodexo">
+            </div>
+            <div class="ce-titleblock">
+                <div class="dh-eyebrow">Client Edition · Operational KPI</div>
+                <h1>Operational KPI Dashboard — APAC India</h1>
+                <div class="dh-subtitle">Version v1.2 · Client View</div>
+                <div class="dh-stats">
+                    <span class="dh-stat">Source · <b>Published snapshot</b></span>
+                    <span class="dh-stat">Updated · <b id="dh-updated">—</b></span>
+                    <span class="dh-stat">Data · <b id="data-info">Loading…</b></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-container" role="tablist">
+            <button type="button" class="tab-btn active" data-tab="overview" role="tab">Performance Overview</button>
+            <button type="button" class="tab-btn" data-tab="adverse" role="tab">Adverse Indicators</button>
+        </div>
+
+        <!-- Tab 1: Overview -->
+        <div class="tab-panel active" data-tab="overview">
+            <div class="layout-top-row">
+                <div class="layout-top-left">
+                    <div class="sidebar-actions">
+                        <button class="reload-btn" data-action="refresh" title="Reload the latest published data">&#8635;<br>Refresh</button>
+                    </div>
+                    <div class="filter-card">
+                        <h3>Filters</h3>
+                        <div class="filter-group">
+                            <span class="filter-title">Fiscal Year</span>
+                            <div id="year-options" class="radio-group"></div>
+                        </div>
+                        <div class="filter-group">
+                            <span class="filter-title">Unit</span>
+                            <div id="unit-options" class="radio-group scrollable"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-top-right">
+                    <div class="indicator-panel">
+                        <span class="filter-title">Indicators</span>
+                        <div id="indicator-options" class="radio-group scrollable"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layout-bottom-row">
+                <div class="layout-bottom-left">
+                    <div class="meta-card">
+                        <div class="meta-label" style="font-size:9px; text-transform:uppercase; letter-spacing:0.5px; font-weight:600; margin-bottom:2px;">Better Direction</div>
+                        <div class="meta-value" id="meta-direction">—</div>
+                    </div>
+                    <div class="kpi-stack">
+                        <div class="kpi-card"><div><div class="kpi-value" id="kpi-avg">—</div><div class="kpi-label">Average Result</div></div></div>
+                        <div class="kpi-card"><div><div class="kpi-value" id="kpi-max">—</div><div class="kpi-label">Maximum</div></div></div>
+                        <div class="kpi-card"><div><div class="kpi-value" id="kpi-min">—</div><div class="kpi-label">Minimum</div></div></div>
+                        <div class="kpi-card"><div><div class="kpi-value" id="kpi-points">—</div><div class="kpi-label">Data Points</div></div></div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h2>
+                            <span id="chart-title">Performance Overview</span>
+                            <span id="meta-measure" class="measure-badge">—</span>
+                            <span id="chart-target-info" class="chart-target-info" style="display: none;">
+                                - Target: <span id="target-value"></span> <span id="target-diff" class="diff"></span>
+                            </span>
+                        </h2>
+                        <span class="badge" id="chart-badge">—</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="mainChart"></canvas>
+                        <div id="loading"><div class="spinner"></div><div>Initializing...</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-card">
+                <h3>Analysis &amp; Actions</h3>
+                <div class="table-scroll-wrapper">
+                    <table class="action-table" id="action-table">
+                        <thead>
+                            <tr>
+                                <th class="col-period">Period</th>
+                                <th class="col-unit">Unit</th>
+                                <th class="col-analysis">Analysis or Action</th>
+                                <th class="col-assigned">Assigned To</th>
+                                <th class="col-due">Due Date</th>
+                                <th class="col-status">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="action-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Adverse Indicators -->
+        <div class="tab-panel" data-tab="adverse">
+            <div class="neg-header">
+                <div>
+                    <h2 class="neg-title">Adverse Indicator Results</h2>
+                    <div class="neg-subtitle" id="neg-period-info">—</div>
+                </div>
+                <span class="neg-stat"><b id="neg-count">0</b>&nbsp;rows flagged</span>
+            </div>
+
+            <div class="neg-table-card">
+                <table class="neg-table" id="adverse-table">
+                    <thead>
+                        <tr>
+                            <th class="ng-period">Period</th>
+                            <th class="ng-ind">Indicator</th>
+                            <th class="ng-unit">Unit</th>
+                            <th class="ng-result">Result</th>
+                            <th class="ng-target">Target</th>
+                            <th class="ng-gap">Gap</th>
+                            <th class="ng-analysis">Analysis or Action</th>
+                            <th class="ng-assigned">Assigned</th>
+                            <th class="ng-due">Due Date</th>
+                            <th class="ng-status">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adverse-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+    /* ============================================================
+     * OPERATIONAL KPI DASHBOARD — CLIENT VIEW (Tetra Pak only)
+     * Standalone public clone of 06-operational-kpi-dashboard-india.html.
+     * Reads the pre-filtered snapshot data/tetrapak-kpi.json (no SharePoint,
+     * no Excel). Front dimension dropped — every row is already Tetra Pak.
+     * ============================================================ */
+    (function () {
+        'use strict';
+
+        // ----- Navigation sound (tick-wood) -----
+        var __sndCtx = null, __sndMaster = null;
+        function __sndInit() {
+            if (__sndCtx) return;
+            try {
+                var AC = window.AudioContext || window.webkitAudioContext;
+                if (!AC) return;
+                __sndCtx = new AC();
+                __sndMaster = __sndCtx.createGain();
+                __sndMaster.gain.value = 0.6;
+                __sndMaster.connect(__sndCtx.destination);
+            } catch (_) { }
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', __sndInit, { once: true });
+        } else { __sndInit(); }
+        function tickWood() {
+            try {
+                if (!__sndCtx) __sndInit();
+                if (!__sndCtx) return;
+                if (__sndCtx.state === 'suspended') __sndCtx.resume();
+                var t = __sndCtx.currentTime;
+                var o = __sndCtx.createOscillator();
+                var g = __sndCtx.createGain();
+                var f = __sndCtx.createBiquadFilter();
+                f.type = 'bandpass'; f.frequency.value = 2000; f.Q.value = 8;
+                o.type = 'square'; o.frequency.setValueAtTime(2000, t);
+                o.frequency.exponentialRampToValueAtTime(900, t + 0.025);
+                g.gain.setValueAtTime(0.0001, t);
+                g.gain.exponentialRampToValueAtTime(0.45, t + 0.002);
+                g.gain.exponentialRampToValueAtTime(0.0001, t + 0.04);
+                o.connect(f).connect(g).connect(__sndMaster);
+                o.start(t); o.stop(t + 0.05);
+            } catch (_) { }
+        }
+        function attachSoundDelegation() {
+            var root = document.getElementById('kpi-dashboard-root');
+            if (!root || root.__sndAttached) return;
+            root.__sndAttached = true;
+            var SND_SEL = 'button, a, [role="button"], [role="link"], .tab-btn, .radio-option, .reload-btn, .neg-table tbody tr, .action-table tbody tr';
+            root.addEventListener('click', function (ev) {
+                var t = ev.target;
+                if (!t || !t.closest) return;
+                if (t.matches('input[type="text"], input[type="search"], textarea')) return;
+                if (t.disabled || (t.closest && t.closest('[disabled]'))) return;
+                if (t.closest(SND_SEL)) tickWood();
+            }, true);
+            root.addEventListener('keydown', function (ev) {
+                if (ev.key !== 'Enter' && ev.key !== ' ') return;
+                var t = ev.target;
+                if (t && t.closest && t.closest(SND_SEL)) tickWood();
+            }, true);
+        }
+
+        // data-action wiring (refresh button)
+        document.addEventListener('click', function (ev) {
+            var el = ev.target && ev.target.closest && ev.target.closest('[data-action]');
+            if (!el) return;
+            if (el.getAttribute('data-action') === 'refresh') { loadJsonData(); }
+        }, false);
+
+        if (window.Chart && window.ChartDataLabels) { Chart.register(window.ChartDataLabels); }
+
+        function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+        function debugLog(msg, type) { console.log('[KPI] ' + msg); }
+
+        function escapeHtml(s) {
+            return String(s == null ? '' : s)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        // ----- CONFIG -----
+        var DATA_URL = 'data/tetrapak-kpi.json';
+        var COL = {
+            YEAR: 'YEAR', INDICATOR: 'INDICATOR', RESULT: 'RESULT', TARGET: 'TARGET',
+            FY_MONTH: 'FY MONTH', MONTH: 'MONTH', FY: 'FY',
+            BETTER_DIRECTION: 'BETTER DIRECTION', MEASURE: 'MEASURE',
+            ANALYSIS: 'ANALYSIS OR ACTION', ASSIGNED: 'ASSIGNED TO',
+            DUE_DATE: 'DUE DATE', STATUS: 'STATUS', UNIT: 'UNIT', FRONT: 'FRONT'
+        };
+
+        var rawData = [];
+        var chartInstance = null;
+
+        var COLOR_GOOD = 'rgba(41, 59, 149, 0.85)';
+        var COLOR_BAD = 'rgba(176, 176, 176, 0.7)';
+
+        // Embedded sample — used only when the JSON can't be fetched (e.g. opened
+        // as a local file://). Mirrors data/tetrapak-kpi.json.
+        var SEED_PAYLOAD = {
+            generatedAt: null,
+            generatedAtLabel: 'sample — awaiting first export',
+            front: 'Tetra Pak',
+            rows: [
+                { "FY": "FY26", "FY MONTH": "M1", "MONTH": "Apr", "FRONT": "Tetra Pak", "INDICATOR": "On-Time Delivery", "UNIT": "Sample Plant", "MEASURE": "%", "BETTER DIRECTION": "Up", "RESULT": 92, "TARGET": 95, "ANALYSIS OR ACTION": "Sample — below target; carrier delays under review.", "ASSIGNED TO": "Ops Lead", "DUE DATE": "30/04/2026", "STATUS": "Open" },
+                { "FY": "FY26", "FY MONTH": "M2", "MONTH": "May", "FRONT": "Tetra Pak", "INDICATOR": "On-Time Delivery", "UNIT": "Sample Plant", "MEASURE": "%", "BETTER DIRECTION": "Up", "RESULT": 96, "TARGET": 95, "ANALYSIS OR ACTION": "", "ASSIGNED TO": "", "DUE DATE": "", "STATUS": "" },
+                { "FY": "FY26", "FY MONTH": "M3", "MONTH": "Jun", "FRONT": "Tetra Pak", "INDICATOR": "On-Time Delivery", "UNIT": "Sample Plant", "MEASURE": "%", "BETTER DIRECTION": "Up", "RESULT": 97, "TARGET": 95, "ANALYSIS OR ACTION": "", "ASSIGNED TO": "", "DUE DATE": "", "STATUS": "" },
+                { "FY": "FY26", "FY MONTH": "M4", "MONTH": "Jul", "FRONT": "Tetra Pak", "INDICATOR": "On-Time Delivery", "UNIT": "Sample Plant", "MEASURE": "%", "BETTER DIRECTION": "Up", "RESULT": 94, "TARGET": 95, "ANALYSIS OR ACTION": "Sample — slight miss; recovery plan in place.", "ASSIGNED TO": "Ops Lead", "DUE DATE": "31/07/2026", "STATUS": "In progress" },
+                { "FY": "FY26", "FY MONTH": "M1", "MONTH": "Apr", "FRONT": "Tetra Pak", "INDICATOR": "Customer Complaints", "UNIT": "Sample Plant", "MEASURE": "Number", "BETTER DIRECTION": "Down", "RESULT": 5, "TARGET": 3, "ANALYSIS OR ACTION": "Sample — above target; root-cause analysis opened.", "ASSIGNED TO": "Quality", "DUE DATE": "15/05/2026", "STATUS": "Open" },
+                { "FY": "FY26", "FY MONTH": "M2", "MONTH": "May", "FRONT": "Tetra Pak", "INDICATOR": "Customer Complaints", "UNIT": "Sample Plant", "MEASURE": "Number", "BETTER DIRECTION": "Down", "RESULT": 2, "TARGET": 3, "ANALYSIS OR ACTION": "", "ASSIGNED TO": "", "DUE DATE": "", "STATUS": "" },
+                { "FY": "FY26", "FY MONTH": "M3", "MONTH": "Jun", "FRONT": "Tetra Pak", "INDICATOR": "Customer Complaints", "UNIT": "Sample Plant", "MEASURE": "Number", "BETTER DIRECTION": "Down", "RESULT": 4, "TARGET": 3, "ANALYSIS OR ACTION": "Sample — above target; corrective action tracked.", "ASSIGNED TO": "Quality", "DUE DATE": "30/06/2026", "STATUS": "In progress" },
+                { "FY": "FY26", "FY MONTH": "M4", "MONTH": "Jul", "FRONT": "Tetra Pak", "INDICATOR": "Customer Complaints", "UNIT": "Sample Plant", "MEASURE": "Number", "BETTER DIRECTION": "Down", "RESULT": 1, "TARGET": 3, "ANALYSIS OR ACTION": "", "ASSIGNED TO": "", "DUE DATE": "", "STATUS": "" }
+            ]
+        };
+
+        // ----- INIT -----
+        function initApp() {
+            attachSoundDelegation();
+            var attempts = 0, max = 50;
+            var iv = setInterval(function () {
+                attempts++;
+                if (window.Chart && typeof window.Chart === 'function') {
+                    clearInterval(iv);
+                    if (window.ChartDataLabels && window.Chart) { try { Chart.register(window.ChartDataLabels); } catch (e) { } }
+                    initializeTabs();
+                    loadJsonData();
+                } else if (attempts >= max) {
+                    clearInterval(iv);
+                    var loadEl = document.getElementById('loading');
+                    if (loadEl) loadEl.innerHTML = '<div style="color:#b00;text-align:center;">Chart library failed to load.<br>Check your connection.</div>';
+                }
+            }, 200);
+        }
+
+        // ----- LOAD JSON -----
+        async function loadJsonData() {
+            var loadEl = document.getElementById('loading');
+            if (loadEl) { loadEl.style.display = 'flex'; loadEl.innerHTML = '<div class="spinner"></div><div>Loading data…</div>'; }
+            var payload = null, usedFallback = false;
+            if (location.protocol !== 'file:') {
+                try {
+                    var resp = await fetch(DATA_URL + '?v=' + new Date().getTime(), { cache: 'no-store' });
+                    if (resp.ok) { payload = await resp.json(); }
+                    else { debugLog('JSON HTTP ' + resp.status, 'warn'); }
+                } catch (e) { debugLog('Fetch failed: ' + e.message, 'warn'); }
+            }
+            if (!payload) { payload = SEED_PAYLOAD; usedFallback = true; }
+
+            rawData = (payload.rows || []).map(function (row) {
+                var n = {};
+                Object.keys(row).forEach(function (k) { n[k.trim()] = row[k]; });
+                return n;
+            });
+            autoDetectColumns();
+
+            var updEl = document.getElementById('dh-updated');
+            if (updEl) updEl.textContent = payload.generatedAtLabel || payload.generatedAt || '—';
+            var infoEl = document.getElementById('data-info');
+            if (infoEl) infoEl.textContent = rawData.length + ' rows' + (usedFallback ? ' (sample)' : '');
+
+            initializeFilters();
+            updateDashboard();
+            updateAdverse();
+            if (loadEl) loadEl.style.display = 'none';
+        }
+
+        function autoDetectColumns() {
+            if (!rawData.length) return;
+            Object.keys(rawData[0]).forEach(function (c) {
+                var u = c.toUpperCase();
+                if (u === 'YEAR') COL.YEAR = c;
+                if (u === 'INDICATOR') COL.INDICATOR = c;
+                if (u === 'RESULT') COL.RESULT = c;
+                if (u === 'TARGET') COL.TARGET = c;
+                if (u === 'FY MONTH' || u === 'FY_MONTH' || u === 'FYMONTH') COL.FY_MONTH = c;
+                if (u === 'MONTH') COL.MONTH = c;
+                if (u === 'FY') COL.FY = c;
+                if (u === 'BETTER DIRECTION' || u === 'BETTER_DIRECTION' || u === 'DIRECTION') COL.BETTER_DIRECTION = c;
+                if (u === 'MEASURE' || u === 'MEASUREMENT') COL.MEASURE = c;
+                if (u === 'ANALYSIS OR ACTION' || u === 'ANALYSIS' || u === 'ACTION') COL.ANALYSIS = c;
+                if (u === 'ASSIGNED TO' || u === 'ASSIGNED_TO' || u === 'ASSIGNEDTO') COL.ASSIGNED = c;
+                if (u === 'DUE DATE' || u === 'DUE_DATE' || u === 'DUEDATE') COL.DUE_DATE = c;
+                if (u === 'STATUS') COL.STATUS = c;
+                if (u === 'UNIT') COL.UNIT = c;
+                if (u === 'FRONT') COL.FRONT = c;
+            });
+        }
+
+        // ----- FILTERS -----
+        function buildRadioGroup(containerId, groupName, items, defaultIndex) {
+            var c = document.getElementById(containerId);
+            if (!c) return;
+            c.innerHTML = '';
+            if (!items.length) { c.innerHTML = '<div style="padding:5px 10px;font-size:12px;color:#999;">No data</div>'; return; }
+            items.forEach(function (item, idx) {
+                var label = document.createElement('label');
+                label.className = 'radio-option';
+                var input = document.createElement('input');
+                input.type = 'radio'; input.name = groupName; input.value = item;
+                if (idx === (defaultIndex || 0)) input.checked = true;
+                input.addEventListener('change', onAnyFilterChange);
+                var circle = document.createElement('span'); circle.className = 'radio-circle';
+                var text = document.createElement('span'); text.className = 'radio-text'; text.textContent = item;
+                label.appendChild(input); label.appendChild(circle); label.appendChild(text);
+                c.appendChild(label);
+            });
+        }
+
+        function initializeFilters() {
+            var fiscalYears = [], units = [];
+            rawData.forEach(function (r) {
+                var fy = r[COL.FY], unit = r[COL.UNIT];
+                if (fy !== undefined && fy !== null && fy !== '' && fiscalYears.indexOf(String(fy)) === -1) fiscalYears.push(String(fy));
+                if (unit !== undefined && unit !== null && unit !== '' && units.indexOf(String(unit)) === -1) units.push(String(unit));
+            });
+            fiscalYears.sort().reverse();
+            units.sort();
+            buildRadioGroup('year-options', 'filter-year', fiscalYears, 0);
+            buildRadioGroup('unit-options', 'filter-unit', units, 0);
+            buildIndicatorList();
+        }
+
+        // Single indicator list — all rows are Tetra Pak, so no Front split.
+        function buildIndicatorList() {
+            var inds = [];
+            rawData.forEach(function (r) {
+                var ind = r[COL.INDICATOR];
+                if (ind && inds.indexOf(ind) < 0) inds.push(ind);
+            });
+            inds.sort();
+            var c = document.getElementById('indicator-options');
+            if (!c) return;
+            c.innerHTML = '';
+            if (!inds.length) { c.innerHTML = '<div style="padding:8px 10px;font-size:11px;color:#999;font-style:italic;">No indicators.</div>'; return; }
+            var first = null;
+            inds.forEach(function (ind) {
+                var label = document.createElement('label');
+                label.className = 'radio-option';
+                var input = document.createElement('input');
+                input.type = 'radio'; input.name = 'filter-indicator'; input.value = ind;
+                input.addEventListener('change', onAnyFilterChange);
+                var circle = document.createElement('span'); circle.className = 'radio-circle';
+                var text = document.createElement('span'); text.className = 'radio-text'; text.textContent = ind;
+                label.appendChild(input); label.appendChild(circle); label.appendChild(text);
+                c.appendChild(label);
+                if (!first) first = input;
+            });
+            if (first) first.checked = true;
+        }
+
+        function onAnyFilterChange() { updateDashboard(); updateAdverse(); }
+
+        function getSelectedFY() { var el = document.querySelector('input[name="filter-year"]:checked'); return el ? el.value : ''; }
+        function getSelectedIndicator() { var el = document.querySelector('input[name="filter-indicator"]:checked'); return el ? el.value : ''; }
+        function getSelectedUnits() { var arr = []; document.querySelectorAll('input[name="filter-unit"]:checked').forEach(function (cb) { arr.push(cb.value); }); return arr; }
+
+        // ----- TABS -----
+        function initializeTabs() {
+            document.querySelectorAll('.tab-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () { showTab(btn.getAttribute('data-tab')); });
+            });
+        }
+        function showTab(name) {
+            document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-tab') === name); });
+            document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.toggle('active', p.getAttribute('data-tab') === name); });
+        }
+
+        // ----- ADVERSE (Tab 2) -----
+        function periodSortKey(p) { var m = String(p || '').match(/(\d+)/); return m ? parseInt(m[1], 10) : 0; }
+        function isLowerBetter(d) { d = String(d || '').trim().toLowerCase(); return d.indexOf('down') >= 0 || d === '↓' || d === 'baixo' || d === 'menor'; }
+
+        function updateAdverse() {
+            var fy = getSelectedFY();
+            var units = getSelectedUnits();
+            var pInfoEl = document.getElementById('neg-period-info');
+            if (!fy) { if (pInfoEl) pInfoEl.textContent = '—'; renderAdverse([]); return; }
+
+            var adverse = [];
+            rawData.forEach(function (r) {
+                if (String(r[COL.FY]) !== fy) return;
+                var ind = r[COL.INDICATOR];
+                if (!ind) return;
+                var u = String(r[COL.UNIT] || '');
+                if (units.length && units.indexOf(u) < 0) return;
+                var result = parseFloat(r[COL.RESULT]);
+                var target = parseFloat(r[COL.TARGET]);
+                if (isNaN(result) || isNaN(target)) return;
+                var direction = r[COL.BETTER_DIRECTION] ? String(r[COL.BETTER_DIRECTION]) : '';
+                var lowerIsBetter = isLowerBetter(direction);
+                var bad = lowerIsBetter ? (result > target) : (result < target);
+                if (!bad) return;
+                var period = String(r[COL.FY_MONTH] || '');
+                var gap = lowerIsBetter ? (result - target) : (target - result);
+                var gapPct = (target !== 0) ? Math.abs(gap) / Math.abs(target) : null;
+                adverse.push({
+                    _pn: periodSortKey(period), period: period,
+                    month: r[COL.MONTH] ? String(r[COL.MONTH]) : '',
+                    indicator: ind, unit: u, result: result, target: target,
+                    measure: r[COL.MEASURE] ? String(r[COL.MEASURE]) : '',
+                    direction: direction, lowerIsBetter: lowerIsBetter, gap: gap, gapPct: gapPct,
+                    analysis: r[COL.ANALYSIS] ? String(r[COL.ANALYSIS]) : '',
+                    assigned: r[COL.ASSIGNED] ? String(r[COL.ASSIGNED]) : '',
+                    dueDate: r[COL.DUE_DATE] ? String(r[COL.DUE_DATE]) : '',
+                    status: r[COL.STATUS] ? String(r[COL.STATUS]) : ''
+                });
+            });
+
+            adverse.sort(function (a, b) {
+                if (a._pn !== b._pn) return a._pn - b._pn;
+                var ga = (a.gapPct == null) ? Math.abs(a.gap) : a.gapPct;
+                var gb = (b.gapPct == null) ? Math.abs(b.gap) : b.gapPct;
+                return gb - ga;
+            });
+
+            if (pInfoEl) { pInfoEl.textContent = 'FY ' + fy + ' · all periods' + (units.length ? ' · Unit: ' + units.join(', ') : ''); }
+            renderAdverse(adverse);
+        }
+
+        function renderAdverse(list) {
+            var tbody = document.getElementById('adverse-tbody');
+            var countEl = document.getElementById('neg-count');
+            if (countEl) countEl.textContent = list.length;
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            if (!list.length) {
+                var tr = document.createElement('tr');
+                var td = document.createElement('td');
+                td.colSpan = 10;
+                td.style.cssText = 'text-align:center;color:#48bb78;padding:24px;font-style:italic;';
+                td.textContent = 'No adverse results in this fiscal year.';
+                tr.appendChild(td); tbody.appendChild(tr); return;
+            }
+            var fmt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+            list.forEach(function (e) {
+                var isPct = e.measure && (e.measure.toLowerCase().indexOf('%') >= 0 || e.measure.toLowerCase().indexOf('percent') >= 0);
+                var arrow = e.lowerIsBetter ? '▲' : '▼';
+                var periodText = e.period + (e.month ? ' (' + e.month + ')' : '');
+                var tr = document.createElement('tr');
+                tr.innerHTML =
+                    '<td class="ng-period">' + escapeHtml(periodText) + '</td>' +
+                    '<td class="ng-ind">' + escapeHtml(e.indicator) + '</td>' +
+                    '<td class="ng-unit">' + escapeHtml(e.unit || '—') + '</td>' +
+                    '<td class="ng-result">' + fmt.format(e.result) + (isPct ? '%' : '') + '</td>' +
+                    '<td class="ng-target">' + fmt.format(e.target) + (isPct ? '%' : '') + '</td>' +
+                    '<td class="ng-gap"><span class="ng-arrow">' + arrow + '</span> ' + fmt.format(Math.abs(e.gap)) + (isPct ? ' pp' : '') + '</td>' +
+                    '<td class="ng-analysis"><div class="line-clamp-2" title="' + escapeHtml(e.analysis || '—') + '">' + escapeHtml(e.analysis || '—') + '</div></td>' +
+                    '<td class="ng-assigned">' + escapeHtml(e.assigned || '—') + '</td>' +
+                    '<td class="ng-due">' + escapeHtml(e.dueDate || '—') + '</td>' +
+                    '<td class="ng-status">' + escapeHtml(e.status || '—') + '</td>';
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ----- TAB 1: DASHBOARD -----
+        function updateDashboard() {
+            var year = getSelectedFY();
+            var indicator = getSelectedIndicator();
+            if (!year || !indicator) { if (chartInstance) chartInstance.destroy(); return; }
+
+            var titleEl = document.getElementById('chart-title');
+            var badgeEl = document.getElementById('chart-badge');
+            if (titleEl) titleEl.textContent = indicator;
+            if (badgeEl) badgeEl.textContent = 'FY: ' + year;
+
+            var checkedUnits = getSelectedUnits();
+            var filtered = rawData.filter(function (d) {
+                var matchFY = String(d[COL.FY]) === year;
+                var matchInd = d[COL.INDICATOR] === indicator;
+                var matchUnit = checkedUnits.length === 0 || checkedUnits.indexOf(String(d[COL.UNIT] || '')) >= 0;
+                return matchFY && matchInd && matchUnit;
+            });
+
+            var ids = ['kpi-avg', 'kpi-max', 'kpi-min'];
+            if (!filtered.length) {
+                if (chartInstance) chartInstance.destroy();
+                ids.forEach(function (id) { var x = document.getElementById(id); if (x) x.textContent = '—'; });
+                var pts = document.getElementById('kpi-points'); if (pts) pts.textContent = '0';
+                return;
+            }
+
+            var sampleRow = filtered[0];
+            var measure = sampleRow[COL.MEASURE] ? String(sampleRow[COL.MEASURE]) : '—';
+            var direction = sampleRow[COL.BETTER_DIRECTION] ? String(sampleRow[COL.BETTER_DIRECTION]) : '—';
+            var elMeasure = document.getElementById('meta-measure');
+            var elDirection = document.getElementById('meta-direction');
+            if (elMeasure) elMeasure.textContent = measure;
+            if (elDirection) elDirection.textContent = direction;
+
+            filtered.sort(function (a, b) {
+                return String(a[COL.FY_MONTH] || '').localeCompare(String(b[COL.FY_MONTH] || ''), undefined, { numeric: true, sensitivity: 'base' });
+            });
+
+            var grouped = {}, groupOrder = [];
+            filtered.forEach(function (d) {
+                var key = String(d[COL.FY_MONTH] || '?');
+                var month = d[COL.MONTH] ? String(d[COL.MONTH]) : '';
+                if (!grouped[key]) { grouped[key] = { sum: 0, count: 0, targetSum: 0, targetCount: 0, month: month }; groupOrder.push(key); }
+                var val = parseFloat(d[COL.RESULT]);
+                if (!isNaN(val)) { grouped[key].sum += val; grouped[key].count += 1; }
+                var tgt = parseFloat(d[COL.TARGET]);
+                if (!isNaN(tgt)) { grouped[key].targetSum += tgt; grouped[key].targetCount += 1; }
+            });
+
+            var labels = [], results = [], targets = [];
+            groupOrder.forEach(function (key) {
+                var g = grouped[key];
+                labels.push(key + (g.month ? ' (' + g.month + ')' : ''));
+                results.push(g.count > 0 ? g.sum / g.count : null);
+                targets.push(g.targetCount > 0 ? g.targetSum / g.targetCount : null);
+            });
+
+            var lowerIsBetter = isLowerBetter(filtered[0][COL.BETTER_DIRECTION]);
+            var barColors = [];
+            results.forEach(function (res, i) {
+                var tgt = targets[i]; var isBad = false;
+                if (tgt !== null && tgt !== undefined && !isNaN(tgt)) { isBad = lowerIsBetter ? (res > tgt) : (res < tgt); }
+                barColors.push(isBad ? COLOR_BAD : COLOR_GOOD);
+            });
+
+            var targetInfoContainer = document.getElementById('chart-target-info');
+            var targetValueEl = document.getElementById('target-value');
+            var targetDiffEl = document.getElementById('target-diff');
+            var isPercentage = measure.toLowerCase().indexOf('%') >= 0 || measure.toLowerCase().indexOf('percent') >= 0;
+            var fmtValue = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+
+            if (results.length && targets.length) {
+                var lastIdx = results.length - 1;
+                while (lastIdx >= 0 && (results[lastIdx] === null || isNaN(results[lastIdx]) || isNaN(targets[lastIdx]) || targets[lastIdx] === null)) lastIdx--;
+                if (lastIdx >= 0) {
+                    var lastResult = results[lastIdx], lastTarget = targets[lastIdx];
+                    var diff = lastResult - lastTarget;
+                    var isPositive = lowerIsBetter ? diff <= 0 : diff >= 0;
+                    var arrow = diff > 0 ? '▲' : (diff < 0 ? '▼' : '');
+                    var diffClass = isPositive ? 'positive' : 'negative';
+                    if (diff === 0) { arrow = '='; diffClass = 'neutral'; }
+                    if (targetValueEl) targetValueEl.textContent = fmtValue.format(lastTarget) + (isPercentage ? '%' : '');
+                    if (targetDiffEl) {
+                        targetDiffEl.innerHTML = '( <span style="font-size:1.1em;">' + arrow + '</span> ' + fmtValue.format(Math.abs(diff)) + (isPercentage ? ' pp' : '') + ')';
+                        targetDiffEl.className = 'diff ' + diffClass;
+                    }
+                    if (targetInfoContainer) targetInfoContainer.style.display = 'inline-flex';
+                } else if (targetInfoContainer) { targetInfoContainer.style.display = 'none'; }
+            } else if (targetInfoContainer) { targetInfoContainer.style.display = 'none'; }
+
+            var validResults = results.filter(function (r) { return r !== null && !isNaN(r); });
+            if (validResults.length) {
+                var sum = validResults.reduce(function (a, b) { return a + b; }, 0);
+                var avg = sum / validResults.length;
+                var max = Math.max.apply(null, validResults);
+                var min = Math.min.apply(null, validResults);
+                var fmt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+                var vals = [avg, max, min];
+                ids.forEach(function (id, i) { var x = document.getElementById(id); if (x) x.textContent = fmt.format(vals[i]); });
+            }
+            var ptsEl = document.getElementById('kpi-points'); if (ptsEl) ptsEl.textContent = filtered.length;
+
+            var canvas = document.getElementById('mainChart');
+            if (!canvas) return;
+            var ctx = canvas.getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+
+            var transparentBgPlugin = {
+                id: 'transparentBg',
+                beforeDraw: function (c) { var x = c.ctx; x.save(); x.globalCompositeOperation = 'destination-over'; x.clearRect(0, 0, c.width, c.height); x.restore(); }
+            };
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                plugins: [transparentBgPlugin],
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            type: 'bar', label: 'Result', data: results,
+                            backgroundColor: barColors, borderWidth: 0, borderRadius: 3, barPercentage: 0.6, order: 2,
+                            datalabels: {
+                                display: true, color: '#ffffff', anchor: 'start', align: 'top', offset: 4,
+                                font: { family: 'Roboto', size: 10, weight: 'bold' },
+                                formatter: function (v) { if (v === null || isNaN(v)) return ''; return new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 }).format(v); }
+                            }
+                        },
+                        {
+                            type: 'line', label: 'Target', data: targets,
+                            borderColor: '#6b7280', backgroundColor: 'rgba(107, 117, 128, 0.1)',
+                            borderWidth: 1, pointRadius: 2.5, pointBackgroundColor: '#6b7280',
+                            pointBorderColor: 'transparent', pointBorderWidth: 0, tension: 0, fill: false, order: 1,
+                            datalabels: {
+                                display: true, color: '#6b7280', anchor: 'end',
+                                align: function (ctx) {
+                                    var v = ctx.dataset.data[ctx.dataIndex];
+                                    if (v == null || isNaN(v)) return 'top';
+                                    var s = ctx.chart && ctx.chart.scales && ctx.chart.scales.y;
+                                    if (s && typeof s.max === 'number' && typeof s.min === 'number') {
+                                        if ((s.max - v) <= (s.max - s.min) * 0.04) return 'bottom';
+                                    }
+                                    return 'top';
+                                },
+                                offset: 4, clamp: true, backgroundColor: 'rgba(255, 255, 255, 0.78)', borderRadius: 3,
+                                padding: { top: 1, bottom: 1, left: 4, right: 4 },
+                                font: { family: 'Roboto', size: 10, weight: 'bold' },
+                                formatter: function (v) { if (v === null || isNaN(v)) return ''; return new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 }).format(v); }
+                            }
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    onClick: function (evt, elements) { if (elements && elements.length > 0) tickWood(); },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20, usePointStyle: true, boxWidth: 4, boxHeight: 4, font: { family: 'Roboto', size: 12 },
+                                generateLabels: function (chart) {
+                                    return [
+                                        { text: 'Result', fillStyle: COLOR_GOOD, strokeStyle: 'transparent', lineWidth: 0, hidden: !chart.isDatasetVisible(0), datasetIndex: 0 },
+                                        { text: 'Adverse Result', fillStyle: COLOR_BAD, strokeStyle: 'transparent', lineWidth: 0, hidden: !chart.isDatasetVisible(0), datasetIndex: 0 },
+                                        { text: 'Target', fillStyle: '#6b7280', strokeStyle: 'transparent', lineWidth: 0, hidden: !chart.isDatasetVisible(1), datasetIndex: 1 }
+                                    ];
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(41, 59, 149, 0.95)', titleFont: { family: 'Roboto', weight: '600' }, bodyFont: { family: 'Roboto' },
+                            padding: 12, cornerRadius: 8,
+                            callbacks: {
+                                label: function (c) {
+                                    var l = c.dataset.label || ''; if (l) l += ': ';
+                                    if (c.parsed.y !== null) l += new Intl.NumberFormat('en-US').format(c.parsed.y);
+                                    return l;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#f0f0f0', drawBorder: false }, ticks: { precision: 0, font: { family: 'Roboto', size: 11 }, color: '#718096' } },
+                        x: { grid: { display: false }, ticks: { font: { family: 'Roboto', size: 11 }, color: '#718096' } }
+                    }
+                }
+            });
+
+            updateActionTable(filtered);
+        }
+
+        // ----- ACTION TABLE (Tab 1) -----
+        function updateActionTable(filteredRows) {
+            var tbody = document.getElementById('action-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            var rows = filteredRows.slice().sort(function (a, b) {
+                return String(a[COL.FY_MONTH] || '').localeCompare(String(b[COL.FY_MONTH] || ''), undefined, { numeric: true, sensitivity: 'base' });
+            });
+            if (!rows.length) {
+                var er = document.createElement('tr');
+                var et = document.createElement('td');
+                et.colSpan = 6; et.style.cssText = 'text-align:center;color:#aaa;padding:16px;font-style:italic;';
+                et.textContent = 'No data available for this indicator.';
+                er.appendChild(et); tbody.appendChild(er); return;
+            }
+            rows.forEach(function (row) {
+                var tr = document.createElement('tr');
+                var fyLabel = String(row[COL.FY_MONTH] || '');
+                if (row[COL.MONTH]) fyLabel += ' (' + row[COL.MONTH] + ')';
+                tr.innerHTML =
+                    '<td class="col-period">' + escapeHtml(fyLabel) + '</td>' +
+                    '<td class="col-unit">' + escapeHtml(String(row[COL.UNIT] || '—')) + '</td>' +
+                    '<td class="col-analysis"><div class="line-clamp-2" title="' + escapeHtml(String(row[COL.ANALYSIS] || '—')) + '">' + escapeHtml(String(row[COL.ANALYSIS] || '—')) + '</div></td>' +
+                    '<td class="col-assigned">' + escapeHtml(String(row[COL.ASSIGNED] || '—')) + '</td>' +
+                    '<td class="col-due">' + escapeHtml(String(row[COL.DUE_DATE] || '—')) + '</td>' +
+                    '<td class="col-status">' + escapeHtml(String(row[COL.STATUS] || '—')) + '</td>';
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ----- BOOT -----
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else { initApp(); }
+    })();
+    </script>
+</body>
+
+</html>
