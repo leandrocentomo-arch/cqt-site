@@ -331,14 +331,14 @@
     <div class="services-header-right">Fundada em 1998, a CQT é uma consultoria especializada em sistemas da qualidade, comprometida em elevar os padrões de gestão em diversos setores. Mantemos organizações em conformidade com as normas, padrões e regulamentação vigentes.</div>
   </div>
   <div class="services-grid">
-    <div class="service-card"><h3>IMPLANTAÇÃO<br>SISTEMAS DE GESTÃO</h3><p class="subtitle">Consultoria e treinamentos em gestão para certificação em normas ISO.</p><div class="dash"></div></div>
-    <div class="service-card"><h3>APOIO<br>TÉCNICO</h3><p class="subtitle">Avaliações e emissões de laudos para atendimento às NR(s).</p><div class="dash"></div></div>
-    <div class="service-card"><h3>PREPARAÇÃO<br>SEDEX/SMETA</h3><p class="subtitle">Consultoria para organizações que buscam atender aos padrões éticos SEDEX SMETA.</p><div class="dash"></div></div>
-    <div class="service-card"><h3>PADRÕES<br>DE MERCADO</h3><p class="subtitle">Consultoria para atendimento a padrões de sustentabilidade.</p><div class="dash"></div></div>
-    <div class="service-card"><h3>PEGADA DE<br>CARBONO</h3><p class="subtitle">Consultoria para elaboração do protocolo e registro na FGV do GHG Protocol.</p><div class="dash"></div></div>
-    <div class="service-card"><h3>SEGURANÇA<br>DE ALIMENTOS</h3><p class="subtitle">Consultoria para normas e padrões da gestão de segurança de alimentos.</p><div class="dash"></div></div>
-    <div class="service-card"><h3>APOIO<br>PÓS CERTIFICAÇÃO</h3><p class="subtitle">Suporte ao sistema de gestão de organizações certificadas.</p><div class="dash"></div></div>
-    <div class="service-card"><h3>INSPEÇÕES<br>DA QUALIDADE</h3><p class="subtitle">Inspeções para o controle de qualidade de produtos na fonte.</p><div class="dash"></div></div>
+    <div class="service-card" data-photo="https://static.wixstatic.com/media/b83354_b4f277dfbbb6428bbb94d4f7af459784~mv2.png"><h3>IMPLANTAÇÃO<br>SISTEMAS DE GESTÃO</h3><p class="subtitle">Consultoria e treinamentos em gestão para certificação em normas ISO.</p><div class="dash"></div></div>
+    <div class="service-card" data-photo="https://static.wixstatic.com/media/b83354_14fe082fd9024c4ea96f030b0e5b3b7c~mv2.png"><h3>APOIO<br>TÉCNICO</h3><p class="subtitle">Avaliações e emissões de laudos para atendimento às NR(s).</p><div class="dash"></div></div>
+    <div class="service-card" data-photo="https://static.wixstatic.com/media/b83354_6f7e745146274df7a366bd2151541dde~mv2.png"><h3>PREPARAÇÃO<br>SEDEX/SMETA</h3><p class="subtitle">Consultoria para organizações que buscam atender aos padrões éticos SEDEX SMETA.</p><div class="dash"></div></div>
+    <div class="service-card" data-photo="https://static.wixstatic.com/media/b83354_c1c97b57c8014ddba028042137c0294a~mv2.png"><h3>PADRÕES<br>DE MERCADO</h3><p class="subtitle">Consultoria para atendimento a padrões de sustentabilidade.</p><div class="dash"></div></div>
+    <div class="service-card" data-photo="https://static.wixstatic.com/media/b83354_d16f148a500f40f7ab5825381a148de2~mv2.png"><h3>PEGADA DE<br>CARBONO</h3><p class="subtitle">Consultoria para elaboração do protocolo e registro na FGV do GHG Protocol.</p><div class="dash"></div></div>
+    <div class="service-card" data-photo="https://static.wixstatic.com/media/b83354_0f2e21aa92e74a8d81d4279ab2571273~mv2.png"><h3>SEGURANÇA<br>DE ALIMENTOS</h3><p class="subtitle">Consultoria para normas e padrões da gestão de segurança de alimentos.</p><div class="dash"></div></div>
+    <div class="service-card" data-photo="https://static.wixstatic.com/media/b83354_c1c97b57c8014ddba028042137c0294a~mv2.png"><h3>APOIO<br>PÓS CERTIFICAÇÃO</h3><p class="subtitle">Suporte ao sistema de gestão de organizações certificadas.</p><div class="dash"></div></div>
+    <div class="service-card" data-photo="https://static.wixstatic.com/media/b83354_b4f277dfbbb6428bbb94d4f7af459784~mv2.png"><h3>INSPEÇÕES<br>DA QUALIDADE</h3><p class="subtitle">Inspeções para o controle de qualidade de produtos na fonte.</p><div class="dash"></div></div>
     <div class="services-photo-col"></div>
   </div>
 </section>
@@ -430,4 +430,31 @@
 })();
 </script>
 <a href="https://wa.me/5511954684086" class="whatsapp-float" target="_blank"><img src="img/WhatsApp_Logo_White.svg" alt="WhatsApp"></a>
+
+<script>
+(function() {
+  var col = document.querySelector('.services-photo-col');
+  if (!col) return;
+  var DEFAULT = 'https://static.wixstatic.com/media/b83354_6f7e745146274df7a366bd2151541dde~mv2.png';
+  var timer;
+  document.querySelectorAll('.service-card[data-photo]').forEach(function(card) {
+    card.addEventListener('mouseenter', function() {
+      clearTimeout(timer);
+      col.style.opacity = '0';
+      timer = setTimeout(function() {
+        col.style.backgroundImage = "url('" + card.dataset.photo + "')";
+        col.style.opacity = '1';
+      }, 220);
+    });
+    card.addEventListener('mouseleave', function() {
+      clearTimeout(timer);
+      col.style.opacity = '0';
+      timer = setTimeout(function() {
+        col.style.backgroundImage = "url('" + DEFAULT + "')";
+        col.style.opacity = '1';
+      }, 220);
+    });
+  });
+})();
+</script>
 </body></html>
