@@ -55,6 +55,7 @@ img { max-width: 100%; display: block; }
 .header-logo {
   display: flex;
   align-items: flex-start;
+  align-self: flex-start;
   position: relative;
   z-index: 210;
   opacity: 1;
