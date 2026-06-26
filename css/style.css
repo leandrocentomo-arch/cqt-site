@@ -67,9 +67,11 @@ img { max-width: 100%; display: block; }
   position: relative;
   top: 0;
 }
-.header-logo img {
+.header-logo img,
+.header-logo svg {
   height: 77px;
   width: auto;
+  display: block;
 }
 .header-nav { display: flex; align-items: center; gap: 28px; height: 100%; }
 .header-nav a {
