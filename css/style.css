@@ -2319,19 +2319,23 @@ img { max-width: 100%; display: block; }
 }
 
 
-/* ===== Ideal Metrics horizontal lockup ===== */
-.im-horiz-badge {
-  display: block;
-  height: 28px;
-  width: auto;
-  margin-bottom: 10px;
-  opacity: 0.55;
-}
 
-.im-horiz-footer {
-  height: 22px;
+/* ===== Ideal Metrics horizontal lockup ===== */
+.im-hero-stamp {
+  margin-top: 28px;
+}
+.im-hero-stamp img {
+  height: 30px;
   width: auto;
   opacity: 0.45;
+}
+
+.im-footer-brand {
+  margin: 14px 0 10px;
+}
+.im-footer-brand img {
+  height: 24px;
+  width: auto;
+  opacity: 0.55;
   filter: invert(1);
-  margin-right: auto;
 }
