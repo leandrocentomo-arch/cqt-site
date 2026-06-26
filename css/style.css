@@ -2318,3 +2318,20 @@ img { max-width: 100%; display: block; }
   .services-hero--slate { margin-top: 0; }
 }
 
+
+/* ===== Ideal Metrics horizontal lockup ===== */
+.im-horiz-badge {
+  display: block;
+  height: 28px;
+  width: auto;
+  margin-bottom: 10px;
+  opacity: 0.55;
+}
+
+.im-horiz-footer {
+  height: 22px;
+  width: auto;
+  opacity: 0.45;
+  filter: invert(1);
+  margin-right: auto;
+}
