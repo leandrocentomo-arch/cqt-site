@@ -2378,7 +2378,7 @@ img { max-width: 100%; display: block; }
   margin: 0;
 }
 .carb-cat ul { margin: 0; }
-.carb-cat li {
+.content .carb-cat li {
   position: relative;
   padding-left: 16px;
   font-size: 15px;
