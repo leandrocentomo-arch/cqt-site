@@ -2325,7 +2325,7 @@ img { max-width: 100%; display: block; }
   margin-top: 28px;
 }
 .im-hero-stamp img {
-  height: 66px;
+  height: 104px;
   width: auto;
   opacity: 0.7;
 }
@@ -2334,7 +2334,7 @@ img { max-width: 100%; display: block; }
   margin: 14px 0 10px;
 }
 .im-footer-brand img {
-  height: 50px;
+  height: 80px;
   width: auto;
   opacity: 0.65;
 }
