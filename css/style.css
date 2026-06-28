@@ -2338,3 +2338,87 @@ img { max-width: 100%; display: block; }
   width: auto;
   opacity: 0.65;
 }
+
+/* ========== GESTÃO DE CARBONO — 4ª coluna do hero + portfólio ========== */
+/* Coluna 4 do hero (substitui --food, mantém a progressão escuro→claro) */
+.sh-column--carbon { background: linear-gradient(160deg, rgba(90,118,148,0.4) 0%, rgba(110,140,170,0.35) 50%, rgba(135,165,195,0.3) 100%); }
+.services-hero--slate .sh-column--carbon {
+  background: linear-gradient(160deg, rgba(125,175,232,0.30) 0%, rgba(155,200,248,0.25) 100%);
+}
+
+/* Portfólio de serviços — cards transparentes, borda azul fina, raio 3px */
+.carb-portfolio {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin: 20px 0 8px;
+}
+.carb-cat {
+  border: 1px solid rgba(113,144,171,0.35);
+  border-radius: 3px;
+  padding: 24px 24px 20px;
+  background: transparent;
+}
+.carb-cat-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.carb-cat-num {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--accent-red);
+}
+.carb-cat h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+}
+.carb-cat ul { margin: 0; }
+.carb-cat li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-light);
+  margin-bottom: 8px;
+  list-style: none;
+}
+.carb-cat li:last-child { margin-bottom: 0; }
+.carb-cat li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-red);
+}
+.carb-cat li strong { color: var(--text-dark); font-weight: 600; }
+
+/* CTA */
+.carb-cta {
+  display: inline-block;
+  margin-top: 6px;
+  border: 1px solid var(--mid-gray);
+  border-radius: 3px;
+  padding: 10px 28px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dark);
+  transition: all 0.3s;
+}
+.carb-cta:hover {
+  background: var(--mid-gray);
+  color: #fff;
+}
+
+@media (max-width: 760px) {
+  .carb-portfolio { grid-template-columns: 1fr; }
+}
