@@ -2322,7 +2322,7 @@ img { max-width: 100%; display: block; }
 
 /* ===== Ideal Metrics horizontal lockup ===== */
 .im-hero-stamp {
-  margin-top: 28px;
+  margin: 0 0 22px;
   display: flex;
   align-items: center;
   gap: 28px;
