@@ -1563,8 +1563,9 @@ img { max-width: 100%; display: block; }
 .hero-refined__title--light {
   font-family: 'IBM Plex Serif', serif;
   font-weight: 500;
-  font-size: 0.68em;
-  letter-spacing: 0;
+  font-size: 0.58em;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
   color: #6B7280;
 }
 .hero-refined__title--accent {
