@@ -1561,7 +1561,10 @@ img { max-width: 100%; display: block; }
   display: block;
 }
 .hero-refined__title--light {
+  font-family: 'IBM Plex Mono', monospace;
   font-weight: 400;
+  font-size: 0.68em;
+  letter-spacing: 0;
   color: #6B7280;
 }
 .hero-refined__title--accent {
