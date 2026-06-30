@@ -2330,7 +2330,8 @@ img { max-width: 100%; display: block; }
 .im-hero-stamp img {
   height: 56px;
   width: auto;
-  opacity: 0.7;
+  opacity: 1;
+  filter: brightness(0);
 }
 
 .im-footer-brand {
