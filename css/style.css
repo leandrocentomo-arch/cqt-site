@@ -463,6 +463,12 @@ img { max-width: 100%; display: block; }
   padding: 10px;
 }
 .services-icon img { height: 28px; width: auto; }
+.services-icon--a4 {
+  background: none;
+  border: none;
+  padding: 0;
+}
+.services-icon--a4 img { height: 55px; width: 55px; }
 .services-header-right {
   max-width: 300px;
   background: var(--lavender);
