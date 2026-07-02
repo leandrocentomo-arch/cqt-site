@@ -2594,3 +2594,12 @@ img { max-width: 100%; display: block; }
   height: 73px;
   width: auto;
 }
+
+/* Selo A.4 abaixo do conteudo (sem brightness, colorido) */
+.im-hero-badge {
+  margin: 30px 0 0;
+}
+.im-hero-badge img {
+  height: 84px;
+  width: auto;
+}
