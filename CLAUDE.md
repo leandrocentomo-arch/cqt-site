@@ -13,7 +13,7 @@
 - Tipografia: Roboto Slab nos títulos, Roboto no corpo, Roboto Mono em rótulos e botões. Exceção: a seção «Serviços de destaque» da home é cópia fiel da seção do site no ar (cqt-br.com) e usa IBM Plex Sans Condensed.
 - Cores: vermelho `#EF4545` como acento, grafite `#3D394A`, cinza-azulado `#50687B`.
 - Estilo visual diferente do site Ideal Metrics: sem losango, sem pássaro, sem trama Bayer azul nas fotos.
-- Home: as quatro lâminas do topo (Certificação ISO, Inspeções de Qualidade, Sustentabilidade ESG, Segurança Alimentar) ficam como estão.
+- Home tem só três blocos, nesta ordem: as quatro lâminas do topo (ficam como estão), «Serviços de destaque» (cópia fiel do cqt-br.com: 80% da tela, laterais #F6F5F8, hover #7190AB em 0,4 s) e «Conteúdo de destaque». Depois só o rodapé. Não acrescentar outros elementos.
 
 ## Texto
 
